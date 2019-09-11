@@ -10,14 +10,34 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.helloWorld"
+		"onCommand:extension.setApiKey",
+		"onCommand:extension.selectWorkspace",
+		"onCommand:extension.resetConfig",
+		"onCommand:extension.startTracking",
+		"onCommand:extension.stopTracking"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.helloWorld",
-				"title": "Hello World"
+				"command": "extension.setApiKey",
+				"title": "Clockify: Set API key"
+			},
+			{
+				"command": "extension.selectWorkspace",
+				"title": "Clockify: Select Workspace"
+			},
+			{
+				"command": "extension.resetConfig",
+				"title": "Clockify: Reset Configuration"
+			},
+			{
+				"command": "extension.startTracking",
+				"title": "Clockify: Start Tracking"
+			},
+			{
+				"command": "extension.stopTracking",
+				"title": "Clockify: Stop Tracking"
 			}
 		]
 	},
@@ -38,5 +58,10 @@
 		"typescript": "^3.3.1",
 		"tslint": "^5.12.1",
 		"vscode-test": "^1.2.0"
+	},
+	"dependencies": {
+		"@types/lodash": "^4.14.138",
+		"axios": "^0.19.0",
+		"lodash": "^4.17.15"
 	}
 }
