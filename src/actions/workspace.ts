@@ -1,5 +1,4 @@
 import http from '../services/http.service';
-import { Tag } from '../interfaces/Tag';
 
 export async function getProjects(workspaceId: string) {
 	return http
@@ -24,7 +23,7 @@ export async function getTags(workspaceId: string) {
 			return [];
 		});
 }
-export function addTag(workspaceId: string, tag: Tag): object | null {
+export function addTag(workspaceId: string, tag): object | null {
 	return http
 		.post(`/workspaces/${workspaceId}/tags`, tag)
 		.then((res) => {

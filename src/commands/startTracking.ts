@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getProjects, getTags, getTasks, addTimeEntry } from '../helpers/workspace';
+import { getProjects, getTags, getTasks, addTimeEntry } from '../actions/workspace';
 
 export async function startTracking(workspaceId: string) {
 	const projectId = await selectProject(workspaceId);
