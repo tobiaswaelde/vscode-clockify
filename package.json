@@ -10,6 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
+		"*",
 		"onCommand:extension.setApiKey",
 		"onCommand:extension.selectWorkspace",
 		"onCommand:extension.resetConfig",

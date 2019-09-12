@@ -7,9 +7,16 @@ import { setApiKey } from './commands/setApiKey';
 import { selectWorkspace } from './commands/selectWorkspace';
 import { startTracking } from './commands/startTracking';
 
+let statusBarItem: vscode.StatusBarItem;
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	// apiKey
+	// workspaceId
+	// autostart: true
+	// autostop: false
+
 	const apiKey = context.globalState.get('apiKey', '');
 	const workspaceId = context.globalState.get('workspaceId', '');
 
@@ -34,6 +41,12 @@ export function activate(context: vscode.ExtensionContext) {
 		),
 		vscode.commands.registerCommand('extension.stopTracking', () => selectWorkspace(context))
 	);
+
+	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+	statusBarItem.color = 'var(--vscode-gitDecoration-untrackedResourceForeground)';
+	statusBarItem.text = 'Clockify';
+	statusBarItem.show();
+	context.subscriptions.push(statusBarItem);
 }
 
 // this method is called when your extension is deactivated
