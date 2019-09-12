@@ -8,7 +8,7 @@ export async function startTracking(workspaceId: string) {
 
 async function selectProject(workspaceId: string) {
 	const projectsRaw = await getProjects(workspaceId);
-	let items = [];
+	let items: object[] = [];
 	projectsRaw.forEach((project) => {
 		let item = { label: project.name, detail: project.id, id: project.id };
 
