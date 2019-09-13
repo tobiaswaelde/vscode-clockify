@@ -1,5 +1,6 @@
 {
 	"name": "clockify-tracker",
+	"publisher": "tobiaswaelde",
 	"displayName": "Clockify Tracker",
 	"description": "Implements Clockify time tracker (https://clockify.me/) in VSCode",
 	"version": "0.3.0",
