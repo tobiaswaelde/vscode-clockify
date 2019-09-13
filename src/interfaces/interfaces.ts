@@ -270,7 +270,7 @@ export interface TimeEntryBulkEditRequest {
 			userId: string;
 			taskId: string;
 			end: string;
-			tagIds: [string];
+			tagIds: string[];
 			timeInterval: {
 				start: string;
 				end: string;
@@ -279,7 +279,7 @@ export interface TimeEntryBulkEditRequest {
 			isLocked: boolean;
 		}
 	];
-	timeEntryIds: [string];
+	timeEntryIds: string[];
 	timeEntryList: [
 		{
 			billable: boolean;
@@ -298,7 +298,7 @@ export interface TimeEntryBulkEditRequest {
 			timeInterval: object;
 		}
 	];
-	changeFields: [string];
+	changeFields: string[];
 }
 export interface TimeEntryDtoImpl {
 	billable: boolean;
@@ -306,7 +306,7 @@ export interface TimeEntryDtoImpl {
 	id: string;
 	isLocked: boolean;
 	projectId: string;
-	tagIds: [string];
+	tagIds: string[];
 	taskId: string;
 	timeInterval: {
 		duration: string;
@@ -317,7 +317,7 @@ export interface TimeEntryDtoImpl {
 	workspaceId: string;
 }
 export interface TimeEntryIdsRequest {
-	timeEntryIds: [string];
+	timeEntryIds: string[];
 }
 export interface TimeEntryRequest {
 	id: string;
@@ -328,7 +328,7 @@ export interface TimeEntryRequest {
 	userId: string;
 	taskId: string;
 	end: string;
-	tagIds: [string];
+	tagIds: string[];
 	timeInterval: {
 		start: string;
 		end: string;
@@ -392,7 +392,7 @@ export interface UpdateTimeEntryRequest {
 	projectId: string;
 	taskId: string;
 	end: string;
-	tagIds: [string];
+	tagIds: string[];
 }
 export interface UserDto {
 	activeWorkspace: string;
@@ -481,7 +481,7 @@ export interface WorkspaceDto {
 	];
 	name: string;
 	workspaceSettings: {
-		adminOnlyPages: [string];
+		adminOnlyPages: string[];
 		automaticLock: {
 			changeDay: string;
 			dayOfMonth: number;
@@ -518,7 +518,7 @@ export interface WorkspaceRequest {
 	name: string;
 }
 export interface WorkspaceSettingsDto {
-	adminOnlyPages: [string];
+	adminOnlyPages: string[];
 	automaticLock: {
 		changeDay: string;
 		dayOfMonth: number;

@@ -1,31 +1,75 @@
 import http from '../services/http.service';
 import { TemplateDto, TemplatePatchRequest } from '../interfaces/interfaces';
 
-export function getTemplates(workspaceId: string): TemplateDto[] {
+export async function getTemplates(workspaceId: string): Promise<TemplateDto[]> {
 	let templates: TemplateDto[] = [];
+	await http
+		.get(`/v1/workspaces/${workspaceId}/templates`)
+		.then((res) => {
+			templates = res.data;
+		})
+		.catch((err) => {
+			templates = [];
+		});
 	return templates;
 }
 
-export function addTemplate(workspaceId: string, newTamplate: TemplatePatchRequest): TemplateDto[] {
+export async function addTemplate(
+	workspaceId: string,
+	newTamplates: TemplatePatchRequest[]
+): Promise<TemplateDto[]> {
 	let templates: TemplateDto[] = [];
+	await http
+		.post(`/v1/workspaces/${workspaceId}/templates`, newTamplates)
+		.then((res) => {
+			templates = res.data;
+		})
+		.catch((err) => (templates = []));
 	return templates;
 }
 
-export function getTemplate(workspaceId: string, templateId: string): TemplateDto {
+export async function getTemplate(workspaceId: string, templateId: string): Promise<TemplateDto> {
 	let template: TemplateDto = {} as TemplateDto;
+	await http
+		.get(`/v1/workspaces/${workspaceId}/templates/${templateId}`)
+		.then((res) => {
+			template = res.data;
+		})
+		.catch((err) => {
+			template = {} as TemplateDto;
+		});
 	return template;
 }
 
-export function deleteTemplate(workspaceId: string, templateId: string): TemplateDto {
+export async function deleteTemplate(
+	workspaceId: string,
+	templateId: string
+): Promise<TemplateDto> {
 	let template: TemplateDto = {} as TemplateDto;
+	await http
+		.delete(`/v1/workspaces/${workspaceId}/templates/${templateId}`)
+		.then((res) => {
+			template = res.data;
+		})
+		.catch((err) => {
+			template = {} as TemplateDto;
+		});
 	return template;
 }
 
-export function changeTemplate(
+export async function changeTemplate(
 	workspaceId: string,
 	templateId: string,
 	newTemplate: TemplatePatchRequest
-): TemplateDto {
+): Promise<TemplateDto> {
 	let template: TemplateDto = {} as TemplateDto;
+	await http
+		.patch(`/v1/workspaces/${workspaceId}/templates/${templateId}`, newTemplate)
+		.then((res) => {
+			template = res.data;
+		})
+		.catch((err) => {
+			template = {} as TemplateDto;
+		});
 	return template;
 }

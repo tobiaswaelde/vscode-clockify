@@ -1,9 +1,10 @@
 import http from '../services/http.service';
 import { TagDto, TagRequest } from '../interfaces/interfaces';
 
-export function getTags(workspaceId: string): TagDto[] {
+export async function getTags(workspaceId: string): Promise<TagDto[]> {
 	let tags: TagDto[] = [];
-	http.get(`/workspaces/${workspaceId}/tags`)
+	await http
+		.get(`/workspaces/${workspaceId}/tags`)
 		.then((res) => {
 			tags = res.data;
 		})
@@ -13,9 +14,10 @@ export function getTags(workspaceId: string): TagDto[] {
 	return tags;
 }
 
-export function addTag(workspaceId: string, newTag: TagRequest): TagDto {
+export async function addTag(workspaceId: string, newTag: TagRequest): Promise<TagDto> {
 	let tag = {} as TagDto;
-	http.post(`/workspaces/${workspaceId}/tags`, newTag)
+	await http
+		.post(`/workspaces/${workspaceId}/tags`, newTag)
 		.then((res) => {
 			tag = res.data;
 		})

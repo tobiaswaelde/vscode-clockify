@@ -1,11 +1,11 @@
 import http from '../services/http.service';
 import { ClientDto, ClientRequest } from '../interfaces/interfaces';
 
-export function getClients(workspaceId: string): ClientDto[] {
+export async function getClients(workspaceId: string): Promise<ClientDto[]> {
 	let clients: ClientDto[] = [];
-	http.get(`/workspaces/${workspaceId}/clients`)
+	await http
+		.get(`/workspaces/${workspaceId}/clients`)
 		.then((res) => {
-			// return res.data;
 			clients = res.data;
 		})
 		.catch((err) => {
@@ -14,9 +14,13 @@ export function getClients(workspaceId: string): ClientDto[] {
 	return clients;
 }
 
-export function addNewClientToWorkspace(workspaceId: string, newClient: ClientRequest) {
+export async function addNewClientToWorkspace(
+	workspaceId: string,
+	newClient: ClientRequest
+): Promise<ClientDto> {
 	let client: ClientDto = {} as ClientDto;
-	http.post(`/workspaces/${workspaceId}/clients`, newClient)
+	await http
+		.post(`/workspaces/${workspaceId}/clients`, newClient)
 		.then((res) => {
 			client = res.data;
 		})

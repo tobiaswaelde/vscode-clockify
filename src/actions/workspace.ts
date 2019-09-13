@@ -1,60 +1,28 @@
 import http from '../services/http.service';
+import { WorkspaceDto, WorkspaceRequest } from '../interfaces/interfaces';
 
-export async function getProjects(workspaceId: string) {
-	return http
-		.get(`/workspaces/${workspaceId}/projects`)
+export async function getWorkspaces(): Promise<WorkspaceDto[]> {
+	let workspaces: WorkspaceDto[] = [];
+	await http
+		.get(`/workspaces`)
 		.then((res) => {
-			return res.data;
+			workspaces = res.data;
 		})
 		.catch((err) => {
-			console.error(err);
-			return [];
+			workspaces = [];
 		});
+	return workspaces;
 }
 
-export async function getTags(workspaceId: string) {
-	return http
-		.get(`/workspaces/${workspaceId}/tags`)
+export async function addWorkspace(newWorkspace: WorkspaceRequest): Promise<WorkspaceDto> {
+	let workspace: WorkspaceDto = {} as WorkspaceDto;
+	await http
+		.post(`/workspaces`)
 		.then((res) => {
-			return res.data;
+			workspace = res.data;
 		})
 		.catch((err) => {
-			console.error(err);
-			return [];
+			workspace = {} as WorkspaceDto;
 		});
-}
-export function addTag(workspaceId: string, tag): object | null {
-	return http
-		.post(`/workspaces/${workspaceId}/tags`, tag)
-		.then((res) => {
-			return res.data;
-		})
-		.catch((err) => {
-			console.error(err);
-			return null;
-		});
-}
-
-export async function getTasks(workspaceId: string, projectId: string) {
-	return http
-		.get(`/workspaces/${workspaceId}/projects/${projectId}/tasks`)
-		.then((res) => {
-			return res.data;
-		})
-		.catch((err) => {
-			console.error(err);
-			return null;
-		});
-}
-
-export async function addTimeEntry(workspaceId: string, timeEntry: object) {
-	return http
-		.post(`/workspaces/${workspaceId}/time-entries`, timeEntry)
-		.then((res) => {
-			return res.data;
-		})
-		.catch((err) => {
-			console.error(err);
-			return null;
-		});
+	return workspace;
 }

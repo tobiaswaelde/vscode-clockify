@@ -1,9 +1,10 @@
 import http from '../services/http.service';
 import { ProjectDtoImpl, ProjectRequest } from '../interfaces/interfaces';
 
-export function getProjects(workspaceId: string): ProjectDtoImpl[] {
+export async function getProjects(workspaceId: string): Promise<ProjectDtoImpl[]> {
 	let projects: ProjectDtoImpl[] = [];
-	http.get(`/workspaces/${workspaceId}/projects`)
+	await http
+		.get(`/workspaces/${workspaceId}/projects`)
 		.then((res) => {
 			projects = res.data;
 		})
@@ -13,9 +14,13 @@ export function getProjects(workspaceId: string): ProjectDtoImpl[] {
 	return projects;
 }
 
-export function addProject(workspaceId: string, newProject: ProjectRequest): ProjectDtoImpl {
+export async function addProject(
+	workspaceId: string,
+	newProject: ProjectRequest
+): Promise<ProjectDtoImpl> {
 	let project: ProjectDtoImpl = {} as ProjectDtoImpl;
-	http.post(`/workspaces/${workspaceId}/projects`, newProject)
+	await http
+		.post(`/workspaces/${workspaceId}/projects`, newProject)
 		.then((res) => {
 			project = res.data;
 		})
@@ -25,9 +30,13 @@ export function addProject(workspaceId: string, newProject: ProjectRequest): Pro
 	return project;
 }
 
-export function deleteProject(workspaceId: string, projectId: string): ProjectDtoImpl {
+export async function deleteProject(
+	workspaceId: string,
+	projectId: string
+): Promise<ProjectDtoImpl> {
 	let project = {} as ProjectDtoImpl;
-	http.delete(`/workspaces/${workspaceId}/projects/${projectId}`)
+	await http
+		.delete(`/workspaces/${workspaceId}/projects/${projectId}`)
 		.then((res) => {
 			project = res.data;
 		})
