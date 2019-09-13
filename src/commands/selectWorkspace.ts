@@ -1,37 +1,38 @@
 import * as vscode from 'vscode';
-import http from '../services/http.service';
 import * as _ from 'lodash';
+import { getWorkspaces } from '../actions/workspace';
+import { WorkspaceDto } from '../interfaces/interfaces';
+import { WorkspaceQuickPickItem } from '../interfaces/customInterfaces';
 
-export async function selectWorkspace(context: vscode.ExtensionContext) {
-	const workspacesRaw: [] = await getWorkspaces();
-	const workspaces = workspacesRaw.map((workspace) => {
-		return _.pick(workspace, ['id', 'name']);
-	});
-
-	let items: object[] = [];
-	workspaces.forEach((w) => {
-		items.push({
-			label: w.name,
-			detail: w.id
+export async function selectWorkspace() {
+	try {
+		const workspaces = await getWorkspaces();
+		let workspacesItems: WorkspaceQuickPickItem[] = [];
+		workspaces.forEach((workspace) => {
+			let item = {
+				label: workspace.name,
+				id: workspace.id
+			};
+			workspacesItems.push(item);
 		});
-	});
-	vscode.window.showQuickPick(items).then((item) => {
-		setWorkspace(context, item.detail);
-	});
-}
 
-function setWorkspace(context: vscode.ExtensionContext, workspaceId: string) {
-	context.globalState.update('workspaceId', workspaceId);
-	vscode.window.showInformationMessage(`Workspace set successfully`);
-}
+		// Select Workspace
+		const workspaceId = await vscode.window
+			.showQuickPick(workspacesItems, {
+				ignoreFocusOut: true,
+				placeHolder: 'Select workspace'
+			})
+			.then((workspace) => {
+				if (workspace === undefined) {
+					throw new Error('No workspace selected');
+				}
+				return workspace.id;
+			});
 
-async function getWorkspaces() {
-	return http
-		.get('/workspaces')
-		.then((data) => {
-			return data.data;
-		})
-		.catch((err) => {
-			console.error(err);
-		});
+		// Write workspaceId to workspace config
+		const config = vscode.workspace.getConfiguration('clockify');
+		config.update('workspaceId', workspaceId, false);
+
+		return workspaceId;
+	} catch (err) {}
 }

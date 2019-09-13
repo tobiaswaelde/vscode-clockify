@@ -1,21 +1,24 @@
 import * as vscode from 'vscode';
-import http from '../services/http.service';
 
 export function setApiKey(context: vscode.ExtensionContext) {
-	vscode.window
-		.showInputBox({
-			placeHolder: 'Your API key',
-			prompt: 'Enter your API key',
-			ignoreFocusOut: true
-		})
-		.then((input) => {
-			if (input === undefined) {
-				return;
-			}
+	try {
+		const apiKey = vscode.window
+			.showInputBox({
+				ignoreFocusOut: true,
+				placeHolder: 'Enter API key',
+				prompt: 'Enter your API key'
+			})
+			.then((apiKey) => {
+				if (apiKey === undefined) {
+					throw new Error('No API key entered');
+				}
+				return apiKey;
+			});
 
-			context.globalState.update('apiKey', input);
-			http.authenticate(input);
+		// Write apiKey to global config
+		const config = vscode.workspace.getConfiguration('clockify');
+		config.update('apiKey', apiKey, true);
 
-			vscode.window.showInformationMessage(`API key set successfully.`);
-		});
+		return apiKey;
+	} catch (err) {}
 }

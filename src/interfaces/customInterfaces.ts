@@ -9,3 +9,7 @@ export interface TaskQuickPickItem extends vscode.QuickPickItem {
 export interface TagQuickPickItem extends vscode.QuickPickItem {
 	id: string;
 }
+
+export interface WorkspaceQuickPickItem extends vscode.QuickPickItem {
+	id: string;
+}

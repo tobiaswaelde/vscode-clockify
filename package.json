@@ -40,7 +40,33 @@
 				"command": "extension.stopTracking",
 				"title": "Clockify: Stop Tracking"
 			}
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Clockify Tracker configuration",
+			"properties": {
+				"clockify.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "The Clockify API Key"
+				},
+				"clockify.workspaceId": {
+					"type": "string",
+					"default": "",
+					"description": "The ID of the workspace to use"
+				},
+				"clockify.autostartTracking": {
+					"type": "boolean",
+					"default": false,
+					"description": "Start tracking with opening Visual Studio"
+				},
+				"clockify.autostopTracking": {
+					"type": "boolean",
+					"default": true,
+					"description": "Stop tracking with closing Visual Studio"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

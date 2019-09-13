@@ -12,6 +12,7 @@ let statusBarItem: vscode.StatusBarItem;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	console.log('clockify-tracker: Clockify extension started.');
 	// apiKey
 	// workspaceId
 	// autostart: true
@@ -26,20 +27,14 @@ export function activate(context: vscode.ExtensionContext) {
 		http.authenticate(apiKey);
 	}
 
-	if (!workspaceId) {
-		selectWorkspace(context);
-	}
-
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.resetConfig', () => resetConfig(context)),
 		vscode.commands.registerCommand('extension.setApiKey', () => setApiKey(context)),
-		vscode.commands.registerCommand('extension.selectWorkspace', () =>
-			selectWorkspace(context)
-		),
+		vscode.commands.registerCommand('extension.selectWorkspace', selectWorkspace),
 		vscode.commands.registerCommand('extension.startTracking', () =>
 			startTracking(workspaceId)
 		),
-		vscode.commands.registerCommand('extension.stopTracking', () => selectWorkspace(context))
+		vscode.commands.registerCommand('extension.stopTracking', () => {})
 	);
 
 	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
