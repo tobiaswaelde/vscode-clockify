@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
-import { getTags } from '../actions/tag';
-import { getProjects } from '../actions/project';
+import * as _ from 'lodash';
+import { ClientDto, ProjectDtoImpl, TimeEntryRequest } from '../interfaces/interfaces';
 import {
 	ProjectQuickPickItem,
 	TaskQuickPickItem,
 	TagQuickPickItem
 } from '../interfaces/customInterfaces';
+import { getTags } from '../actions/tag';
+import { getProjects } from '../actions/project';
 import { getClients } from '../actions/client';
-import { ClientDto, ProjectDtoImpl, TimeEntryRequest } from '../interfaces/interfaces';
 import { getTasks } from '../actions/task';
-import * as _ from 'lodash';
 import { addTimeentry } from '../actions/timeEntry';
 
 export async function startTracking(workspaceId: string) {
