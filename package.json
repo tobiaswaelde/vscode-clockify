@@ -3,7 +3,7 @@
 	"publisher": "tobiaswaelde",
 	"displayName": "Clockify Tracker",
 	"description": "Implements Clockify time tracker (https://clockify.me/) in VSCode",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"icon": "./resources/logo.jpg",
 	"repository": {
 		"type": "git",
