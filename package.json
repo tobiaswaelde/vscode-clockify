@@ -4,7 +4,7 @@
 	"displayName": "Clockify Tracker",
 	"description": "Implements Clockify time tracker (https://clockify.me/) in VSCode",
 	"version": "0.7.2",
-	"icon": "resources/icon.ico",
+	"icon": "assets/icon.ico",
 	"galleryBanner": {
 		"color": "#1840D0",
 		"theme": "dark"
@@ -29,26 +29,64 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "clockify-explorer",
+					"title": "Clockify Explorer",
+					"icon": "assets/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"clockify-explorer": [
+				{
+					"id": "clockify-workspaces",
+					"name": "Workspaces"
+				},
+				{
+					"id": "clockify-clients",
+					"name": "Clients"
+				},
+				{
+					"id": "clockify-projects",
+					"name": "Projects"
+				},
+				{
+					"id": "clockify-tasks",
+					"name": "Tasks"
+				},
+				{
+					"id": "clockify-tags",
+					"name": "Tags"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "extension.setApiKey",
-				"title": "Clockify: Set API key"
+				"title": "Set API key",
+				"category": "Clockify"
 			},
 			{
 				"command": "extension.selectWorkspace",
-				"title": "Clockify: Select Workspace"
+				"title": "Select Workspace",
+				"category": "Clockify"
 			},
 			{
 				"command": "extension.resetConfig",
-				"title": "Clockify: Reset Configuration"
+				"title": "Reset Configuration",
+				"category": "Clockify"
 			},
 			{
 				"command": "extension.startTracking",
-				"title": "Clockify: Start Tracking"
+				"title": "Start Tracking",
+				"category": "Clockify"
 			},
 			{
 				"command": "extension.stopTracking",
-				"title": "Clockify: Stop Tracking"
+				"title": "Stop Tracking",
+				"category": "Clockify"
 			}
 		],
 		"configuration": {
