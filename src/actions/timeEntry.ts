@@ -93,7 +93,7 @@ export async function addTimeentryForUser(
 	return timeentry;
 }
 
-export async function stopTimeentr(
+export async function stopTimeentry(
 	workspaceId: string,
 	userId: string,
 	newTimeentry: StopTimeEntryRequest

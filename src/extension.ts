@@ -6,6 +6,8 @@ import { resetConfig } from './commands/resetConfig';
 import { setApiKey } from './commands/setApiKey';
 import { selectWorkspace } from './commands/selectWorkspace';
 import { startTracking } from './commands/startTracking';
+import { stopTracking } from './commands/stopTracking';
+import { getUser } from './actions/user';
 
 let statusBarItem: vscode.StatusBarItem;
 
@@ -19,7 +21,9 @@ export function activate(context: vscode.ExtensionContext) {
 	// autostop: false
 
 	const apiKey = context.globalState.get('apiKey', '');
+	// const user = await getUser();
 	const workspaceId = context.globalState.get('workspaceId', '');
+	// console.log(`clockify-tracker: User: ${user.name} (${user.id})`);
 
 	if (!apiKey) {
 		setApiKey(context);
@@ -34,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand('extension.startTracking', () =>
 			startTracking(workspaceId)
 		),
-		vscode.commands.registerCommand('extension.stopTracking', () => {})
+		vscode.commands.registerCommand('extension.stopTracking', () => stopTracking(workspaceId))
 	);
 
 	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);

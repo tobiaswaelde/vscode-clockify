@@ -3,6 +3,11 @@
 	"displayName": "Clockify Tracker",
 	"description": "Implements Clockify time tracker (https://clockify.me/) in VSCode",
 	"version": "0.0.1",
+	"icon": "./resources/logo.jpg",
+	"repository": {
+		"type": "git",
+		"url": "https://gitlab.com/custom-extensions/clockify-tracker.git"
+	},
 	"engines": {
 		"vscode": "^1.38.0"
 	},
