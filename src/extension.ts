@@ -14,31 +14,28 @@ let statusBarItem: vscode.StatusBarItem;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	const config = vscode.workspace.getConfiguration('clockify');
 	console.log('clockify-tracker: Clockify extension started.');
-	// apiKey
-	// workspaceId
-	// autostart: true
-	// autostop: false
 
-	const apiKey = context.globalState.get('apiKey', '');
-	// const user = await getUser();
-	const workspaceId = context.globalState.get('workspaceId', '');
-	// console.log(`clockify-tracker: User: ${user.name} (${user.id})`);
-
+	//#region CHECK API KEY
+	let apiKey = <string>config.get('apiKey');
 	if (!apiKey) {
-		setApiKey(context);
-	} else {
-		http.authenticate(apiKey);
+		setApiKey();
+		apiKey = <string>config.get('apiKey');
+		if (!apiKey) {
+			return;
+		}
 	}
+	//#endregion
+
+	http.authenticate(apiKey);
 
 	context.subscriptions.push(
 		vscode.commands.registerCommand('extension.resetConfig', () => resetConfig(context)),
-		vscode.commands.registerCommand('extension.setApiKey', () => setApiKey(context)),
+		vscode.commands.registerCommand('extension.setApiKey', () => setApiKey()),
 		vscode.commands.registerCommand('extension.selectWorkspace', selectWorkspace),
-		vscode.commands.registerCommand('extension.startTracking', () =>
-			startTracking(workspaceId)
-		),
-		vscode.commands.registerCommand('extension.stopTracking', () => stopTracking(workspaceId))
+		vscode.commands.registerCommand('extension.startTracking', () => startTracking()),
+		vscode.commands.registerCommand('extension.stopTracking', () => stopTracking())
 	);
 
 	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);

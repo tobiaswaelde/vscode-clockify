@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
-import * as _ from 'lodash';
-import { getWorkspaces } from '../actions/workspace';
-import { WorkspaceDto } from '../interfaces/interfaces';
 import { WorkspaceQuickPickItem } from '../interfaces/customInterfaces';
+import { getWorkspaces } from '../actions/workspace';
 
-export async function selectWorkspace() {
-	try {
+export async function selectWorkspace(): Promise<string> {
+	const config = vscode.workspace.getConfiguration('clockify');
+	let workspaceId: string = config.get('workspaceId') || '';
+
+	if (!workspaceId) {
 		const workspaces = await getWorkspaces();
 		let workspacesItems: WorkspaceQuickPickItem[] = [];
 		workspaces.forEach((workspace) => {
@@ -17,7 +18,7 @@ export async function selectWorkspace() {
 		});
 
 		// Select Workspace
-		const workspaceId = await vscode.window
+		workspaceId = await vscode.window
 			.showQuickPick(workspacesItems, {
 				ignoreFocusOut: true,
 				placeHolder: 'Select workspace'
@@ -29,8 +30,9 @@ export async function selectWorkspace() {
 				return workspace.id;
 			});
 
-		// Write workspaceId to workspace config
-		const config = vscode.workspace.getConfiguration('clockify');
+		// Write workspaceId to configuration
 		config.update('workspaceId', workspaceId, false);
-	} catch (err) {}
+	}
+
+	return workspaceId;
 }

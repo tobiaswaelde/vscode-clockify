@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 
-export function setApiKey(context: vscode.ExtensionContext) {
+export async function setApiKey() {
 	try {
-		const apiKey = vscode.window
+		const apiKey = await vscode.window
 			.showInputBox({
 				ignoreFocusOut: true,
 				placeHolder: 'Enter API key',
@@ -18,7 +18,5 @@ export function setApiKey(context: vscode.ExtensionContext) {
 		// Write apiKey to global config
 		const config = vscode.workspace.getConfiguration('clockify');
 		config.update('apiKey', apiKey, true);
-
-		return apiKey;
 	} catch (err) {}
 }
