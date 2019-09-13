@@ -5,6 +5,10 @@
 	"description": "Implements Clockify time tracker (https://clockify.me/) in VSCode",
 	"version": "0.7.1",
 	"icon": "resources/icon.ico",
+	"galleryBanner": {
+		"color": "#1840D0",
+		"theme": "dark"
+	},
 	"repository": {
 		"type": "git",
 		"url": "https://gitlab.com/custom-extensions/clockify-tracker.git"
