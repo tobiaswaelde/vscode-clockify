@@ -105,6 +105,24 @@
 				"command": "clockify.workspaces.selection",
 				"title": "Set Workspace",
 				"category": "Clockify Explorer"
+			},
+			{
+				"command": "clockify.clients.refresh",
+				"title": "Refresh Clients",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/refresh.svg",
+					"dark": "assets/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "clockify.clients.add",
+				"title": "Add Client",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/add.svg",
+					"dark": "assets/dark/add.svg"
+				}
 			}
 		],
 		"menus": {
@@ -117,6 +135,16 @@
 				{
 					"command": "clockify.workspaces.add",
 					"when": "view == clockify-workspaces",
+					"group": "navigation@1"
+				},
+				{
+					"command": "clockify.clients.refresh",
+					"when": "view == clockify-clients",
+					"group": "navigation@2"
+				},
+				{
+					"command": "clockify.clients.add",
+					"when": "view == clockify-clients",
 					"group": "navigation@1"
 				}
 			]

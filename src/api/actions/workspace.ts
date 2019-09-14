@@ -17,7 +17,7 @@ export async function getWorkspaces(): Promise<WorkspaceDto[]> {
 export async function addWorkspace(newWorkspace: WorkspaceRequest): Promise<WorkspaceDto> {
 	let workspace: WorkspaceDto = {} as WorkspaceDto;
 	await http
-		.post(`/workspaces`)
+		.post(`/workspaces`, newWorkspace)
 		.then((res) => {
 			workspace = res.data;
 		})

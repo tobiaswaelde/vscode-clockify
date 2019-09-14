@@ -27,7 +27,8 @@ export function getFilePath(...filenameParts: string[]): string {
 }
 
 export enum ContextValue {
-	WorkspaceSelected = 'workspaces:selected'
+	WorkspaceSelected = 'workspaces:selected',
+	ProjectSelected = 'projects:selected'
 }
 
 export function setContext(key: ContextValue, value: any): void {
