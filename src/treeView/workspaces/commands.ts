@@ -9,7 +9,7 @@ export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 }
 
 function selectWorkspace(workspace: WorkspaceDto): void {
-	const context = getContext();
+	// const context = getContext();
 
 	if (workspace) {
 	}
