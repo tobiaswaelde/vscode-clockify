@@ -17,13 +17,13 @@ export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 function selectWorkspace(workspace: WorkspaceDto): void {
 	const context = getContext();
 	const currentWorkspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
-	console.log(workspace.name);
 
 	if (currentWorkspace === workspace) {
 		return;
 	}
 
 	//> Get Providers
+	const workspacesProvider = providerStore.get<WorkspacesProvider>('workspaces');
 	const clientsProvider = providerStore.get<ClientsProvider>('clients');
 
 	//> Set context
@@ -35,6 +35,7 @@ function selectWorkspace(workspace: WorkspaceDto): void {
 	}
 
 	//> Call refresh() on all providers
+	workspacesProvider.refresh();
 	clientsProvider.refresh();
 
 	if (workspace) {
@@ -43,6 +44,7 @@ function selectWorkspace(workspace: WorkspaceDto): void {
 			context.globalState.update('selectedWorkspace', workspace);
 
 			//> Call refresh() on all providers
+			workspacesProvider.refresh();
 			clientsProvider.refresh();
 		}, 250);
 	}
@@ -68,24 +70,24 @@ async function addWorkspace(): Promise<void> {
 
 		const workspace = await apiAddWorkspace(newWorkspace);
 		if (workspace) {
-			await vscode.window.showInformationMessage('Workspace added');
-		}
+			// const workspacesProvider = providerStore.get<WorkspacesProvider>('workspaces');
+			// const clientsProvider = providerStore.get<ClientsProvider>('clients');
+			// setContext(ContextValue.WorkspaceSelected, false);
+			// context.globalState.update('selectedWorkspace', null);
+			// workspacesProvider.refresh();
+			// clientsProvider.refresh();
 
-		const workspacesProvider = providerStore.get<WorkspacesProvider>('workspaces');
-		setContext(ContextValue.WorkspaceSelected, false);
-		if (workspace) {
-			context.globalState.update('selectedWorkspace', null);
+			// setTimeout(() => {
+			// 	context.globalState.update('selectedWorkspace', workspace);
+			// 	workspacesProvider.refresh();
+			// 	clientsProvider.refresh();
+			// }, 250);
+			selectWorkspace(workspace);
+			await vscode.window.showInformationMessage(`Workspace '${workspace.name}' added`);
 		}
-		workspacesProvider.refresh();
-		if (workspace) {
-			setTimeout(() => {
-				context.globalState.update('selectedWorkspace', workspace);
-				workspacesProvider.refresh();
-
-				setContext(ContextValue.WorkspaceSelected, !!workspace);
-			}, 250);
-		}
-	} catch (err) {}
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 function refreshWorkspaces(element?: WorkspaceItem): void {
