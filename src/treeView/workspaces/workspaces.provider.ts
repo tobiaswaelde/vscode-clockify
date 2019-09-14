@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { messageTreeItem } from '../utils';
+import { messageTreeItem, getContext } from '../utils';
 import { getWorkspaces } from '../../api/actions/workspace';
 import { WorkspaceDto } from '../../api/interfaces';
 import { getFilePath } from '../utils';
@@ -19,6 +19,12 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 	}
 
 	async getChildren(element?: WorkspaceProviderItem): Promise<WorkspaceProviderItem[]> {
+		// const workspace = this.context.globalState.get<WorkspaceDto | null>('selectedWorkspace');
+
+		// if (!workspace) {
+		// 	return [messageTreeItem('Loading...')];
+		// }
+
 		if (!element) {
 			try {
 				const workspaces = await getWorkspaces();
@@ -36,13 +42,15 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 			let items: WorkspaceProviderItem[] = [];
 
 			items.push(
-				new WorkspaceInfoItem('ID', workspace.id, IconType.Number),
-				new WorkspaceInfoItem('Name', workspace.name, IconType.String),
+				new WorkspaceInfoItem({ name: 'ID', value: workspace.id }, IconType.Number),
+				new WorkspaceInfoItem({ name: 'Name', value: workspace.name }, IconType.String),
 				new WorkspaceInfoItem(
-					'Hourly Rate',
-					`${Math.round((workspace.hourlyRate.amount / 100) * 100) / 100} ${
-						workspace.hourlyRate.currency
-					}`,
+					{
+						name: 'Hourly Rate',
+						value: `${Math.round((workspace.hourlyRate.amount / 100) * 100) / 100} ${
+							workspace.hourlyRate.currency
+						}`
+					},
 					IconType.Number
 				)
 			);
@@ -82,26 +90,21 @@ export class WorkspaceInfoItem extends vscode.TreeItem {
 	contextValue = 'workspaces.info';
 	iconPath: string;
 
-	constructor(
-		public name: string,
-		public fieldValue: any,
-		public iconType: IconType,
-		expand = true
-	) {
-		super(name, vscode.TreeItemCollapsibleState.None);
+	constructor(public fieldValue: FieldValue, public iconType: IconType) {
+		super(fieldValue.name, vscode.TreeItemCollapsibleState.None);
 
 		this.iconPath = getFilePath('assets', 'valuetype', `${iconType}.svg`);
-		this.description = fieldValue;
+		this.description = fieldValue.value;
 	}
 
 	get tooltip(): string {
-		return this.fieldValue;
+		return this.fieldValue.value;
 	}
 }
 
 type FieldValue = {
 	name: string;
-	value: string;
+	value: any;
 };
 enum IconType {
 	Array = 'array',

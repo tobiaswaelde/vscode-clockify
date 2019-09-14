@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { WorkspaceDto } from '../../api/interfaces';
 import { WorkspaceItem, WorkspacesProvider } from './workspaces.provider';
 import { providerStore } from '../stores';
+import { getContext } from '../utils';
 
 export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -21,9 +22,17 @@ async function addWorkspace(): Promise<void> {
 }
 
 function selectWorkspace(workspace: WorkspaceDto): void {
-	// const context = getContext();
+	const context = getContext();
+	const currentWorkspace = context.globalState.get<WorkspaceDto>('selectedWorkspace');
 
-	if (workspace) {
-		vscode.window.showInformationMessage(`Workspace ${workspace.id} selected.`);
+	if (currentWorkspace === workspace) {
+		return;
 	}
+
+	//> Get Providers
+	//> Set context
+	//> Empty selection to show 'Loading...'
+	//> Call refresh() on all providers
+	//> Update globalState
+	//> Call refresh() on all providers
 }
