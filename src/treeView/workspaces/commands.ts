@@ -70,18 +70,6 @@ async function addWorkspace(): Promise<void> {
 
 		const workspace = await apiAddWorkspace(newWorkspace);
 		if (workspace) {
-			// const workspacesProvider = providerStore.get<WorkspacesProvider>('workspaces');
-			// const clientsProvider = providerStore.get<ClientsProvider>('clients');
-			// setContext(ContextValue.WorkspaceSelected, false);
-			// context.globalState.update('selectedWorkspace', null);
-			// workspacesProvider.refresh();
-			// clientsProvider.refresh();
-
-			// setTimeout(() => {
-			// 	context.globalState.update('selectedWorkspace', workspace);
-			// 	workspacesProvider.refresh();
-			// 	clientsProvider.refresh();
-			// }, 250);
 			selectWorkspace(workspace);
 			await vscode.window.showInformationMessage(`Workspace '${workspace.name}' added`);
 		}
