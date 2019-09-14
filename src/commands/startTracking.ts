@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as _ from 'lodash';
-import { TimeEntryRequest } from '../interfaces/interfaces';
-import { addTimeentry } from '../actions/timeEntry';
+import { TimeEntryRequest } from '../api/interfaces';
+import { addTimeentry } from '../api/timeEntry';
 import { selectWorkspace } from '../helpers/selectWorkspace';
 import { selectProject } from '../helpers/selectProject';
 import { selectTask } from '../helpers/selectTask';

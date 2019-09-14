@@ -1,7 +1,7 @@
 {
 	"name": "clockify-tracker",
 	"publisher": "tobiaswaelde",
-	"displayName": "Clockify Tracker",
+	"displayName": "Clockify",
 	"description": "Implements Clockify time tracker (https://clockify.me/) in VSCode",
 	"version": "0.7.2",
 	"icon": "assets/icon.ico",
@@ -20,12 +20,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"*",
-		"onCommand:extension.setApiKey",
-		"onCommand:extension.selectWorkspace",
-		"onCommand:extension.resetConfig",
-		"onCommand:extension.startTracking",
-		"onCommand:extension.stopTracking"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -86,6 +81,11 @@
 			{
 				"command": "extension.stopTracking",
 				"title": "Stop Tracking",
+				"category": "Clockify"
+			},
+			{
+				"command": "clockify.workspaces.selection",
+				"title": "Set Workspace",
 				"category": "Clockify"
 			}
 		],

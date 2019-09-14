@@ -1,5 +1,5 @@
 import http from '../services/http.service';
-import { TagDto, TagRequest } from '../interfaces/interfaces';
+import { TagDto, TagRequest } from './interfaces';
 
 export async function getTags(workspaceId: string): Promise<TagDto[]> {
 	let tags: TagDto[] = [];

@@ -7,7 +7,10 @@ import { setApiKey } from './commands/setApiKey';
 import { selectWorkspace } from './commands/selectWorkspace';
 import { startTracking } from './commands/startTracking';
 import { stopTracking } from './commands/stopTracking';
-import { getUser } from './actions/user';
+import { getUser } from './api/user';
+import { ClockifyExplorerProvider } from './treeView/clockifyExplorer';
+import { treeViewStore, providerStore } from './treeView/stores';
+import { WorkspacesProvider } from './treeView/workspaces/workspaces.provider';
 
 let statusBarItem: vscode.StatusBarItem;
 
@@ -28,6 +31,8 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	//#endregion
 
+	registerProvider('workspaces', new WorkspacesProvider(context));
+
 	http.authenticate(apiKey);
 
 	context.subscriptions.push(
@@ -47,3 +52,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+function registerProvider<T>(name: string, provider: vscode.TreeDataProvider<T>) {
+	const treeView = vscode.window.createTreeView(`clockify-${name}`, {
+		treeDataProvider: provider
+	});
+	treeViewStore.add(name, treeView);
+	providerStore.add(name, provider);
+}

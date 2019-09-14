@@ -5,7 +5,7 @@ import {
 	TimeEntryDtoImpl,
 	UpdateTimeEntryRequest,
 	StopTimeEntryRequest
-} from '../interfaces/interfaces';
+} from './interfaces';
 
 export async function addTimeentry(
 	workspaceId: string,

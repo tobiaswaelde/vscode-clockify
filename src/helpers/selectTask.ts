@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { TaskQuickPickItem } from '../interfaces/customInterfaces';
-import { getTasks } from '../actions/task';
+import { getTasks } from '../api/task';
 
 export async function selectTask(workspaceId: string, projectId: string): Promise<string> {
 	const tasks = await getTasks(workspaceId, projectId);
