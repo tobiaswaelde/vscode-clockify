@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ProjectQuickPickItem } from '../interfaces/customInterfaces';
-import { getProjects } from '../api/project';
-import { getClients } from '../api/client';
+import { getProjects } from '../api/actions/project';
+import { getClients } from '../api/actions/client';
 import { getClientFromProject } from './getClient';
 
 export async function selectProject(workspaceId: string): Promise<string> {

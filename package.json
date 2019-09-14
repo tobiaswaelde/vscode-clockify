@@ -59,36 +59,68 @@
 		},
 		"commands": [
 			{
-				"command": "extension.setApiKey",
+				"command": "clockify.setApiKey",
 				"title": "Set API key",
 				"category": "Clockify"
 			},
 			{
-				"command": "extension.selectWorkspace",
+				"command": "clockify.selectWorkspace",
 				"title": "Select Workspace",
 				"category": "Clockify"
 			},
 			{
-				"command": "extension.resetConfig",
+				"command": "clockify.resetConfig",
 				"title": "Reset Configuration",
 				"category": "Clockify"
 			},
 			{
-				"command": "extension.startTracking",
+				"command": "clockify.startTracking",
 				"title": "Start Tracking",
 				"category": "Clockify"
 			},
 			{
-				"command": "extension.stopTracking",
+				"command": "clockify.stopTracking",
 				"title": "Stop Tracking",
 				"category": "Clockify"
 			},
 			{
+				"command": "clockify.workspaces.refresh",
+				"title": "Refresh Workspaces",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/refresh.svg",
+					"dark": "assets/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "clockify.workspaces.add",
+				"title": "Add Workspace",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/add.svg",
+					"dark": "assets/dark/add.svg"
+				}
+			},
+			{
 				"command": "clockify.workspaces.selection",
 				"title": "Set Workspace",
-				"category": "Clockify"
+				"category": "Clockify Explorer"
 			}
 		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "clockify.workspaces.refresh",
+					"when": "view == clockify-workspaces",
+					"group": "navigation@2"
+				},
+				{
+					"command": "clockify.workspaces.add",
+					"when": "view == clockify-workspaces",
+					"group": "navigation@1"
+				}
+			]
+		},
 		"configuration": {
 			"type": "object",
 			"title": "Clockify Tracker configuration",

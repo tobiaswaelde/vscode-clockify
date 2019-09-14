@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import * as moment from 'moment';
-import { stopTimeentry } from '../api/timeEntry';
+import { stopTimeentry } from '../api/actions/timeEntry';
 import { StopTimeEntryRequest } from '../api/interfaces';
-import { getUser } from '../api/user';
+import { getUser } from '../api/actions/user';
 import { getConfig } from '../config/config';
 import { selectWorkspace } from './selectWorkspace';
 

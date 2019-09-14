@@ -7,16 +7,20 @@ import { setApiKey } from './commands/setApiKey';
 import { selectWorkspace } from './commands/selectWorkspace';
 import { startTracking } from './commands/startTracking';
 import { stopTracking } from './commands/stopTracking';
-import { getUser } from './api/user';
+import { getUser } from './api/actions/user';
 import { ClockifyExplorerProvider } from './treeView/clockifyExplorer';
 import { treeViewStore, providerStore } from './treeView/stores';
 import { WorkspacesProvider } from './treeView/workspaces/workspaces.provider';
+import { registerWorkspacesCommands } from './treeView/workspaces/commands';
+import { setContextObject } from './treeView/utils';
 
 let statusBarItem: vscode.StatusBarItem;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+	setContextObject(context);
+
 	const config = vscode.workspace.getConfiguration('clockify');
 	console.log('clockify-tracker: Clockify extension started.');
 
@@ -31,17 +35,18 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	//#endregion
 
-	registerProvider('workspaces', new WorkspacesProvider(context));
-
 	http.authenticate(apiKey);
 
 	context.subscriptions.push(
-		vscode.commands.registerCommand('extension.resetConfig', () => resetConfig(context)),
-		vscode.commands.registerCommand('extension.setApiKey', () => setApiKey()),
-		vscode.commands.registerCommand('extension.selectWorkspace', selectWorkspace),
-		vscode.commands.registerCommand('extension.startTracking', () => startTracking()),
-		vscode.commands.registerCommand('extension.stopTracking', () => stopTracking())
+		vscode.commands.registerCommand('clockify.resetConfig', () => resetConfig(context)),
+		vscode.commands.registerCommand('clockify.setApiKey', () => setApiKey()),
+		vscode.commands.registerCommand('clockify.selectWorkspace', selectWorkspace),
+		vscode.commands.registerCommand('clockify.startTracking', () => startTracking()),
+		vscode.commands.registerCommand('clockify.stopTracking', () => stopTracking())
 	);
+
+	registerProvider('workspaces', new WorkspacesProvider(context));
+	registerWorkspacesCommands(context);
 
 	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 	statusBarItem.color = 'var(--vscode-gitDecoration-untrackedResourceForeground)';

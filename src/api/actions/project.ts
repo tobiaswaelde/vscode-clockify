@@ -1,5 +1,5 @@
-import http from '../services/http.service';
-import { ProjectDtoImpl, ProjectRequest } from './interfaces';
+import http from '../../services/http.service';
+import { ProjectDtoImpl, ProjectRequest } from '../interfaces';
 
 export async function getProjects(workspaceId: string): Promise<ProjectDtoImpl[]> {
 	let projects: ProjectDtoImpl[] = [];

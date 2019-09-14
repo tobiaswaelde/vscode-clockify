@@ -1,5 +1,5 @@
-import http from '../services/http.service';
-import { WorkspaceDto, WorkspaceRequest } from './interfaces';
+import http from '../../services/http.service';
+import { WorkspaceDto, WorkspaceRequest } from '../interfaces';
 
 export async function getWorkspaces(): Promise<WorkspaceDto[]> {
 	let workspaces: WorkspaceDto[] = [];

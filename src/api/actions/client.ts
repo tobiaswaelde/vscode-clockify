@@ -1,5 +1,5 @@
-import http from '../services/http.service';
-import { ClientDto, ClientRequest } from './interfaces';
+import http from '../../services/http.service';
+import { ClientDto, ClientRequest } from '../interfaces';
 
 export async function getClients(workspaceId: string): Promise<ClientDto[]> {
 	let clients: ClientDto[] = [];

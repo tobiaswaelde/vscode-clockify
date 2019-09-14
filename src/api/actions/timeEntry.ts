@@ -1,11 +1,11 @@
-import http from '../services/http.service';
+import http from '../../services/http.service';
 import {
 	TimeEntryRequest,
 	TimeIntervalDto,
 	TimeEntryDtoImpl,
 	UpdateTimeEntryRequest,
 	StopTimeEntryRequest
-} from './interfaces';
+} from '../interfaces';
 
 export async function addTimeentry(
 	workspaceId: string,

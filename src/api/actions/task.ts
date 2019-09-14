@@ -1,5 +1,5 @@
-import http from '../services/http.service';
-import { TaskDto, TaskRequest } from './interfaces';
+import http from '../../services/http.service';
+import { TaskDto, TaskRequest } from '../interfaces';
 
 export async function getTasks(workspaceId: string, projectId: string): Promise<TaskDto[]> {
 	let tasks: TaskDto[] = [];

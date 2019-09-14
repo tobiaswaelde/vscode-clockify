@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { WorkspaceQuickPickItem } from '../interfaces/customInterfaces';
-import { getWorkspaces } from '../api/workspace';
+import { getWorkspaces } from '../api/actions/workspace';
 
 export async function selectWorkspace(): Promise<string> {
 	const config = vscode.workspace.getConfiguration('clockify');

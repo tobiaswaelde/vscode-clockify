@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { TagQuickPickItem } from '../interfaces/customInterfaces';
-import { getTags } from '../api/tag';
+import { getTags } from '../api/actions/tag';
 
 export async function selectTags(workspaceId: string): Promise<string[]> {
 	const tags = await getTags(workspaceId);

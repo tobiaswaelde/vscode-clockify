@@ -1,5 +1,5 @@
-import http from '../services/http.service';
-import { TemplateDto, TemplatePatchRequest } from './interfaces';
+import http from '../../services/http.service';
+import { TemplateDto, TemplatePatchRequest } from '../interfaces';
 
 export async function getTemplates(workspaceId: string): Promise<TemplateDto[]> {
 	let templates: TemplateDto[] = [];

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as _ from 'lodash';
 import { WorkspaceQuickPickItem } from '../interfaces/customInterfaces';
-import { getWorkspaces } from '../api/workspace';
+import { getWorkspaces } from '../api/actions/workspace';
 
 export async function selectWorkspace() {
 	try {

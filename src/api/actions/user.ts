@@ -1,5 +1,5 @@
-import http from '../services/http.service';
-import { UserDto } from './interfaces';
+import http from '../../services/http.service';
+import { UserDto } from '../interfaces';
 
 export async function getUser(): Promise<UserDto> {
 	let user: UserDto = {} as UserDto;

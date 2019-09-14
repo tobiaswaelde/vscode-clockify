@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import { messageTreeItem } from '../utils';
-import { getWorkspaces } from '../../api/workspace';
+import { getWorkspaces } from '../../api/actions/workspace';
 import { WorkspaceDto } from '../../api/interfaces';
+import { getFilePath } from '../utils';
 
 export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProviderItem> {
 	private _onDidChangeTreeData = new vscode.EventEmitter<WorkspaceProviderItem | undefined>();
@@ -21,12 +22,34 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 		if (!element) {
 			try {
 				const workspaces = await getWorkspaces();
+				if (workspaces.length === 0) {
+					return [messageTreeItem('No workspaces')];
+				}
 				return workspaces.map((workspace) => {
 					return new WorkspaceItem(workspace);
 				});
 			} catch (err) {
-				return [messageTreeItem('No workspaces')];
+				return [messageTreeItem('Error', undefined, 'alert')];
 			}
+		} else if (element instanceof WorkspaceItem) {
+			const workspace = element.workspace;
+			let items: WorkspaceProviderItem[] = [];
+
+			items.push(
+				new WorkspaceInfoItem('ID', workspace.id, IconType.Number),
+				new WorkspaceInfoItem('Name', workspace.name, IconType.String),
+				new WorkspaceInfoItem(
+					'Hourly Rate',
+					`${Math.round((workspace.hourlyRate.amount / 100) * 100) / 100} ${
+						workspace.hourlyRate.currency
+					}`,
+					IconType.Number
+				)
+			);
+
+			return items;
+		} else if (element instanceof WorkspaceInfoItem) {
+			return [];
 		} else {
 			console.error('Should not happen!', element);
 			return [];
@@ -34,13 +57,14 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 	}
 }
 
-export type WorkspaceProviderItem = WorkspaceItem;
+export type WorkspaceProviderItem = WorkspaceItem | WorkspaceInfoItem;
 
 export class WorkspaceItem extends vscode.TreeItem {
 	contextValue = 'workspace';
+	iconPath = getFilePath('assets', 'clockify', 'dark', 'workspaces.svg');
 
 	constructor(public workspace: WorkspaceDto) {
-		super(workspace.name, vscode.TreeItemCollapsibleState.None);
+		super(workspace.name, vscode.TreeItemCollapsibleState.Collapsed);
 	}
 
 	readonly command: vscode.Command = {
@@ -52,4 +76,44 @@ export class WorkspaceItem extends vscode.TreeItem {
 	get tooltip(): string {
 		return this.workspace.id;
 	}
+}
+
+export class WorkspaceInfoItem extends vscode.TreeItem {
+	contextValue = 'workspaces.info';
+	iconPath: string;
+
+	constructor(
+		public name: string,
+		public fieldValue: any,
+		public iconType: IconType,
+		expand = true
+	) {
+		super(name, vscode.TreeItemCollapsibleState.None);
+
+		this.iconPath = getFilePath('assets', 'valuetype', `${iconType}.svg`);
+		this.description = fieldValue;
+	}
+
+	get tooltip(): string {
+		return this.fieldValue;
+	}
+}
+
+type FieldValue = {
+	name: string;
+	value: string;
+};
+enum IconType {
+	Array = 'array',
+	Boolean = 'boolean',
+	Bytes = 'bytes',
+	Geopoint = 'geopoint',
+	Map = 'map',
+	Null = 'null',
+	Number = 'number',
+	Reference = 'reference',
+	String = 'string',
+	StringA = 'string-A',
+	StringAbc = 'string-abc',
+	Timestamp = 'timestamp'
 }
