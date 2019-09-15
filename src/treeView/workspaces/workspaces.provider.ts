@@ -10,7 +10,6 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 	constructor(private context: vscode.ExtensionContext) {}
 
 	refresh(element?: WorkspaceProviderItem): void {
-		console.log('workspaces.refresh');
 		this._onDidChangeTreeData.fire(element);
 	}
 

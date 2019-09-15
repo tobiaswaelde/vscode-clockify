@@ -40,8 +40,6 @@ export class ProjectsProvider implements vscode.TreeDataProvider<ProjectProvider
 			const project = element.project;
 			let items: ProjectProviderItem[] = [];
 
-			console.log(project);
-
 			// items.push(new ProjectInfoItem({ name: 'ID', value: project.id }, IconType.Number));
 			// items.push(new ProjectInfoItem({ name: 'Name', value: project.name }, IconType.String));
 			items.push(

@@ -15,11 +15,11 @@ export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 	);
 }
 
-function selectWorkspace(workspace: WorkspaceDto): void {
+async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 	const context = getContext();
 	const currentWorkspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
 
-	if (currentWorkspace === workspace) {
+	if (currentWorkspace && currentWorkspace.id === workspace.id) {
 		return;
 	}
 
@@ -27,6 +27,7 @@ function selectWorkspace(workspace: WorkspaceDto): void {
 	const workspacesProvider = providerStore.get<WorkspacesProvider>('workspaces');
 	const clientsProvider = providerStore.get<ClientsProvider>('clients');
 	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
+	// tags
 
 	//> Set context
 	setContext(ContextValue.WorkspaceSelected, false);
@@ -54,6 +55,8 @@ function selectWorkspace(workspace: WorkspaceDto): void {
 			projectsProvider.refresh();
 		}, 250);
 	}
+
+	await vscode.window.showInformationMessage(`Workspace '${workspace.name}' selected`);
 }
 
 async function addWorkspace(): Promise<void> {
