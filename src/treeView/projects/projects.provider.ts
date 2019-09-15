@@ -106,8 +106,8 @@ export class ProjectItem extends vscode.TreeItem {
 
 		this.description = project.clientName;
 
-		createColorSvg(project.color);
-		this.iconPath = getFilePath('assets', 'colors', `${project.color}.svg`);
+		createColorSvg(project.color.toLowerCase());
+		this.iconPath = getFilePath('assets', 'colors', `${project.color.toLowerCase()}.svg`);
 	}
 
 	readonly command: vscode.Command = {
