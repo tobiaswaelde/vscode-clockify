@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
-import { messageTreeItem, getContext, FieldValue, IconType } from '../utils';
+import { messageTreeItem, FieldValue, IconType, getFilePath } from '../utils';
 import { getWorkspaces } from '../../api/actions/workspace';
 import { WorkspaceDto } from '../../api/interfaces';
-import { getFilePath } from '../utils';
 
 export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProviderItem> {
 	private _onDidChangeTreeData = new vscode.EventEmitter<WorkspaceProviderItem | undefined>();
