@@ -22,7 +22,6 @@ export function registerProjectsCommands(context: vscode.ExtensionContext) {
 async function selectProject(project: ProjectDtoImpl): Promise<void> {
 	const context = getContext();
 	const currentProject = context.globalState.get<ProjectDtoImpl>('selectedProject')!;
-
 	if (currentProject && currentProject.id === project.id) {
 		return;
 	}
@@ -58,15 +57,19 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 }
 
 async function addProject(): Promise<void> {
+	const context = getContext();
+	const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
+	if (!workspace) {
+		await vscode.window.showErrorMessage('No workspace selected');
+		return;
+	}
+
 	// 1. Project name
 	// 2. Select Client
 	// 3. Select Color
 	// 4. isPublic
 	// 5. isBillable
 	try {
-		const context = getContext();
-		const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
-
 		let newProject: ProjectRequest = {} as ProjectRequest;
 
 		const projectName = await getProjectName();

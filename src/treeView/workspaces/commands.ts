@@ -70,9 +70,9 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 }
 
 async function addWorkspace(): Promise<void> {
-	try {
-		const context = getContext();
+	const context = getContext();
 
+	try {
 		let newWorkspace: WorkspaceRequest = {} as WorkspaceRequest;
 
 		const workspaceName = await getWorkspaceName();

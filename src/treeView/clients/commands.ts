@@ -19,7 +19,6 @@ export function registerClientsCommands(context: vscode.ExtensionContext) {
 async function selectClient(client: ClientDto): Promise<void> {
 	const context = getContext();
 	const currentClient = context.globalState.get<ClientDto>('selectedClient')!;
-
 	if (currentClient && currentClient.id === client.id) {
 		return;
 	}
@@ -58,7 +57,12 @@ async function selectClient(client: ClientDto): Promise<void> {
 
 async function addClient(): Promise<void> {
 	const context = getContext();
-	const currentWorkspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
+	const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
+	if (!workspace) {
+		await vscode.window.showErrorMessage('No workspace selected');
+		return;
+	}
+
 	try {
 		let newClient: ClientRequest = {} as ClientRequest;
 
@@ -66,7 +70,7 @@ async function addClient(): Promise<void> {
 		newClient.name = clientName;
 
 		// Add client
-		const client = await addNewClientToWorkspace(currentWorkspace.id, newClient);
+		const client = await addNewClientToWorkspace(workspace.id, newClient);
 		if (client) {
 			const clientsProvider = providerStore.get<ClientsProvider>('clients');
 			clientsProvider.refresh();

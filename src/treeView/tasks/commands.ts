@@ -17,16 +17,19 @@ export function registerTasksCommands(context: vscode.ExtensionContext) {
 }
 
 async function addTask(): Promise<void> {
-	// 1. Task name
-	// 2. Estimated hours
-	try {
-		const context = getContext();
-		const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
-		const project = context.globalState.get<ProjectDtoImpl>('selectedProject')!;
-		if (!(workspace.id && project.id)) {
-			return;
-		}
+	const context = getContext();
+	const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
+	const project = context.globalState.get<ProjectDtoImpl>('selectedProject')!;
+	if (!workspace) {
+		await vscode.window.showErrorMessage('No workspace selected');
+		return;
+	}
+	if (!project) {
+		await vscode.window.showErrorMessage('No project selected');
+		return;
+	}
 
+	try {
 		let newTask: TaskRequest = {} as TaskRequest;
 
 		const taskName = await getTaskName();

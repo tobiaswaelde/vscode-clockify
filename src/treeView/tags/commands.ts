@@ -14,14 +14,15 @@ export function registerTagsCommands(context: vscode.ExtensionContext) {
 }
 
 async function addTag(): Promise<void> {
+	const context = getContext();
+	const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace');
+	if (!workspace) {
+		await vscode.window.showErrorMessage('No workspace selected');
+		return;
+	}
+
 	// 1. Tag name
 	try {
-		const context = getContext();
-		const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace');
-		if (!workspace) {
-			return;
-		}
-
 		let newTag: TagRequest = {} as TagRequest;
 
 		const tagName = await getTagName();
