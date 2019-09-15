@@ -53,7 +53,7 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 			workspacesProvider.refresh();
 			clientsProvider.refresh();
 			projectsProvider.refresh();
-		}, 250);
+		}, 50);
 	}
 
 	await vscode.window.showInformationMessage(`Workspace '${workspace.name}' selected`);

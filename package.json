@@ -146,6 +146,24 @@
 				"command": "clockify.projects.selection",
 				"title": "Select Project",
 				"category": "Clockify Explorer"
+			},
+			{
+				"command": "clockify.tasks.refresh",
+				"title": "Refresh Tasks",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/refresh.svg",
+					"dark": "assets/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "clockify.tasks.add",
+				"title": "Add Task",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/add.svg",
+					"dark": "assets/dark/add.svg"
+				}
 			}
 		],
 		"menus": {
@@ -178,6 +196,16 @@
 				{
 					"command": "clockify.projects.add",
 					"when": "view == clockify-projects",
+					"group": "navigation@1"
+				},
+				{
+					"command": "clockify.tasks.refresh",
+					"when": "view == clockify-tasks",
+					"group": "navigation@2"
+				},
+				{
+					"command": "clockify.tasks.add",
+					"when": "view == clockify-tasks",
 					"group": "navigation@1"
 				}
 			]
