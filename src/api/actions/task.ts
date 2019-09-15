@@ -21,7 +21,7 @@ export async function addTask(
 ): Promise<TaskDto> {
 	let task = {} as TaskDto;
 	await http
-		.post(`/workspaces/${workspaceId}/projects/${projectId}/tasks`)
+		.post(`/workspaces/${workspaceId}/projects/${projectId}/tasks`, newTask)
 		.then((res) => {
 			task = res.data;
 		})

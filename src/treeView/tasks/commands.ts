@@ -40,15 +40,13 @@ async function addTask(): Promise<void> {
 
 		newTask.assigneeId = (await getUser()!).id;
 
-		console.log('new task', newTask);
-
 		// Add Task
 		const task = await apiAddTask(workspace.id, project.id, newTask);
 		if (task) {
 			const tasksProvider = providerStore.get<TasksProvider>('tasks');
 			const projectsProvider = providerStore.get<ProjectsProvider>('projects');
+			tasksProvider.refresh();
 			projectsProvider.refresh();
-			console.log('task', task);
 
 			await vscode.window.showInformationMessage(`Task '${task.name}' added`);
 		}

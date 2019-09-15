@@ -12,10 +12,10 @@ export async function getEstimatedDuration(): Promise<number> {
 			if (estimatedDuration === undefined) {
 				return -1;
 			}
-			if (typeof estimatedDuration !== 'number') {
+			if (Number(estimatedDuration) === NaN) {
 				return -1;
 			}
-			return estimatedDuration;
+			return Number(estimatedDuration);
 		});
 
 	return estimatedDuration;
