@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as moment from 'moment';
-import { FieldValue, IconType, getFilePath, messageTreeItem } from '../utils';
+import { FieldValue, IconType, getFilePath, messageTreeItem, createColorSvg } from '../utils';
 import { ProjectDtoImpl, WorkspaceDto } from '../../api/interfaces';
 import { getProjects } from '../../api/actions/project';
 
@@ -105,6 +105,9 @@ export class ProjectItem extends vscode.TreeItem {
 		super(project.name, vscode.TreeItemCollapsibleState.Collapsed);
 
 		this.description = project.clientName;
+
+		createColorSvg(project.color);
+		this.iconPath = getFilePath('assets', 'colors', `${project.color}.svg`);
 	}
 
 	readonly command: vscode.Command = {

@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
 
 let _context: vscode.ExtensionContext;
 
@@ -58,4 +59,14 @@ export enum IconType {
 	StringA = 'string-A',
 	StringAbc = 'string-abc',
 	Timestamp = 'timestamp'
+}
+
+export function createColorSvg(color: string) {
+	try {
+		const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="${color}" /></svg>`;
+		const filePath = getContext().asAbsolutePath(path.join('assets', 'colors', `${color}.svg`));
+		fs.writeFileSync(filePath, svg);
+	} catch (err) {
+		// console.error(err);
+	}
 }

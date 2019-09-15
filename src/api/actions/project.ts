@@ -25,6 +25,7 @@ export async function addProject(
 			project = res.data;
 		})
 		.catch((err) => {
+			console.error(err);
 			project = {} as ProjectDtoImpl;
 		});
 	return project;

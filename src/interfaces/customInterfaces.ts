@@ -13,3 +13,9 @@ export interface TagQuickPickItem extends vscode.QuickPickItem {
 export interface WorkspaceQuickPickItem extends vscode.QuickPickItem {
 	id: string;
 }
+export interface ClientQuickPickItem extends vscode.QuickPickItem {
+	id: string;
+}
+export interface ColorQuickPickItem extends vscode.QuickPickItem {
+	value: string;
+}
