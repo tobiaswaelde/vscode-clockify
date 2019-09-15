@@ -32,9 +32,11 @@ export class TasksProvider implements vscode.TreeDataProvider<TaskProviderItem> 
 				if (tasks.length === 0) {
 					return [messageTreeItem('No Tasks')];
 				}
-				return tasks.map((task) => {
-					return new TaskItem(task);
-				});
+				return tasks
+					.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0)) // Sort A>Z
+					.map((task) => {
+						return new TaskItem(task);
+					});
 			} catch (err) {
 				return [messageTreeItem('Error', undefined, 'alert')];
 			}

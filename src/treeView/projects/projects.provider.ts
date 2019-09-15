@@ -35,6 +35,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<ProjectProvider
 				if (client) {
 					return projects
 						.filter((project) => project.clientId === client.id)
+						.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0)) // Sort A>Z
 						.map((project) => {
 							return new ProjectItem(project);
 						});

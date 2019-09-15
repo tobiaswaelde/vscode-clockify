@@ -30,9 +30,11 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 				if (workspaces.length === 0) {
 					return [messageTreeItem('No workspaces')];
 				}
-				return workspaces.map((workspace) => {
-					return new WorkspaceItem(workspace);
-				});
+				return workspaces
+					.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0)) // Sort A>Z
+					.map((workspace) => {
+						return new WorkspaceItem(workspace);
+					});
 			} catch (err) {
 				return [messageTreeItem('Error', undefined, 'alert')];
 			}

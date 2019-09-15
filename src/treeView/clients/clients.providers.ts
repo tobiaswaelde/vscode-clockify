@@ -29,9 +29,11 @@ export class ClientsProvider implements vscode.TreeDataProvider<ClientProviderIt
 				if (clients.length === 0) {
 					return [messageTreeItem('No clients')];
 				}
-				return clients.map((client) => {
-					return new ClientItem(client);
-				});
+				return clients
+					.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0)) // Sort A>Z
+					.map((client) => {
+						return new ClientItem(client);
+					});
 			} catch (err) {
 				return [messageTreeItem('Error', undefined, 'alert')];
 			}

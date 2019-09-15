@@ -29,9 +29,11 @@ export class TagsProvider implements vscode.TreeDataProvider<TagProviderItem> {
 				if (tags.length === 0) {
 					return [messageTreeItem('No Tags')];
 				}
-				return tags.map((tag) => {
-					return new TagItem(tag);
-				});
+				return tags
+					.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0)) // Sort A>Z
+					.map((tag) => {
+						return new TagItem(tag);
+					});
 			} catch (err) {
 				return [messageTreeItem('Error', undefined, 'alert')];
 			}
