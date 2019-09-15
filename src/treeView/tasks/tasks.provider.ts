@@ -71,6 +71,7 @@ export type TaskProviderItem = TaskItem | TaskInfoItem;
 
 export class TaskItem extends vscode.TreeItem {
 	contextValue = 'task';
+	iconPath = getFilePath('assets', 'clockify', 'dark', 'tasks.svg');
 
 	constructor(public task: TaskDto) {
 		super(task.name, vscode.TreeItemCollapsibleState.Collapsed);
@@ -86,6 +87,7 @@ export class TaskItem extends vscode.TreeItem {
 
 export class TaskInfoItem extends vscode.TreeItem {
 	contextValue = 'tasks.info';
+	iconPath: string;
 
 	constructor(public fieldValue: FieldValue, public iconType: IconType) {
 		super(fieldValue.name, vscode.TreeItemCollapsibleState.None);
