@@ -169,6 +169,24 @@
 					"light": "assets/light/add.svg",
 					"dark": "assets/dark/add.svg"
 				}
+			},
+			{
+				"command": "clockify.tags.refresh",
+				"title": "Refresh Tags",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/refresh.svg",
+					"dark": "assets/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "clockify.tags.add",
+				"title": "Add Tag",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/add.svg",
+					"dark": "assets/dark/add.svg"
+				}
 			}
 		],
 		"menus": {
@@ -211,6 +229,16 @@
 				{
 					"command": "clockify.tasks.add",
 					"when": "view == clockify-tasks",
+					"group": "navigation@1"
+				},
+				{
+					"command": "clockify.tags.refresh",
+					"when": "view == clockify-tags",
+					"group": "navigation@2"
+				},
+				{
+					"command": "clockify.tags.add",
+					"when": "view == clockify-tags",
 					"group": "navigation@1"
 				}
 			]

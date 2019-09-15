@@ -8,6 +8,7 @@ import { ClientsProvider } from '../clients/clients.providers';
 import { ProjectsProvider } from '../projects/projects.provider';
 import { TasksProvider } from '../tasks/tasks.provider';
 import { getWorkspaceName } from '../../helpers/workspace/getWorkspaceName';
+import { TagsProvider } from '../tags/tags.provider';
 
 export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -30,7 +31,7 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 	const clientsProvider = providerStore.get<ClientsProvider>('clients');
 	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
 	const tasksProvider = providerStore.get<TasksProvider>('tasks');
-	// tags
+	const tagsProvider = providerStore.get<TagsProvider>('tags');
 
 	//> Set context
 	setContext(ContextValue.WorkspaceSelected, false);
@@ -49,6 +50,7 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 	clientsProvider.refresh();
 	projectsProvider.refresh();
 	tasksProvider.refresh();
+	tagsProvider.refresh();
 
 	if (workspace) {
 		setTimeout(() => {
@@ -60,6 +62,7 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 			clientsProvider.refresh();
 			projectsProvider.refresh();
 			tasksProvider.refresh();
+			tagsProvider.refresh();
 		}, 50);
 	}
 

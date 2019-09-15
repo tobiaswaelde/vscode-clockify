@@ -19,6 +19,8 @@ import { ProjectsProvider } from './treeView/projects/projects.provider';
 import { registerProjectsCommands } from './treeView/projects/commands';
 import { TasksProvider } from './treeView/tasks/tasks.provider';
 import { registerTasksCommands } from './treeView/tasks/commands';
+import { TagsProvider } from './treeView/tags/tags.provider';
+import { registerTagsCommands } from './treeView/tags/commands';
 
 let statusBarItem: vscode.StatusBarItem;
 
@@ -55,10 +57,12 @@ export function activate(context: vscode.ExtensionContext) {
 	registerProvider('clients', new ClientsProvider(context));
 	registerProvider('projects', new ProjectsProvider(context));
 	registerProvider('tasks', new TasksProvider(context));
+	registerProvider('tags', new TagsProvider(context));
 	registerWorkspacesCommands(context);
 	registerClientsCommands(context);
 	registerProjectsCommands(context);
 	registerTasksCommands(context);
+	registerTagsCommands(context);
 
 	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 	statusBarItem.color = 'var(--vscode-gitDecoration-untrackedResourceForeground)';

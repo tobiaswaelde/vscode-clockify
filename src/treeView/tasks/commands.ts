@@ -19,7 +19,6 @@ export function registerTasksCommands(context: vscode.ExtensionContext) {
 async function addTask(): Promise<void> {
 	// 1. Task name
 	// 2. Estimated hours
-	//> refresh projects
 	try {
 		const context = getContext();
 		const workspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;

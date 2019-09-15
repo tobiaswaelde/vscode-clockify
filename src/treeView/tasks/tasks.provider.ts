@@ -5,10 +5,6 @@ import { getTasks } from '../../api/actions/task';
 import moment = require('moment');
 import { ProjectInfoItem } from '../projects/projects.provider';
 
-// TASK
-// Estimate
-// Status
-
 export class TasksProvider implements vscode.TreeDataProvider<TaskProviderItem> {
 	private _onDidChangeTreeData = new vscode.EventEmitter<TaskProviderItem | undefined>();
 	readonly onDidChangeTreeData = this._onDidChangeTreeData.event;
