@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import * as moment from 'moment';
 import { FieldValue, IconType, getFilePath, messageTreeItem, createColorSvg } from '../utils';
-import { ProjectDtoImpl, WorkspaceDto } from '../../api/interfaces';
+import { ProjectDtoImpl, WorkspaceDto, ClientDto } from '../../api/interfaces';
 import { getProjects } from '../../api/actions/project';
 
 export class ProjectsProvider implements vscode.TreeDataProvider<ProjectProviderItem> {
@@ -20,6 +20,8 @@ export class ProjectsProvider implements vscode.TreeDataProvider<ProjectProvider
 
 	async getChildren(element?: ProjectProviderItem): Promise<ProjectProviderItem[]> {
 		const workspace = this.context.globalState.get<WorkspaceDto>('selectedWorkspace');
+		const client = this.context.globalState.get<ClientDto>('selectedClient');
+
 		if (!workspace) {
 			return [messageTreeItem('Select workspace')];
 		}
@@ -30,9 +32,17 @@ export class ProjectsProvider implements vscode.TreeDataProvider<ProjectProvider
 				if (projects.length === 0) {
 					return [messageTreeItem('No projects')];
 				}
-				return projects.map((project) => {
-					return new ProjectItem(project);
-				});
+				if (client) {
+					return projects
+						.filter((project) => project.clientId === client.id)
+						.map((project) => {
+							return new ProjectItem(project);
+						});
+				} else {
+					return projects.map((project) => {
+						return new ProjectItem(project);
+					});
+				}
 			} catch (err) {
 				return [messageTreeItem('Error', undefined, 'alert')];
 			}

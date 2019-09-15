@@ -30,7 +30,6 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 	//> Get Providers
 	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
 	const tasksProvider = providerStore.get<TasksProvider>('tasks');
-	// tasks
 
 	//> Set context
 	setContext(ContextValue.ProjectSelected, false);

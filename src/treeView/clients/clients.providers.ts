@@ -54,6 +54,12 @@ export class ClientItem extends vscode.TreeItem {
 		super(client.name, vscode.TreeItemCollapsibleState.None);
 	}
 
+	readonly command: vscode.Command = {
+		command: 'clockify.clients.selection',
+		title: '',
+		arguments: [this.client]
+	};
+
 	get tooltip(): string {
 		return this.client.id;
 	}

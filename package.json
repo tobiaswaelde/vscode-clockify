@@ -125,6 +125,11 @@
 				}
 			},
 			{
+				"command": "clockify.clients.selection",
+				"title": "Select Client",
+				"category": "Clockify Explorer"
+			},
+			{
 				"command": "clockify.projects.refresh",
 				"title": "Refresh Projects",
 				"category": "Clockify Explorer",
