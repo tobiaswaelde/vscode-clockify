@@ -103,7 +103,7 @@
 			},
 			{
 				"command": "clockify.workspaces.selection",
-				"title": "Set Workspace",
+				"title": "Select Workspace",
 				"category": "Clockify Explorer"
 			},
 			{
@@ -123,6 +123,29 @@
 					"light": "assets/light/add.svg",
 					"dark": "assets/dark/add.svg"
 				}
+			},
+			{
+				"command": "clockify.projects.refresh",
+				"title": "Refresh Projects",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/refresh.svg",
+					"dark": "assets/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "clockify.projects.add",
+				"title": "Add Project",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/add.svg",
+					"dark": "assets/dark/add.svg"
+				}
+			},
+			{
+				"command": "clockify.projects.selection",
+				"title": "Select Project",
+				"category": "Clockify Explorer"
 			}
 		],
 		"menus": {
@@ -145,6 +168,16 @@
 				{
 					"command": "clockify.clients.add",
 					"when": "view == clockify-clients",
+					"group": "navigation@1"
+				},
+				{
+					"command": "clockify.projects.refresh",
+					"when": "view == clockify-projects",
+					"group": "navigation@2"
+				},
+				{
+					"command": "clockify.projects.add",
+					"when": "view == clockify-projects",
 					"group": "navigation@1"
 				}
 			]

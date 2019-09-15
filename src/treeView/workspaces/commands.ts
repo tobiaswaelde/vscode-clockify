@@ -5,6 +5,7 @@ import { providerStore } from '../stores';
 import { getContext, setContext, ContextValue } from '../utils';
 import { addWorkspace as apiAddWorkspace } from '../../api/actions/workspace';
 import { ClientsProvider } from '../clients/clients.providers';
+import { ProjectsProvider } from '../projects/projects.provider';
 
 export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -25,18 +26,22 @@ function selectWorkspace(workspace: WorkspaceDto): void {
 	//> Get Providers
 	const workspacesProvider = providerStore.get<WorkspacesProvider>('workspaces');
 	const clientsProvider = providerStore.get<ClientsProvider>('clients');
+	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
 
 	//> Set context
 	setContext(ContextValue.WorkspaceSelected, false);
+	setContext(ContextValue.ProjectSelected, false);
 
 	//> Empty selection to show 'Loading...'
 	if (workspace) {
 		context.globalState.update('selectedWorkspace', null);
+		context.globalState.update('selectedProject', null);
 	}
 
 	//> Call refresh() on all providers
 	workspacesProvider.refresh();
 	clientsProvider.refresh();
+	projectsProvider.refresh();
 
 	if (workspace) {
 		setTimeout(() => {
@@ -46,6 +51,7 @@ function selectWorkspace(workspace: WorkspaceDto): void {
 			//> Call refresh() on all providers
 			workspacesProvider.refresh();
 			clientsProvider.refresh();
+			projectsProvider.refresh();
 		}, 250);
 	}
 }

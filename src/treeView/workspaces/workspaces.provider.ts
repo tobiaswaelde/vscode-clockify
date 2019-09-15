@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { messageTreeItem, getContext } from '../utils';
+import { messageTreeItem, getContext, FieldValue, IconType } from '../utils';
 import { getWorkspaces } from '../../api/actions/workspace';
 import { WorkspaceDto } from '../../api/interfaces';
 import { getFilePath } from '../utils';
@@ -43,8 +43,8 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 			let items: WorkspaceProviderItem[] = [];
 
 			items.push(
-				new WorkspaceInfoItem({ name: 'ID', value: workspace.id }, IconType.Number),
-				new WorkspaceInfoItem({ name: 'Name', value: workspace.name }, IconType.String),
+				// new WorkspaceInfoItem({ name: 'ID', value: workspace.id }, IconType.Number),
+				// new WorkspaceInfoItem({ name: 'Name', value: workspace.name }, IconType.String),
 				new WorkspaceInfoItem(
 					{
 						name: 'Hourly Rate',
@@ -101,23 +101,4 @@ export class WorkspaceInfoItem extends vscode.TreeItem {
 	get tooltip(): string {
 		return this.fieldValue.value;
 	}
-}
-
-type FieldValue = {
-	name: string;
-	value: any;
-};
-enum IconType {
-	Array = 'array',
-	Boolean = 'boolean',
-	Bytes = 'bytes',
-	Geopoint = 'geopoint',
-	Map = 'map',
-	Null = 'null',
-	Number = 'number',
-	Reference = 'reference',
-	String = 'string',
-	StringA = 'string-A',
-	StringAbc = 'string-abc',
-	Timestamp = 'timestamp'
 }

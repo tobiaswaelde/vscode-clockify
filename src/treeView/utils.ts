@@ -40,3 +40,22 @@ export function setContextObject(context: vscode.ExtensionContext) {
 export function getContext(): vscode.ExtensionContext {
 	return _context;
 }
+
+export type FieldValue = {
+	name: string;
+	value: any;
+};
+export enum IconType {
+	Array = 'array',
+	Boolean = 'boolean',
+	Bytes = 'bytes',
+	Geopoint = 'geopoint',
+	Map = 'map',
+	Null = 'null',
+	Number = 'number',
+	Reference = 'reference',
+	String = 'string',
+	StringA = 'string-A',
+	StringAbc = 'string-abc',
+	Timestamp = 'timestamp'
+}
