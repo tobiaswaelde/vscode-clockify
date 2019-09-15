@@ -9,6 +9,7 @@ import { selectColor } from '../../helpers/project/selectColor';
 import { selectVisibility } from '../../helpers/project/selectVisibility';
 import { selectBillable } from '../../helpers/project/selectBillable';
 import { addProject as apiAddProject } from '../../api/actions/project';
+import { TasksProvider } from '../tasks/tasks.provider';
 
 export function registerProjectsCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -28,6 +29,7 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 
 	//> Get Providers
 	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
+	const tasksProvider = providerStore.get<TasksProvider>('tasks');
 	// tasks
 
 	//> Set context
@@ -40,6 +42,7 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 
 	//> Call refresh() on all providers
 	projectsProvider.refresh();
+	tasksProvider.refresh();
 
 	if (project) {
 		setTimeout(() => {
@@ -48,7 +51,8 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 
 			//> Call refresh() on all providers
 			projectsProvider.refresh();
-		}, 250);
+			tasksProvider.refresh();
+		}, 50);
 	}
 
 	await vscode.window.showInformationMessage(`Project '${project.name}' selected`);

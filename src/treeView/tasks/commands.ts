@@ -11,6 +11,7 @@ export function registerTasksCommands(context: vscode.ExtensionContext) {
 
 async function addTask(): Promise<void> {
 	//
+	//> refresh projects
 }
 
 function refreshTasks(element?: TaskItem): void {

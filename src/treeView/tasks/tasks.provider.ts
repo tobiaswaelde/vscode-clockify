@@ -74,6 +74,9 @@ export class TaskItem extends vscode.TreeItem {
 
 	constructor(public task: TaskDto) {
 		super(task.name, vscode.TreeItemCollapsibleState.Collapsed);
+
+		const estimate = moment.duration(task.estimate);
+		this.description = `${estimate.asHours()} hours`;
 	}
 
 	get tooltip(): string {
