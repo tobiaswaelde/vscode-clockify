@@ -7,6 +7,7 @@ import { addWorkspace as apiAddWorkspace } from '../../api/actions/workspace';
 import { ClientsProvider } from '../clients/clients.providers';
 import { ProjectsProvider } from '../projects/projects.provider';
 import { TasksProvider } from '../tasks/tasks.provider';
+import { getWorkspaceName } from '../../helpers/workspace/getWorkspaceName';
 
 export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -70,19 +71,11 @@ async function addWorkspace(): Promise<void> {
 		const context = getContext();
 
 		let newWorkspace: WorkspaceRequest = {} as WorkspaceRequest;
-		newWorkspace.name = await vscode.window
-			.showInputBox({
-				ignoreFocusOut: true,
-				placeHolder: 'Name of the workspace',
-				prompt: 'Enter a name for your workspace'
-			})
-			.then((name) => {
-				if (name === undefined) {
-					throw new Error();
-				}
-				return name;
-			});
 
+		const workspaceName = await getWorkspaceName();
+		newWorkspace.name = workspaceName;
+
+		// Add workspace
 		const workspace = await apiAddWorkspace(newWorkspace);
 		if (workspace) {
 			selectWorkspace(workspace);

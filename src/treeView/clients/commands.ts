@@ -6,6 +6,7 @@ import { getContext, setContext, ContextValue } from '../utils';
 import { addNewClientToWorkspace } from '../../api/actions/client';
 import { ProjectsProvider } from '../projects/projects.provider';
 import { TasksProvider } from '../tasks/tasks.provider';
+import { getClientName } from '../../helpers/client/getName';
 
 export function registerClientsCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -60,19 +61,11 @@ async function addClient(): Promise<void> {
 	const currentWorkspace = context.globalState.get<WorkspaceDto>('selectedWorkspace')!;
 	try {
 		let newClient: ClientRequest = {} as ClientRequest;
-		newClient.name = await vscode.window
-			.showInputBox({
-				ignoreFocusOut: true,
-				placeHolder: 'Name of the client',
-				prompt: 'Enter a name for your client'
-			})
-			.then((name) => {
-				if (name === undefined) {
-					throw new Error();
-				}
-				return name;
-			});
 
+		const clientName = await getClientName();
+		newClient.name = clientName;
+
+		// Add client
 		const client = await addNewClientToWorkspace(currentWorkspace.id, newClient);
 		if (client) {
 			const clientsProvider = providerStore.get<ClientsProvider>('clients');
