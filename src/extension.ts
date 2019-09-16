@@ -14,8 +14,7 @@ import { registerClientsCommands } from './treeView/clients/commands';
 import { registerProjectsCommands } from './treeView/projects/commands';
 import { registerTasksCommands } from './treeView/tasks/commands';
 import { registerTagsCommands } from './treeView/tags/commands';
-
-let statusBarItem: vscode.StatusBarItem;
+import { initStatusBarItem } from './statusbar/init';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -40,8 +39,9 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	//#endregion
 
+	//#region COMMANDS
 	registerClockifyCommands(context);
-
+	//#endregion
 	//#region TREE VIEW
 	registerProvider('workspaces', new WorkspacesProvider(context));
 	registerProvider('clients', new ClientsProvider(context));
@@ -55,11 +55,7 @@ export function activate(context: vscode.ExtensionContext) {
 	registerTagsCommands(context);
 	//#endregion
 	//#region STATUS BAR ITEM
-	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-	statusBarItem.color = 'var(--vscode-gitDecoration-untrackedResourceForeground)';
-	statusBarItem.text = 'Clockify';
-	statusBarItem.show();
-	context.subscriptions.push(statusBarItem);
+	initStatusBarItem(context);
 	//#endregion
 }
 

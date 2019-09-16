@@ -74,13 +74,18 @@
 				"category": "Clockify"
 			},
 			{
-				"command": "clockify.startTracking",
+				"command": "clockify.tracking.start",
 				"title": "Start Tracking",
 				"category": "Clockify"
 			},
 			{
-				"command": "clockify.stopTracking",
+				"command": "clockify.tracking.stop",
 				"title": "Stop Tracking",
+				"category": "Clockify"
+			},
+			{
+				"command": "clockify.tracking.toggle",
+				"title": "Toggle Tracking",
 				"category": "Clockify"
 			},
 			{
