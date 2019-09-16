@@ -6,7 +6,7 @@
 	"version": "2.0.5",
 	"icon": "assets/icon.ico",
 	"galleryBanner": {
-		"color": "#1840D0",
+		"color": "#ffffff",
 		"theme": "dark"
 	},
 	"repository": {
