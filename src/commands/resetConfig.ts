@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
-export function resetConfig(context: vscode.ExtensionContext) {
-	vscode.window
+export async function resetConfig() {
+	await vscode.window
 		.showErrorMessage(
 			"Are you sure that you want to reset the extension's configuration?",
 			'Yes',
@@ -10,8 +10,9 @@ export function resetConfig(context: vscode.ExtensionContext) {
 		.then((selectedItem) => {
 			switch (selectedItem) {
 				case 'Yes':
-					context.globalState.update('apiKey', null);
-					context.globalState.update('workspaceId', null);
+					//> Reset config
+					const config = vscode.workspace.getConfiguration('clockify');
+					config.update('apiKey', null, true);
 					return true;
 
 				default:

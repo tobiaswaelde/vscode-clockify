@@ -1,7 +1,15 @@
 import * as vscode from 'vscode';
-import { messageTreeItem, FieldValue, IconType, getFilePath } from '../utils';
+import {
+	messageTreeItem,
+	FieldValue,
+	IconType,
+	getFilePath,
+	setContext,
+	ContextValue
+} from '../utils';
 import { getWorkspaces } from '../../api/actions/workspace';
 import { WorkspaceDto } from '../../api/interfaces';
+import http from '../../services/http.service';
 
 export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProviderItem> {
 	private _onDidChangeTreeData = new vscode.EventEmitter<WorkspaceProviderItem | undefined>();
@@ -18,11 +26,16 @@ export class WorkspacesProvider implements vscode.TreeDataProvider<WorkspaceProv
 	}
 
 	async getChildren(element?: WorkspaceProviderItem): Promise<WorkspaceProviderItem[]> {
-		// const workspace = this.context.globalState.get<WorkspaceDto | null>('selectedWorkspace');
-
-		// if (!workspace) {
-		// 	return [messageTreeItem('Loading...')];
-		// }
+		const config = vscode.workspace.getConfiguration('clockify');
+		const apiKey = config.get<string>('apiKey')!;
+		if (!apiKey) {
+			return [
+				messageTreeItem('API key not set', 'Click to set API key', 'alert', {
+					command: 'clockify.setApiKey',
+					title: 'Set API key'
+				})
+			];
+		}
 
 		if (!element) {
 			try {

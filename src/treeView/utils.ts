@@ -1,10 +1,16 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { treeViewStore, providerStore } from './stores';
 
 let _context: vscode.ExtensionContext;
 
-export function messageTreeItem(msg: string, tooltip?: string, icon?: 'info' | 'alert'): any {
+export function messageTreeItem(
+	msg: string,
+	tooltip?: string,
+	icon?: 'info' | 'alert',
+	command?: vscode.Command
+): any {
 	const item = new vscode.TreeItem('', vscode.TreeItemCollapsibleState.None);
 	item.tooltip = tooltip;
 	item.description = msg;
@@ -15,6 +21,9 @@ export function messageTreeItem(msg: string, tooltip?: string, icon?: 'info' | '
 		};
 	} else {
 		item.iconPath = undefined;
+	}
+	if (command) {
+		item.command = command;
 	}
 	return item;
 }
@@ -73,4 +82,12 @@ export function createColorSvg(color: string) {
 	} catch (err) {
 		console.error(err);
 	}
+}
+
+export function registerProvider<T>(name: string, provider: vscode.TreeDataProvider<T>) {
+	const treeView = vscode.window.createTreeView(`clockify-${name}`, {
+		treeDataProvider: provider
+	});
+	treeViewStore.add(name, treeView);
+	providerStore.add(name, provider);
 }
