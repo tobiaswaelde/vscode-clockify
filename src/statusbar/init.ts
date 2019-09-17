@@ -17,7 +17,7 @@ export async function initStatusBarItem(context: vscode.ExtensionContext): Promi
 }
 
 export async function updateStatusBarItem() {
-	let isTracking = true;
+	let isTracking = false;
 
 	// Get daily average for last 90 days
 	const last90DaysAverage = await get90DayAverage();
