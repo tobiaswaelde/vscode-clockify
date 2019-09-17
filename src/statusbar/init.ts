@@ -9,7 +9,7 @@ let statusBarItem: vscode.StatusBarItem;
 export async function initStatusBarItem(context: vscode.ExtensionContext): Promise<void> {
 	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 	statusBarItem.text = 'Clockify';
-	statusBarItem.command = 'clockify.tracker.toggle';
+	// statusBarItem.command = 'clockify.tracker.toggle';
 	statusBarItem.show();
 
 	context.subscriptions.push(statusBarItem);
