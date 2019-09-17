@@ -7,7 +7,7 @@ import { addWorkspace as apiAddWorkspace } from '../../api/actions/workspace';
 import { ClientsProvider } from '../clients/clients.providers';
 import { ProjectsProvider } from '../projects/projects.provider';
 import { TasksProvider } from '../tasks/tasks.provider';
-import { getWorkspaceName } from '../../helpers/workspace/getWorkspaceName';
+import { getWorkspaceName } from '../../helpers/treeview/workspace/getWorkspaceName';
 import { TagsProvider } from '../tags/tags.provider';
 
 export function registerWorkspacesCommands(context: vscode.ExtensionContext) {

@@ -21,3 +21,8 @@ export const PROJECT_COLORS = [
 	{ name: 'Grey', value: '#9e9e9e' },
 	{ name: 'Blue Grey', value: '#607d8b' }
 ];
+
+export const ICONS = {
+	Bullet: '•',
+	Clock: '$(clock)'
+};

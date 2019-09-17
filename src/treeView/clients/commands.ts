@@ -6,7 +6,7 @@ import { getContext, setContext, ContextValue } from '../utils';
 import { addNewClientToWorkspace } from '../../api/actions/client';
 import { ProjectsProvider } from '../projects/projects.provider';
 import { TasksProvider } from '../tasks/tasks.provider';
-import { getClientName } from '../../helpers/client/getName';
+import { getClientName } from '../../helpers/treeview/client/getName';
 
 export function registerClientsCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(

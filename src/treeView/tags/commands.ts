@@ -3,7 +3,7 @@ import { TagItem, TagsProvider } from './tags.provider';
 import { providerStore } from '../stores';
 import { getContext } from '../utils';
 import { WorkspaceDto, TagRequest } from '../../api/interfaces';
-import { getTagName } from '../../helpers/tag/getTagName';
+import { getTagName } from '../../helpers/treeview/tag/getTagName';
 import { addTag as apiAddTag } from '../../api/actions/tag';
 
 export function registerTagsCommands(context: vscode.ExtensionContext) {

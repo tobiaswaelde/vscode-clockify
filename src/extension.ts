@@ -43,16 +43,16 @@ export function activate(context: vscode.ExtensionContext) {
 	registerClockifyCommands(context);
 	//#endregion
 	//#region TREE VIEW
-	registerProvider('workspaces', new WorkspacesProvider(context));
-	registerProvider('clients', new ClientsProvider(context));
-	registerProvider('projects', new ProjectsProvider(context));
-	registerProvider('tasks', new TasksProvider(context));
-	registerProvider('tags', new TagsProvider(context));
-	registerWorkspacesCommands(context);
-	registerClientsCommands(context);
-	registerProjectsCommands(context);
-	registerTasksCommands(context);
-	registerTagsCommands(context);
+	// registerProvider('workspaces', new WorkspacesProvider(context));
+	// registerProvider('clients', new ClientsProvider(context));
+	// registerProvider('projects', new ProjectsProvider(context));
+	// registerProvider('tasks', new TasksProvider(context));
+	// registerProvider('tags', new TagsProvider(context));
+	// registerWorkspacesCommands(context);
+	// registerClientsCommands(context);
+	// registerProjectsCommands(context);
+	// registerTasksCommands(context);
+	// registerTagsCommands(context);
 	//#endregion
 	//#region STATUS BAR ITEM
 	initStatusBarItem(context);

@@ -3,11 +3,11 @@ import { ProjectDtoImpl, ProjectRequest, WorkspaceDto } from '../../api/interfac
 import { providerStore } from '../stores';
 import { ProjectsProvider, ProjectItem } from './projects.provider';
 import { getContext, setContext, ContextValue } from '../utils';
-import { getProjectName } from '../../helpers/project/getProjectName';
-import { selectClient } from '../../helpers/project/selectClient';
-import { selectColor } from '../../helpers/project/selectColor';
-import { selectVisibility } from '../../helpers/project/selectVisibility';
-import { selectBillable } from '../../helpers/project/selectBillable';
+import { getProjectName } from '../../helpers/treeview/project/getProjectName';
+import { selectClient } from '../../helpers/treeview/project/selectClient';
+import { selectColor } from '../../helpers/treeview/project/selectColor';
+import { selectVisibility } from '../../helpers/treeview/project/selectVisibility';
+import { selectBillable } from '../../helpers/treeview/project/selectBillable';
 import { addProject as apiAddProject } from '../../api/actions/project';
 import { TasksProvider } from '../tasks/tasks.provider';
 

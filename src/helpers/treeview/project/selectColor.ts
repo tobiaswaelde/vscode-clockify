@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { PROJECT_COLORS } from '../../config/constants';
-import { ColorQuickPickItem } from '../../interfaces/customInterfaces';
+import { PROJECT_COLORS } from '../../../config/constants';
+import { ColorQuickPickItem } from '../../../interfaces/customInterfaces';
 
 export async function selectColor(): Promise<string> {
 	const colors = PROJECT_COLORS;

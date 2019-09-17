@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as _ from 'lodash';
 import { WorkspaceQuickPickItem } from '../interfaces/customInterfaces';
 import { getWorkspaces } from '../api/actions/workspace';
+import { updateStatusBarItem } from '../statusbar/init';
 
 export async function selectWorkspace() {
 	try {
@@ -31,5 +32,8 @@ export async function selectWorkspace() {
 		// Write workspaceId to workspace config
 		const config = vscode.workspace.getConfiguration('clockify');
 		config.update('workspaceId', workspaceId, false);
+
+		// Update status bar item
+		updateStatusBarItem();
 	} catch (err) {}
 }

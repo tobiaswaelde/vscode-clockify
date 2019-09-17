@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { getClients } from '../../api/actions/client';
-import { ClientQuickPickItem } from '../../interfaces/customInterfaces';
-import { ClientItem } from '../../treeView/clients/clients.providers';
+import { getClients } from '../../../api/actions/client';
+import { ClientQuickPickItem } from '../../../interfaces/customInterfaces';
+import { ClientItem } from '../../../treeView/clients/clients.providers';
 
 export async function selectClient(workspaceId: string): Promise<string> {
 	const clients = await getClients(workspaceId);
