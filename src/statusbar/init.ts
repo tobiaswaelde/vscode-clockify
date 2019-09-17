@@ -7,17 +7,26 @@ import { ICONS } from '../config/constants';
 let statusBarItem: vscode.StatusBarItem;
 
 export async function initStatusBarItem(context: vscode.ExtensionContext): Promise<void> {
+	context.subscriptions.push(
+		vscode.commands.registerCommand('clockify.statusbar.menu', openStatusBarMenu)
+	);
+
 	statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
 	statusBarItem.text = 'Clockify';
-	// statusBarItem.command = 'clockify.tracker.toggle';
+	statusBarItem.command = 'clockify.statusbar.menu';
 	statusBarItem.show();
 
 	context.subscriptions.push(statusBarItem);
-	updateStatusBarItem();
+	updateStatusBarItem(context);
 }
 
-export async function updateStatusBarItem() {
-	let isTracking = false;
+export function openStatusBarMenu() {
+	console.log('status bar menu');
+}
+
+export async function updateStatusBarItem(context: vscode.ExtensionContext) {
+	console.log('updateStatusBarItem');
+	let isTracking = context.globalState.get<boolean>('tracking:isTracking');
 
 	// Get daily average for last 90 days
 	const last90DaysAverage = await get90DayAverage();

@@ -1,15 +1,16 @@
 import * as vscode from 'vscode';
 import * as _ from 'lodash';
-import { TimeEntryRequest } from '../api/interfaces';
-import { addTimeentry } from '../api/actions/timeEntry';
-import { selectWorkspace } from '../helpers/selectWorkspace';
-import { selectProject } from '../helpers/selectProject';
-import { selectTask } from '../helpers/selectTask';
-import { getDescription } from '../helpers/getDescription';
-import { selectBillable } from '../helpers/selectBillable';
-import { selectTags } from '../helpers/selectTags';
+import { TimeEntryRequest } from '../../api/interfaces';
+import { addTimeentry } from '../../api/actions/timeEntry';
+import { selectWorkspace } from '../../helpers/selectWorkspace';
+import { selectProject } from '../../helpers/selectProject';
+import { selectTask } from '../../helpers/selectTask';
+import { getDescription } from '../../helpers/getDescription';
+import { selectBillable } from '../../helpers/selectBillable';
+import { selectTags } from '../../helpers/selectTags';
+import { updateStatusBarItem } from '../../statusbar/init';
 
-export async function startTracking() {
+export async function startTracking(context: vscode.ExtensionContext) {
 	// 1. Select Workspace
 	// 2. Select Project
 	// 3. Select Task
@@ -43,6 +44,10 @@ export async function startTracking() {
 		if (timeEntry) {
 			vscode.window.showInformationMessage('Tracking started');
 		}
+
+		// Update status bar item
+		context.globalState.update('tracking:isTracking', true);
+		updateStatusBarItem(context);
 	} catch (err) {
 		console.log(err);
 	}

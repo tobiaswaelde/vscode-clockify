@@ -74,6 +74,11 @@
 				"category": "Clockify"
 			},
 			{
+				"command": "clockify.statusbar.menu",
+				"title": "Open StatusBar Menu",
+				"category": "Clockify"
+			},
+			{
 				"command": "clockify.tracking.start",
 				"title": "Start Tracking",
 				"category": "Clockify"
@@ -86,6 +91,11 @@
 			{
 				"command": "clockify.tracking.toggle",
 				"title": "Toggle Tracking",
+				"category": "Clockify"
+			},
+			{
+				"command": "clockify.timeentry.change",
+				"title": "Change time entry",
 				"category": "Clockify"
 			},
 			{
@@ -257,17 +267,41 @@
 					"default": "",
 					"description": "The Clockify API Key"
 				},
-				"clockify.workspaceId": {
+				"clockify.tracking.workspaceId": {
 					"type": "string",
 					"default": "",
-					"description": "The ID of the workspace to use"
+					"description": "The ID of the default workspace"
 				},
-				"clockify.autostartTracking": {
+				"clockify.tracking.projectId": {
+					"type": "string",
+					"default": "",
+					"description": "The ID of the default project in this workspace"
+				},
+				"clockify.tracking.taskId": {
+					"type": "string",
+					"default": "",
+					"description": "The ID of the default task in this workspace"
+				},
+				"clockify.tracking.tagIds": {
+					"type": "array",
+					"items": {
+						"type": "string",
+						"title": "Tag ID"
+					},
+					"default": [],
+					"description": "The IDs of the default tags in this workspace"
+				},
+				"clockify.tracking.billable": {
+					"type": "boolean",
+					"default": false,
+					"description": "Check if Time Entry is billable"
+				},
+				"clockify.tracking.autostart": {
 					"type": "boolean",
 					"default": false,
 					"description": "Start tracking with opening Visual Studio"
 				},
-				"clockify.autostopTracking": {
+				"clockify.tracking.autostop": {
 					"type": "boolean",
 					"default": true,
 					"description": "Stop tracking with closing Visual Studio"

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { TagQuickPickItem } from '../interfaces/customInterfaces';
 import { getTags } from '../api/actions/tag';
 
-export async function selectTags(workspaceId: string): Promise<string[]> {
+export async function selectTags(workspaceId: string, throwError = true): Promise<string[]> {
 	const tags = await getTags(workspaceId);
 
 	let tagItems: TagQuickPickItem[] = [];
@@ -23,7 +23,11 @@ export async function selectTags(workspaceId: string): Promise<string[]> {
 		})
 		.then((tags) => {
 			if (tags === undefined) {
-				throw new Error('No tags selected');
+				if (throwError) {
+					throw new Error('No tags selected');
+				} else {
+					return [];
+				}
 			}
 			let result: string[] = [];
 			tags.forEach((tag) => {

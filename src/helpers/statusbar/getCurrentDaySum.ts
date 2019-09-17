@@ -6,7 +6,7 @@ import { getTimeentriesForUser } from '../../api/actions/timeEntry';
 export async function getCurrentDaySum(): Promise<moment.Duration> {
 	try {
 		const config = vscode.workspace.getConfiguration('clockify');
-		const workspaceId = <string>config.get('workspaceId')!;
+		const workspaceId = <string>config.get('tracking.workspaceId')!;
 		if (!workspaceId) {
 			throw new Error();
 		}

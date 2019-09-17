@@ -4,7 +4,7 @@ import { WorkspaceQuickPickItem } from '../interfaces/customInterfaces';
 import { getWorkspaces } from '../api/actions/workspace';
 import { updateStatusBarItem } from '../statusbar/init';
 
-export async function selectWorkspace() {
+export async function selectWorkspace(context: vscode.ExtensionContext) {
 	try {
 		const workspaces = await getWorkspaces();
 		let workspacesItems: WorkspaceQuickPickItem[] = [];
@@ -31,9 +31,9 @@ export async function selectWorkspace() {
 
 		// Write workspaceId to workspace config
 		const config = vscode.workspace.getConfiguration('clockify');
-		config.update('workspaceId', workspaceId, false);
+		config.update('tracking.workspaceId', workspaceId, false);
 
 		// Update status bar item
-		updateStatusBarItem();
+		updateStatusBarItem(context);
 	} catch (err) {}
 }

@@ -14,7 +14,9 @@ import { registerClientsCommands } from './treeView/clients/commands';
 import { registerProjectsCommands } from './treeView/projects/commands';
 import { registerTasksCommands } from './treeView/tasks/commands';
 import { registerTagsCommands } from './treeView/tags/commands';
-import { initStatusBarItem } from './statusbar/init';
+import { initStatusBarItem, updateStatusBarItem } from './statusbar/init';
+import { autoStartTracking } from './commands/tracking/autoStartTracking';
+import { autoStopTracking } from './commands/tracking/autoStopTracking';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -39,6 +41,13 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	//#endregion
 
+	//#region AUTOSTART
+	const trackingAutoStart = config.get<boolean>('tracking.autostart')!;
+	if (trackingAutoStart) {
+		autoStartTracking(context);
+	}
+	//#endregion
+
 	//#region COMMANDS
 	registerClockifyCommands(context);
 	//#endregion
@@ -57,7 +66,20 @@ export function activate(context: vscode.ExtensionContext) {
 	//#region STATUS BAR ITEM
 	initStatusBarItem(context);
 	//#endregion
+
+	setInterval(() => {
+		updateStatusBarItem(context);
+	}, 1000 * 60 * 5);
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate(context: vscode.ExtensionContext) {
+	const config = vscode.workspace.getConfiguration('clockify');
+
+	//#region AUTOSTOP
+	const trackingAutoStop = config.get<boolean>('tracking.autostop');
+	if (trackingAutoStop) {
+		autoStopTracking(context);
+	}
+	//#endregion
+}

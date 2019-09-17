@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-export async function getDescription(): Promise<string> {
+export async function getDescription(throwError = true): Promise<string> {
 	const description = await vscode.window
 		.showInputBox({
 			ignoreFocusOut: true,
@@ -9,7 +9,11 @@ export async function getDescription(): Promise<string> {
 		})
 		.then((description) => {
 			if (description === undefined) {
-				throw new Error('No description entered');
+				if (throwError) {
+					throw new Error('No description entered');
+				} else {
+					return '';
+				}
 			}
 			return description;
 		});

@@ -4,7 +4,7 @@ import { getProjects } from '../api/actions/project';
 import { getClients } from '../api/actions/client';
 import { getClientFromProject } from './getClient';
 
-export async function selectProject(workspaceId: string): Promise<string> {
+export async function selectProject(workspaceId: string, throwError = true): Promise<string> {
 	const projects = await getProjects(workspaceId);
 	const clients = await getClients(workspaceId);
 
@@ -26,7 +26,11 @@ export async function selectProject(workspaceId: string): Promise<string> {
 		.showQuickPick(projectItems, { ignoreFocusOut: true, placeHolder: 'Select project' })
 		.then((project) => {
 			if (project === undefined) {
-				throw new Error('No project selected');
+				if (throwError) {
+					throw new Error('No project selected');
+				} else {
+					return '';
+				}
 			}
 			return project.id;
 		});
