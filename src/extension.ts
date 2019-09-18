@@ -24,7 +24,6 @@ import { initStatusBarItem, updateStatusBarItem } from './statusbar/init';
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	console.log('clockify-tracker: Clockify extension started.');
-	// XEZ5gbB5hxt3ZRgL
 
 	setContextObject(context);
 	const config = vscode.workspace.getConfiguration('clockify');

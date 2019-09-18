@@ -14,7 +14,7 @@ export async function autoStartTracking(context: vscode.ExtensionContext): Promi
 	const config = vscode.workspace.getConfiguration('clockify');
 	let workspaceId = config.get<string>('tracking.workspaceId')!;
 	let projectId = config.get<string>('tracking.projectId')!;
-	let taskId = config.get<string>('tracking.taskId')!;
+	// let taskId = config.get<string>('tracking.taskId')!;
 	let tagIds = config.get<string[]>('tracking.tagIds')!;
 	let billable = config.get<boolean>('tracking.billable')!;
 
@@ -37,11 +37,14 @@ export async function autoStartTracking(context: vscode.ExtensionContext): Promi
 		newTimeentry.projectId = projectId;
 		//#endregion
 		//#region Task
-		if (projectId && !taskId) {
-			taskId = await selectTask(workspaceId, projectId, false);
-			config.update('tracking.taskId', taskId);
+		// if (projectId && !taskId) {
+		// 	taskId = await selectTask(workspaceId, projectId, false);
+		// 	config.update('tracking.taskId', taskId);
+		// }
+		// newTimeentry.taskId = taskId;
+		if (projectId) {
+			newTimeentry.taskId = await selectTask(workspaceId, projectId, false);
 		}
-		newTimeentry.taskId = taskId;
 		//#endregion
 		//#region Description
 		newTimeentry.description = await getDescription();
