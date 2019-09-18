@@ -34,6 +34,6 @@ export async function selectWorkspace(context: vscode.ExtensionContext) {
 		config.update('tracking.workspaceId', workspaceId, false);
 
 		// Update status bar item
-		updateStatusBarItem(context);
+		updateStatusBarItem(context, true);
 	} catch (err) {}
 }

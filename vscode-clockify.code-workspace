@@ -9,7 +9,6 @@
 		"clockify.tracking.autostart": true,
 		"clockify.tracking.autostop": true,
 		"clockify.tracking.workspaceId": "5c45c925b079871b77620835",
-        "clockify.tracking.projectId": "5d8040d30f66327a8f8d8ab9",
-        "clockify.tracking.taskId": ""
+		"clockify.tracking.projectId": "5d8040d30f66327a8f8d8ab9"
 	}
 }

@@ -9,6 +9,8 @@ import { getDescription } from '../../helpers/getDescription';
 import { selectBillable } from '../../helpers/selectBillable';
 import { selectTags } from '../../helpers/selectTags';
 import { updateStatusBarItem } from '../../statusbar/init';
+import { providerStore } from '../../treeView/stores';
+import { TimeentriesProvider } from '../../treeView/timeentries/timeentries.provider';
 
 export async function startTracking(context: vscode.ExtensionContext) {
 	// 1. Select Workspace
@@ -22,6 +24,7 @@ export async function startTracking(context: vscode.ExtensionContext) {
 		newTimeentry.start = new Date().toISOString();
 
 		const workspaceId = await selectWorkspace();
+		newTimeentry.workspaceId = workspaceId;
 
 		const projectId = await selectProject(workspaceId, false);
 		newTimeentry.projectId = projectId;
@@ -48,7 +51,11 @@ export async function startTracking(context: vscode.ExtensionContext) {
 
 		// Update status bar item
 		context.globalState.update('tracking:isTracking', true);
-		updateStatusBarItem(context);
+		updateStatusBarItem(context, true);
+
+		// Update tree view
+		const timentriesProvider = providerStore.get<TimeentriesProvider>('timeentries');
+		timentriesProvider.refresh();
 	} catch (err) {
 		console.log(err);
 	}

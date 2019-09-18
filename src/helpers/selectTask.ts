@@ -36,7 +36,7 @@ export async function selectTask(
 						}
 						return task.id;
 					})
-			: 'null';
+			: '';
 
 	return taskId;
 }

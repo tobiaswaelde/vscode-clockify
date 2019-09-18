@@ -3,7 +3,7 @@ import moment = require('moment');
 import { getUser } from '../../api/actions/user';
 import { getTimeentriesForUser } from '../../api/actions/timeEntry';
 
-export async function getCurrentDaySum(): Promise<moment.Duration> {
+export async function getCurrentDaySum(context: vscode.ExtensionContext): Promise<moment.Duration> {
 	try {
 		const config = vscode.workspace.getConfiguration('clockify');
 		const workspaceId = <string>config.get('tracking.workspaceId')!;
@@ -39,7 +39,16 @@ export async function getCurrentDaySum(): Promise<moment.Duration> {
 		);
 		if (timeEntries.length > 0) {
 			timeEntries.forEach((timeEntry) => {
-				sum.add(timeEntry.timeInterval.duration);
+				if (timeEntry.timeInterval.duration) {
+					sum.add(timeEntry.timeInterval.duration);
+				} else {
+					context.globalState.update('tracking:isTracking', true);
+
+					const start = moment(timeEntry.timeInterval.start);
+					const end = moment(new Date());
+					const duration = moment.duration(end.diff(start));
+					sum.add(duration);
+				}
 			});
 		}
 

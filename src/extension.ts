@@ -73,8 +73,8 @@ export function activate(context: vscode.ExtensionContext) {
 	//#endregion
 
 	setInterval(() => {
-		updateStatusBarItem(context);
-	}, 1000 * 60 * 5);
+		updateStatusBarItem(context, false);
+	}, 1000 * 5);
 }
 
 // this method is called when your extension is deactivated

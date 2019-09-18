@@ -18,7 +18,7 @@ export async function addTimeentry(
 			timeentry = res.data;
 		})
 		.catch((err) => {
-			timeentry = {} as TimeEntryDtoImpl;
+			throw new Error(err);
 		});
 	return timeentry;
 }

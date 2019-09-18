@@ -27,41 +27,52 @@ export function openStatusBarMenu() {
 	console.log('status bar menu');
 }
 
-export async function updateStatusBarItem(context: vscode.ExtensionContext) {
-	console.log('updateStatusBarItem');
+export async function updateStatusBarItem(
+	context: vscode.ExtensionContext,
+	updateLast90DaysAverage = false
+) {
+	// let start = moment(new Date());
 	let isTracking = context.globalState.get<boolean>('tracking:isTracking');
 
 	// Get daily average for last 90 days
-	const codeTimeAvg = `${Math.round(last90DaysAverage.asHours() * 10) / 10} hrs`;
+	if (updateLast90DaysAverage) {
+		last90DaysAverage = await get90DayAverage();
+	}
+	const codeTimeAvg = last90DaysAverage
+		? `${Math.round(last90DaysAverage.asHours() * 10) / 10} hrs`
+		: '0 hrs';
 	// Sum up current day's tracked time
-	const currentDaySum = await getCurrentDaySum();
-	const codeTimeToday =
-		currentDaySum.asHours() < 1
+	const currentDaySum = await getCurrentDaySum(context);
+	const codeTimeToday = currentDaySum
+		? currentDaySum.asHours() < 1
 			? `${Math.round(currentDaySum.asMinutes() * 10) / 10} min`
-			: `${Math.round(currentDaySum.asHours() * 10) / 10} hrs`;
+			: `${Math.round(currentDaySum.asHours() * 10) / 10} hrs`
+		: '0 hrs';
 
 	//#region Get color
 	let color = '#2196f3';
 	// red >1h below avg
-	if (
-		moment
-			.duration(currentDaySum)
-			.add(1, 'hour')
-			.asMilliseconds() < last90DaysAverage.asMilliseconds()
-	) {
-		color = '#f44336';
-	}
-	// orange <1h below avg
-	else if (currentDaySum.asMilliseconds() < last90DaysAverage.asMilliseconds()) {
-		color = '#ff9800';
-	}
-	// blue == avg
-	else if (currentDaySum.asMilliseconds() === last90DaysAverage.asMilliseconds()) {
-		color = '#2196f3';
-	}
-	// green >= avg
-	else {
-		color = '#4caf50';
+	if (last90DaysAverage && currentDaySum) {
+		if (
+			moment
+				.duration(currentDaySum)
+				.add(1, 'hour')
+				.asMilliseconds() < last90DaysAverage.asMilliseconds()
+		) {
+			color = '#f44336';
+		}
+		// orange <1h below avg
+		else if (currentDaySum.asMilliseconds() < last90DaysAverage.asMilliseconds()) {
+			color = '#ff9800';
+		}
+		// blue == avg
+		else if (currentDaySum.asMilliseconds() === last90DaysAverage.asMilliseconds()) {
+			color = '#2196f3';
+		}
+		// green >= avg
+		else {
+			color = '#4caf50';
+		}
 	}
 	statusBarItem.color = color;
 	//#endregion
@@ -71,4 +82,8 @@ export async function updateStatusBarItem(context: vscode.ExtensionContext) {
 	}`;
 
 	statusBarItem.text = `${codeTimeToday} | ${codeTimeAvg} ${isTracking ? ICONS.Clock : ''}`;
+
+	// let end = moment(new Date());
+	// let d = moment.duration(end.diff(start));
+	// console.log('updateStatusBartItem', d.asMilliseconds());
 }
