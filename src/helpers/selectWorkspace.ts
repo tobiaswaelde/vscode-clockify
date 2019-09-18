@@ -31,7 +31,7 @@ export async function selectWorkspace(): Promise<string> {
 			});
 
 		// Write workspaceId to configuration
-		config.update('workspaceId', workspaceId, false);
+		config.update('tracking.workspaceId', workspaceId, false);
 	}
 
 	return workspaceId;
