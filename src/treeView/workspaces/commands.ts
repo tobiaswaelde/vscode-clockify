@@ -9,6 +9,7 @@ import { ProjectsProvider } from '../projects/projects.provider';
 import { TasksProvider } from '../tasks/tasks.provider';
 import { getWorkspaceName } from '../../helpers/treeview/workspace/getWorkspaceName';
 import { TagsProvider } from '../tags/tags.provider';
+import { TimeentriesProvider } from '../timeentries/timeentries.provider';
 
 export function registerWorkspacesCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -32,6 +33,7 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
 	const tasksProvider = providerStore.get<TasksProvider>('tasks');
 	const tagsProvider = providerStore.get<TagsProvider>('tags');
+	const timeentriesProvider = providerStore.get<TimeentriesProvider>('timeentries');
 
 	//> Set context
 	setContext(ContextValue.WorkspaceSelected, false);
@@ -51,6 +53,7 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 	projectsProvider.refresh();
 	tasksProvider.refresh();
 	tagsProvider.refresh();
+	timeentriesProvider.refresh();
 
 	if (workspace) {
 		setTimeout(() => {
@@ -63,6 +66,7 @@ async function selectWorkspace(workspace: WorkspaceDto): Promise<void> {
 			projectsProvider.refresh();
 			tasksProvider.refresh();
 			tagsProvider.refresh();
+			timeentriesProvider.refresh();
 		}, 50);
 	}
 

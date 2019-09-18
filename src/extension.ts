@@ -4,19 +4,21 @@ import * as vscode from 'vscode';
 import http from './services/http.service';
 import { setContextObject, setContext, ContextValue, registerProvider } from './treeView/utils';
 import { registerClockifyCommands } from './commands';
+import { autoStartTracking } from './commands/tracking/autoStartTracking';
+import { autoStopTracking } from './commands/tracking/autoStopTracking';
 import { WorkspacesProvider } from './treeView/workspaces/workspaces.provider';
 import { ClientsProvider } from './treeView/clients/clients.providers';
 import { ProjectsProvider } from './treeView/projects/projects.provider';
 import { TasksProvider } from './treeView/tasks/tasks.provider';
 import { TagsProvider } from './treeView/tags/tags.provider';
+import { TimeentriesProvider } from './treeView/timeentries/timeentries.provider';
 import { registerWorkspacesCommands } from './treeView/workspaces/commands';
 import { registerClientsCommands } from './treeView/clients/commands';
 import { registerProjectsCommands } from './treeView/projects/commands';
 import { registerTasksCommands } from './treeView/tasks/commands';
 import { registerTagsCommands } from './treeView/tags/commands';
+import { registerTimeentriesCommands } from './treeView/timeentries/commands';
 import { initStatusBarItem, updateStatusBarItem } from './statusbar/init';
-import { autoStartTracking } from './commands/tracking/autoStartTracking';
-import { autoStopTracking } from './commands/tracking/autoStopTracking';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -57,11 +59,13 @@ export function activate(context: vscode.ExtensionContext) {
 	registerProvider('projects', new ProjectsProvider(context));
 	registerProvider('tasks', new TasksProvider(context));
 	registerProvider('tags', new TagsProvider(context));
+	registerProvider('timeentries', new TimeentriesProvider(context));
 	registerWorkspacesCommands(context);
 	registerClientsCommands(context);
 	registerProjectsCommands(context);
 	registerTasksCommands(context);
 	registerTagsCommands(context);
+	registerTimeentriesCommands(context);
 	//#endregion
 	//#region STATUS BAR ITEM
 	initStatusBarItem(context);

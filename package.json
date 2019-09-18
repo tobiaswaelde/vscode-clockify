@@ -54,6 +54,10 @@
 				{
 					"id": "clockify-tags",
 					"name": "Tags"
+				},
+				{
+					"id": "clockify-timeentries",
+					"name": "Timeentries"
 				}
 			]
 		},
@@ -202,6 +206,15 @@
 					"light": "assets/light/add.svg",
 					"dark": "assets/dark/add.svg"
 				}
+			},
+			{
+				"command": "clockify.timeentries.refresh",
+				"title": "Refresh Time entries",
+				"category": "Clockify Explorer",
+				"icon": {
+					"light": "assets/light/refresh.svg",
+					"dark": "assets/dark/refresh.svg"
+				}
 			}
 		],
 		"menus": {
@@ -255,6 +268,11 @@
 					"command": "clockify.tags.add",
 					"when": "view == clockify-tags",
 					"group": "navigation@1"
+				},
+				{
+					"command": "clockify.timeentries.refresh",
+					"when": "view == clockify-timeentries",
+					"group": "navigation@2"
 				}
 			]
 		},

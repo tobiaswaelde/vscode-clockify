@@ -10,6 +10,7 @@ import { selectVisibility } from '../../helpers/treeview/project/selectVisibilit
 import { selectBillable } from '../../helpers/treeview/project/selectBillable';
 import { addProject as apiAddProject } from '../../api/actions/project';
 import { TasksProvider } from '../tasks/tasks.provider';
+import { TimeentriesProvider } from '../timeentries/timeentries.provider';
 
 export function registerProjectsCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -29,6 +30,7 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 	//> Get Providers
 	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
 	const tasksProvider = providerStore.get<TasksProvider>('tasks');
+	const timeentriesProvider = providerStore.get<TimeentriesProvider>('timeentries');
 
 	//> Set context
 	setContext(ContextValue.ProjectSelected, false);
@@ -41,6 +43,7 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 	//> Call refresh() on all providers
 	projectsProvider.refresh();
 	tasksProvider.refresh();
+	timeentriesProvider.refresh();
 
 	if (project) {
 		setTimeout(() => {
@@ -50,6 +53,7 @@ async function selectProject(project: ProjectDtoImpl): Promise<void> {
 			//> Call refresh() on all providers
 			projectsProvider.refresh();
 			tasksProvider.refresh();
+			timeentriesProvider.refresh();
 		}, 50);
 	}
 
@@ -102,6 +106,13 @@ async function addProject(): Promise<void> {
 }
 
 function refreshProjects(element?: ProjectItem): void {
+	const context = getContext();
+	context.globalState.update('selectedProject', null);
+
 	const projectsProvider = providerStore.get<ProjectsProvider>('projects');
+	const tasksProvider = providerStore.get<TasksProvider>('tasks');
+	const timeentriesProvider = providerStore.get<TimeentriesProvider>('timeentries');
 	projectsProvider.refresh(element);
+	tasksProvider.refresh();
+	timeentriesProvider.refresh();
 }
