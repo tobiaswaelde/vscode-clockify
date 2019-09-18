@@ -215,6 +215,16 @@
 					"light": "assets/light/refresh.svg",
 					"dark": "assets/dark/refresh.svg"
 				}
+			},
+			{
+				"command": "clockify.config.workspace.set",
+				"title": "Set as default for this workspace",
+				"category": "Clockify Explorer"
+			},
+			{
+				"command": "clockify.config.project.set",
+				"title": "Set as default for this workspace",
+				"category": "Clockify Explorer"
 			}
 		],
 		"menus": {
@@ -273,6 +283,18 @@
 					"command": "clockify.timeentries.refresh",
 					"when": "view == clockify-timeentries",
 					"group": "navigation@2"
+				}
+			],
+			"view/item/context": [
+				{
+					"when": "viewItem == workspace",
+					"command": "clockify.config.workspace.set",
+					"group": "workspace@1"
+				},
+				{
+					"when": "viewItem == project",
+					"command": "clockify.config.project.set",
+					"group": "project@1"
 				}
 			]
 		},

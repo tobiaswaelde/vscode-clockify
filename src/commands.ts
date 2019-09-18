@@ -6,6 +6,8 @@ import { startTracking } from './commands/tracking/startTracking';
 import { stopTracking } from './commands/tracking/stopTracking';
 import { toggleTracking } from './commands/tracking/toggleTracking';
 import { changeTimeEntry } from './commands/timeentry/changeTimeEntry';
+import { WorkspaceItem } from './treeView/workspaces/workspaces.provider';
+import { ProjectItem } from './treeView/projects/projects.provider';
 
 export function registerClockifyCommands(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
@@ -22,5 +24,24 @@ export function registerClockifyCommands(context: vscode.ExtensionContext) {
 		}),
 		vscode.commands.registerCommand('clockify.tracking.toggle', toggleTracking),
 		vscode.commands.registerCommand('clockify.timeentry.change', changeTimeEntry)
+	);
+}
+
+export function registerContextMenuCommands(context: vscode.ExtensionContext) {
+	const config = vscode.workspace.getConfiguration('clockify');
+
+	context.subscriptions.push(
+		vscode.commands.registerCommand(
+			'clockify.config.workspace.set',
+			(workspaceItem: WorkspaceItem) => {
+				config.update('tracking.workspaceId', workspaceItem.workspace.id);
+			}
+		),
+		vscode.commands.registerCommand(
+			'clockify.config.project.set',
+			(projectItem: ProjectItem) => {
+				config.update('tracking.projectId', projectItem.project.id);
+			}
+		)
 	);
 }

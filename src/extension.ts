@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import http from './services/http.service';
 import { setContextObject, setContext, ContextValue, registerProvider } from './treeView/utils';
-import { registerClockifyCommands } from './commands';
+import { registerClockifyCommands, registerContextMenuCommands } from './commands';
 import { autoStartTracking } from './commands/tracking/autoStartTracking';
 import { autoStopTracking } from './commands/tracking/autoStopTracking';
 import { WorkspacesProvider } from './treeView/workspaces/workspaces.provider';
@@ -52,6 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	//#region COMMANDS
 	registerClockifyCommands(context);
+	registerContextMenuCommands(context);
 	//#endregion
 	//#region TREE VIEW
 	registerProvider('workspaces', new WorkspacesProvider(context));
