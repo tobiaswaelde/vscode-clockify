@@ -24,14 +24,12 @@ export async function stopTracking(context: vscode.ExtensionContext) {
 		let timeentry = await stopTimeentry(workspaceId, user.id, newTimeentry);
 		let duration = moment.duration(timeentry.timeInterval.duration).humanize() || '';
 
-		await vscode.window.showInformationMessage(
-			`You worked ${duration} on ${timeentry.description}`
-		);
+		vscode.window.showInformationMessage(`You worked ${duration} on ${timeentry.description}`);
+
+		// Update status bar item
+		await context.globalState.update('tracking:isTracking', false);
+		updateStatusBarItem(context);
 	} catch (err) {
 		//
-	} finally {
-		// Update status bar item
-		context.globalState.update('tracking:isTracking', false);
-		updateStatusBarItem(context);
 	}
 }

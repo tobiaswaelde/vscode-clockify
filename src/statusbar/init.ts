@@ -5,6 +5,7 @@ import moment = require('moment');
 import { ICONS } from '../config/constants';
 
 let statusBarItem: vscode.StatusBarItem;
+let last90DaysAverage: moment.Duration;
 
 export async function initStatusBarItem(context: vscode.ExtensionContext): Promise<void> {
 	context.subscriptions.push(
@@ -17,6 +18,8 @@ export async function initStatusBarItem(context: vscode.ExtensionContext): Promi
 	statusBarItem.show();
 
 	context.subscriptions.push(statusBarItem);
+
+	last90DaysAverage = await get90DayAverage();
 	updateStatusBarItem(context);
 }
 
@@ -29,11 +32,13 @@ export async function updateStatusBarItem(context: vscode.ExtensionContext) {
 	let isTracking = context.globalState.get<boolean>('tracking:isTracking');
 
 	// Get daily average for last 90 days
-	const last90DaysAverage = await get90DayAverage();
-	const codeTimeAvg = Math.round(last90DaysAverage.asHours() * 100) / 100;
+	const codeTimeAvg = `${Math.round(last90DaysAverage.asHours() * 10) / 10} hrs`;
 	// Sum up current day's tracked time
 	const currentDaySum = await getCurrentDaySum();
-	const codeTimeToday = Math.round(currentDaySum.asHours() * 100) / 100;
+	const codeTimeToday =
+		currentDaySum.asHours() < 1
+			? `${Math.round(currentDaySum.asMinutes() * 10) / 10} min`
+			: `${Math.round(currentDaySum.asHours() * 10) / 10} hrs`;
 
 	//#region Get color
 	let color = '#2196f3';
@@ -65,7 +70,5 @@ export async function updateStatusBarItem(context: vscode.ExtensionContext) {
 		isTracking ? ` ${ICONS.Bullet} Tracking...` : ''
 	}`;
 
-	statusBarItem.text = `${codeTimeToday} hrs | ${codeTimeAvg} hrs ${
-		isTracking ? ICONS.Clock : ''
-	}`;
+	statusBarItem.text = `${codeTimeToday} | ${codeTimeAvg} ${isTracking ? ICONS.Clock : ''}`;
 }

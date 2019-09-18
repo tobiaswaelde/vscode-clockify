@@ -8,6 +8,7 @@ export async function autoStopTracking(context: vscode.ExtensionContext) {
 	console.log('clockify.autoStopTracking');
 	let workspaceId = <string>getConfig('tracking.workspaceId');
 	if (!workspaceId) {
+		context.globalState.update('tracking:isTracking', false);
 		return;
 	}
 

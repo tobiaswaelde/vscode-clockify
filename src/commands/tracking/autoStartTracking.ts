@@ -7,9 +7,10 @@ import { selectTags } from '../../helpers/selectTags';
 import { selectBillable } from '../../helpers/selectBillable';
 import { getDescription } from '../../helpers/getDescription';
 import { addTimeentry } from '../../api/actions/timeEntry';
+import { providerStore } from '../../treeView/stores';
+import { TimeentriesProvider } from '../../treeView/timeentries/timeentries.provider';
 
 export async function autoStartTracking(context: vscode.ExtensionContext): Promise<void> {
-	console.log('clockify.autoStartTracking');
 	const config = vscode.workspace.getConfiguration('clockify');
 	let workspaceId = config.get<string>('tracking.workspaceId')!;
 	let projectId = config.get<string>('tracking.projectId')!;
@@ -53,17 +54,23 @@ export async function autoStartTracking(context: vscode.ExtensionContext): Promi
 		newTimeentry.tagIds = tagIds;
 		//#endregion
 		//#region Billable
-		if (!billable) {
+		if (billable === undefined) {
 			billable = await selectBillable(false);
 			config.update('tracking.billable', billable);
 		}
 		newTimeentry.billable = billable;
 		//#endregion
 
-		console.log(newTimeentry);
+		// Add time entry
 		let timeentry = await addTimeentry(workspaceId, newTimeentry);
-		vscode.window.showInformationMessage(`Tracking started: ${timeentry.id}`);
-		context.globalState.update('tracking:isTracking', true);
+		if (timeentry) {
+			context.globalState.update('tracking:isTracking', true);
+			vscode.window.showInformationMessage(`Tracking started`);
+
+			// Refresh time entries in tree view
+			const timeentriesProvider = providerStore.get<TimeentriesProvider>('timeentries');
+			timeentriesProvider.refresh();
+		}
 	} catch (err) {
 		return;
 	}

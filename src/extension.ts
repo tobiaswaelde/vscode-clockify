@@ -44,6 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
 	//#endregion
 
 	//#region AUTOSTART
+	context.globalState.update('tracking:isTracking', false);
 	const trackingAutoStart = config.get<boolean>('tracking.autostart')!;
 	if (trackingAutoStart) {
 		autoStartTracking(context);
