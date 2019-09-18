@@ -77,13 +77,13 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate(context: vscode.ExtensionContext) {
+export async function deactivate(context: vscode.ExtensionContext) {
 	const config = vscode.workspace.getConfiguration('clockify');
 
 	//#region AUTOSTOP
 	const trackingAutoStop = config.get<boolean>('tracking.autostop');
 	if (trackingAutoStop) {
-		autoStopTracking(context);
+		await autoStopTracking(context);
 	}
 	//#endregion
 }

@@ -6,6 +6,7 @@ import { selectTask } from '../../helpers/selectTask';
 import { selectTags } from '../../helpers/selectTags';
 import { selectBillable } from '../../helpers/selectBillable';
 import { getDescription } from '../../helpers/getDescription';
+import { addTimeentry } from '../../api/actions/timeEntry';
 
 export async function autoStartTracking(context: vscode.ExtensionContext): Promise<void> {
 	console.log('clockify.autoStartTracking');
@@ -60,6 +61,8 @@ export async function autoStartTracking(context: vscode.ExtensionContext): Promi
 		//#endregion
 
 		console.log(newTimeentry);
+		let timeentry = await addTimeentry(workspaceId, newTimeentry);
+		vscode.window.showInformationMessage(`Tracking started: ${timeentry.id}`);
 		context.globalState.update('tracking:isTracking', true);
 	} catch (err) {
 		return;

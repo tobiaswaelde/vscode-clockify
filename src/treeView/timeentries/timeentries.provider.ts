@@ -61,12 +61,12 @@ export class TimeentriesProvider implements vscode.TreeDataProvider<TimeentryPro
 			const timeentry = element.timeentry;
 			let items: TimeentryProviderItem[] = [];
 
-			items.push(
-				new TimeentryInfoItem(
-					{ name: 'Project', value: timeentry.projectId },
-					IconType.String
-				)
-			);
+			// items.push(
+			// 	new TimeentryInfoItem(
+			// 		{ name: 'Project', value: timeentry.projectId },
+			// 		IconType.String
+			// 	)
+			// );
 			items.push(
 				new TimeentryInfoItem(
 					{
