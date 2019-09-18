@@ -23,20 +23,20 @@ export async function startTracking(context: vscode.ExtensionContext) {
 
 		const workspaceId = await selectWorkspace();
 
-		const projectId = await selectProject(workspaceId);
+		const projectId = await selectProject(workspaceId, false);
 		newTimeentry.projectId = projectId;
 
-		const taskId = await selectTask(workspaceId, projectId);
+		const taskId = await selectTask(workspaceId, projectId, false);
 		newTimeentry.taskId = taskId;
 
-		const description = await getDescription();
+		const description = await getDescription(false);
 		newTimeentry.description = description;
 
-		const billable = await selectBillable();
+		const billable = await selectBillable(false);
 		newTimeentry.billable = billable;
 
 		//#region GET TAGS ITEMS
-		const tagIds = await selectTags(workspaceId);
+		const tagIds = await selectTags(workspaceId, false);
 		newTimeentry.tagIds = tagIds;
 
 		// Add Time Entry
