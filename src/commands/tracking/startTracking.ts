@@ -42,6 +42,7 @@ export async function startTracking(context: vscode.ExtensionContext) {
 		// Add Time Entry
 		const timeEntry = await addTimeentry(workspaceId, newTimeentry);
 		if (timeEntry) {
+			context.globalState.update('workspaceId', workspaceId);
 			vscode.window.showInformationMessage('Tracking started');
 		}
 

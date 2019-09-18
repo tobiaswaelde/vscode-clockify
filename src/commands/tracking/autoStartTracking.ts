@@ -47,7 +47,7 @@ export async function autoStartTracking(context: vscode.ExtensionContext): Promi
 		}
 		//#endregion
 		//#region Description
-		newTimeentry.description = await getDescription(); //! Throw exception on ESC
+		newTimeentry.description = await getDescription(false);
 		//#endregion
 		//#region Tags
 		if (tagIds === []) {
