@@ -1,5 +1,6 @@
 import http from '../../services/http.service';
 import { TaskDto, TaskRequest } from '../interfaces';
+import { ApiError } from '../errors';
 
 export async function getTasks(workspaceId: string, projectId: string): Promise<TaskDto[]> {
 	let tasks: TaskDto[] = [];
@@ -8,8 +9,9 @@ export async function getTasks(workspaceId: string, projectId: string): Promise<
 		.then((res) => {
 			tasks = res.data;
 		})
-		.catch((err) => {
-			tasks = [];
+		.catch((error) => {
+			throw new ApiError(error);
+			//// tasks = [];
 		});
 	return tasks;
 }
@@ -25,8 +27,9 @@ export async function addTask(
 		.then((res) => {
 			task = res.data;
 		})
-		.catch((err) => {
-			task = {} as TaskDto;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// task = {} as TaskDto;
 		});
 	return task;
 }

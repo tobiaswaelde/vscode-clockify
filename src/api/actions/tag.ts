@@ -1,5 +1,6 @@
 import http from '../../services/http.service';
 import { TagDto, TagRequest } from '../interfaces';
+import { ApiError } from '../errors';
 
 export async function getTags(workspaceId: string): Promise<TagDto[]> {
 	let tags: TagDto[] = [];
@@ -8,8 +9,9 @@ export async function getTags(workspaceId: string): Promise<TagDto[]> {
 		.then((res) => {
 			tags = res.data;
 		})
-		.catch((err) => {
-			tags = [];
+		.catch((error) => {
+			throw new ApiError(error);
+			//// tags = [];
 		});
 	return tags;
 }
@@ -21,8 +23,9 @@ export async function addTag(workspaceId: string, newTag: TagRequest): Promise<T
 		.then((res) => {
 			tag = res.data;
 		})
-		.catch((err) => {
-			tag = {} as TagDto;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// tag = {} as TagDto;
 		});
 	return tag;
 }

@@ -1,5 +1,6 @@
 import http from '../../services/http.service';
 import { TemplateDto, TemplatePatchRequest } from '../interfaces';
+import { ApiError } from '../errors';
 
 export async function getTemplates(workspaceId: string): Promise<TemplateDto[]> {
 	let templates: TemplateDto[] = [];
@@ -8,8 +9,9 @@ export async function getTemplates(workspaceId: string): Promise<TemplateDto[]> 
 		.then((res) => {
 			templates = res.data;
 		})
-		.catch((err) => {
-			templates = [];
+		.catch((error) => {
+			throw new ApiError(error);
+			//// templates = [];
 		});
 	return templates;
 }
@@ -24,7 +26,10 @@ export async function addTemplate(
 		.then((res) => {
 			templates = res.data;
 		})
-		.catch((err) => (templates = []));
+		.catch((error) => {
+			throw new ApiError(error);
+			//// templates = [];
+		});
 	return templates;
 }
 
@@ -35,8 +40,9 @@ export async function getTemplate(workspaceId: string, templateId: string): Prom
 		.then((res) => {
 			template = res.data;
 		})
-		.catch((err) => {
-			template = {} as TemplateDto;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// template = {} as TemplateDto;
 		});
 	return template;
 }
@@ -51,8 +57,9 @@ export async function deleteTemplate(
 		.then((res) => {
 			template = res.data;
 		})
-		.catch((err) => {
-			template = {} as TemplateDto;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// template = {} as TemplateDto;
 		});
 	return template;
 }
@@ -68,8 +75,9 @@ export async function changeTemplate(
 		.then((res) => {
 			template = res.data;
 		})
-		.catch((err) => {
-			template = {} as TemplateDto;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// template = {} as TemplateDto;
 		});
 	return template;
 }

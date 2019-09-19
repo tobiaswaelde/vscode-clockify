@@ -1,5 +1,6 @@
 import http from '../../services/http.service';
 import { ClientDto, ClientRequest } from '../interfaces';
+import { ApiError } from '../errors';
 
 export async function getClients(workspaceId: string): Promise<ClientDto[]> {
 	let clients: ClientDto[] = [];
@@ -8,8 +9,9 @@ export async function getClients(workspaceId: string): Promise<ClientDto[]> {
 		.then((res) => {
 			clients = res.data;
 		})
-		.catch((err) => {
-			clients = [];
+		.catch((error) => {
+			throw new ApiError(error);
+			//// clients = [];
 		});
 	return clients;
 }
@@ -24,8 +26,9 @@ export async function addNewClientToWorkspace(
 		.then((res) => {
 			client = res.data;
 		})
-		.catch((err) => {
-			client = {} as ClientDto;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// client = {} as ClientDto;
 		});
 	return client;
 }

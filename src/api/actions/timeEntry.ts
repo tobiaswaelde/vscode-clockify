@@ -6,6 +6,7 @@ import {
 	UpdateTimeEntryRequest,
 	StopTimeEntryRequest
 } from '../interfaces';
+import { ApiError } from '../errors';
 
 export async function addTimeentry(
 	workspaceId: string,
@@ -17,8 +18,9 @@ export async function addTimeentry(
 		.then((res) => {
 			timeentry = res.data;
 		})
-		.catch((err) => {
-			throw new Error(err);
+		.catch((error) => {
+			throw new ApiError(error);
+			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
@@ -33,8 +35,9 @@ export async function getTimeentry(
 		.then((res) => {
 			timeentry = res.data;
 		})
-		.catch((err) => {
-			timeentry = {} as TimeEntryDtoImpl;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
@@ -50,14 +53,17 @@ export async function updateTimeentry(
 		.then((res) => {
 			timeentry = res.data;
 		})
-		.catch((err) => {
-			timeentry = {} as TimeEntryDtoImpl;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
 
 export async function deleteTimeentry(workspaceId: string, timeentryId: string): Promise<void> {
-	await http.delete(`/workspaces/${workspaceId}/time-entries/${timeentryId}`);
+	await http.delete(`/workspaces/${workspaceId}/time-entries/${timeentryId}`).catch((error) => {
+		throw new ApiError(error);
+	});
 }
 
 /**
@@ -160,8 +166,9 @@ export async function getTimeentriesForUser(
 		.then((res) => {
 			timeentries = res.data;
 		})
-		.catch((err) => {
-			timeentries = [];
+		.catch((error) => {
+			throw new ApiError(error);
+			//// timeentries = [];
 		});
 	return timeentries;
 }
@@ -177,8 +184,9 @@ export async function addTimeentryForUser(
 		.then((res) => {
 			timeentry = res.data;
 		})
-		.catch((err) => {
-			timeentry = {} as TimeEntryDtoImpl;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
@@ -194,8 +202,9 @@ export async function stopTimeentry(
 		.then((res) => {
 			timeentry = res.data;
 		})
-		.catch((err) => {
-			timeentry = {} as TimeEntryDtoImpl;
+		.catch((error) => {
+			throw new ApiError(error);
+			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
