@@ -7,7 +7,7 @@
 	"icon": "assets/icon.ico",
 	"galleryBanner": {
 		"color": "#ffffff",
-		"theme": "dark"
+		"theme": "light"
 	},
 	"repository": {
 		"type": "git",
