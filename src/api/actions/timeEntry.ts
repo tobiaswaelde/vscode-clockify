@@ -8,60 +8,100 @@ import {
 } from '../interfaces';
 import { ApiError } from '../errors';
 
+/**
+ * Add a new time entry to workspace
+ * If end is not sent in request means that stopwatch mode is active, otherwise time entry is manually added.
+ * 'start' is the only mandatory field in this request.
+ * @param workspaceId Workspace ID
+ * @param newTimeentry New Timeentry
+ */
 export async function addTimeentry(
 	workspaceId: string,
 	newTimeentry: TimeEntryRequest
 ): Promise<TimeEntryDtoImpl> {
+	let query = `/workspaces/${workspaceId}/time-entries`;
 	let timeentry: TimeEntryDtoImpl = {} as TimeEntryDtoImpl;
 	await http
-		.post(`/workspaces/${workspaceId}/time-entries`, newTimeentry)
+		.post(query, newTimeentry)
 		.then((res) => {
 			timeentry = res.data;
 		})
 		.catch((error) => {
 			throw new ApiError(error);
-			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
 
+/**
+ * Get time entry on workspace
+ * @param workspaceId Workspace ID
+ * @param timeentryId Timeentry ID
+ * @param considerDurationFormat If provided, returned timeentry's duration will be rounded to minutes or seconds based on duration format (hh:mm or hh:mm:ss) from workspace settings.
+ * @param hydrated If provided, returned timeentry's project,task and tags will be returned in full and not just their ids. Note that if you request hydrated entity version, projectId, taskId and tagIds will be changed to project, task and tags in request response.
+ */
 export async function getTimeentry(
 	workspaceId: string,
-	timeentryId: string
+	timeentryId: string,
+	considerDurationFormat: boolean = false,
+	hydrated: boolean = false
 ): Promise<TimeEntryDtoImpl> {
+	let query = `/workspaces/${workspaceId}/time-entries/${timeentryId}`;
+	let queryParamsSet = false;
+	//#region QUERY PARAMETERS
+	if (considerDurationFormat) {
+		query += `${queryParamsSet ? '&' : '?'}consider-duration-format=1`;
+		queryParamsSet = true;
+	}
+	if (hydrated) {
+		query += `${queryParamsSet ? '&' : '?'}hydrated=1`;
+		queryParamsSet = true;
+	}
+	//#endregion
+
 	let timeentry: TimeEntryDtoImpl = {} as TimeEntryDtoImpl;
 	await http
-		.get(`/workspaces/${workspaceId}/time-entries/${timeentryId}`)
+		.get(query)
 		.then((res) => {
 			timeentry = res.data;
 		})
 		.catch((error) => {
 			throw new ApiError(error);
-			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
 
+/**
+ * Update time entry on workspace
+ * @param workspaceId Workspace ID
+ * @param timeentryId Timeentry ID
+ * @param newTimeentry New Timeentry
+ */
 export async function updateTimeentry(
 	workspaceId: string,
 	timeentryId: string,
 	newTimeentry: UpdateTimeEntryRequest
 ): Promise<TimeEntryDtoImpl> {
+	let query = `/workspaces/${workspaceId}/time-entries/${timeentryId}`;
 	let timeentry: TimeEntryDtoImpl = {} as TimeEntryDtoImpl;
 	await http
-		.put(`/workspaces/${workspaceId}/time-entries/${timeentryId}`, newTimeentry)
+		.put(query, newTimeentry)
 		.then((res) => {
 			timeentry = res.data;
 		})
 		.catch((error) => {
 			throw new ApiError(error);
-			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
 
+/**
+ * Delete time entry from workspace
+ * @param workspaceId Workspace ID
+ * @param timeentryId Timeentry ID
+ */
 export async function deleteTimeentry(workspaceId: string, timeentryId: string): Promise<void> {
-	await http.delete(`/workspaces/${workspaceId}/time-entries/${timeentryId}`).catch((error) => {
+	let query = `/workspaces/${workspaceId}/time-entries/${timeentryId}`;
+	await http.delete(query).catch((error) => {
 		throw new ApiError(error);
 	});
 }
@@ -168,37 +208,57 @@ export async function getTimeentriesForUser(
 		})
 		.catch((error) => {
 			throw new ApiError(error);
-			//// timeentries = [];
 		});
 	return timeentries;
 }
 
+/**
+ * Add a new time entry for another user on workspace
+ * Adding time for others is a premium feature. This API endpoint works only for workspaces with active Premium subscription.
+ *
+ * You specify for which user you're adding time in the request's POST path.
+ *
+ * If you leave out end time, you'll start a timer for that person.
+ * @param workspaceId Workspace ID
+ * @param userId User ID
+ * @param newTimeentry New Timeentry
+ */
 export async function addTimeentryForUser(
 	workspaceId: string,
 	userId: string,
 	newTimeentry: TimeEntryRequest
 ): Promise<TimeEntryDtoImpl> {
+	let query = `/workspaces/${workspaceId}/user/${userId}/time-entries`;
 	let timeentry: TimeEntryDtoImpl = {} as TimeEntryDtoImpl;
 	await http
-		.post(`/workspaces/${workspaceId}/user/${userId}/time-entries`, newTimeentry)
+		.post(query, newTimeentry)
 		.then((res) => {
 			timeentry = res.data;
 		})
 		.catch((error) => {
 			throw new ApiError(error);
-			//// timeentry = {} as TimeEntryDtoImpl;
 		});
 	return timeentry;
 }
 
+/**
+ * *Stops currently running time entry on workspace
+ * Admins can stop someone else's running timers on Premium workspaces (Add time for others feature).
+ *
+ * If workspace has a required field enabled (eg. the Timesheet is enabled and project is a required field as a result), you won't be able to stop the timer until you fill in the required field(s). You'll simply get "Entity not created" message.
+ * @param workspaceId Workspace ID
+ * @param userId User ID
+ * @param newTimeentry New Timeentry
+ */
 export async function stopTimeentry(
 	workspaceId: string,
 	userId: string,
 	newTimeentry: StopTimeEntryRequest
 ): Promise<TimeEntryDtoImpl> {
+	let query = `/workspaces/${workspaceId}/user/${userId}/time-entries`;
 	let timeentry: TimeEntryDtoImpl = {} as TimeEntryDtoImpl;
 	await http
-		.patch(`/workspaces/${workspaceId}/user/${userId}/time-entries`, newTimeentry)
+		.patch(query, newTimeentry)
 		.then((res) => {
 			timeentry = res.data;
 		})
