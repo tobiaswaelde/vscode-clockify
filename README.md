@@ -13,3 +13,6 @@ Or you can just search for "Clockify" in the Extensions view.
 
 ## Preview
 ![Clockify TreeView screenshot](images/preview-treeview.png)
+
+## Getting Started
+[Getting Started](https://github.com/tobiaswaelde/vscode-clockify/wiki/Home)
