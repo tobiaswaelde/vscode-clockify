@@ -21,6 +21,8 @@ export class ProjectsProvider implements vscode.TreeDataProvider<ProjectProvider
 	async getChildren(element?: ProjectProviderItem): Promise<ProjectProviderItem[]> {
 		const workspace = this.context.globalState.get<WorkspaceDto>('selectedWorkspace');
 		const client = this.context.globalState.get<ClientDto>('selectedClient');
+		const config = vscode.workspace.getConfiguration('clockify');
+		const limit = config.get<number>('downloadLimit')!;
 
 		if (!workspace) {
 			return [messageTreeItem('Select workspace')];
@@ -28,7 +30,7 @@ export class ProjectsProvider implements vscode.TreeDataProvider<ProjectProvider
 
 		if (!element) {
 			try {
-				const projects = await getProjects(workspace.id);
+				const projects = await getProjects(workspace.id, undefined, 1, limit);
 				if (projects.length === 0) {
 					return [messageTreeItem('No projects')];
 				}

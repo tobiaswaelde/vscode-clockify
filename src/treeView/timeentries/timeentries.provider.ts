@@ -21,6 +21,9 @@ export class TimeentriesProvider implements vscode.TreeDataProvider<TimeentryPro
 
 	async getChildren(element?: TimeentryProviderItem): Promise<TimeentryProviderItem[]> {
 		const workspace = this.context.globalState.get<WorkspaceDto>('selectedWorkspace');
+		const config = vscode.workspace.getConfiguration('clockify');
+		const limit = config.get<number>('downloadLimit')!;
+		
 		if (!workspace) {
 			return [messageTreeItem('Select workspace')];
 		}
@@ -45,7 +48,7 @@ export class TimeentriesProvider implements vscode.TreeDataProvider<TimeentryPro
 					undefined,
 					undefined,
 					1,
-					100
+					limit
 				);
 				if (timeentries.length === 0) {
 					return [messageTreeItem('No Timeentries')];

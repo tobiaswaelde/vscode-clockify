@@ -22,13 +22,16 @@ export class TasksProvider implements vscode.TreeDataProvider<TaskProviderItem> 
 	async getChildren(element?: TaskProviderItem): Promise<TaskProviderItem[]> {
 		const workspace = this.context.globalState.get<WorkspaceDto>('selectedWorkspace');
 		const project = this.context.globalState.get<ProjectDtoImpl>('selectedProject');
+		const config = vscode.workspace.getConfiguration('clockify');
+		const limit = config.get<number>('downloadLimit')!;
+
 		if (!workspace || !project) {
 			return [messageTreeItem('Select project')];
 		}
 
 		if (!element) {
 			try {
-				const tasks = await getTasks(workspace.id, project.id);
+				const tasks = await getTasks(workspace.id, project.id, undefined, undefined, 1, limit);
 				if (tasks.length === 0) {
 					return [messageTreeItem('No Tasks')];
 				}
