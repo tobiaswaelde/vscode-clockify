@@ -345,6 +345,11 @@
 					"type": "boolean",
 					"default": true,
 					"description": "Stop tracking with closing Visual Studio"
+				},
+				"clockify.downloadLimit": {
+					"type": "number",
+					"default": 200,
+					"description": "Limit the number of items that will be downloaded in the tree view"
 				}
 			}
 		}

@@ -19,13 +19,16 @@ export class ClientsProvider implements vscode.TreeDataProvider<ClientProviderIt
 
 	async getChildren(element?: ClientProviderItem): Promise<ClientProviderItem[]> {
 		const workspace = this.context.globalState.get<WorkspaceDto>('selectedWorkspace');
+		const config = vscode.workspace.getConfiguration('clockify');
+		const limit = config.get<number>('downloadLimit')!;
+		
 		if (!workspace) {
 			return [messageTreeItem('Select workspace')];
 		}
 
 		if (!element) {
 			try {
-				const clients = await getClients(workspace.id);
+				const clients = await getClients(workspace.id, undefined, 1, limit);
 				if (clients.length === 0) {
 					return [messageTreeItem('No clients')];
 				}

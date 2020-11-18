@@ -19,13 +19,16 @@ export class TagsProvider implements vscode.TreeDataProvider<TagProviderItem> {
 
 	async getChildren(element?: TagProviderItem): Promise<TagProviderItem[]> {
 		const workspace = this.context.globalState.get<WorkspaceDto>('selectedWorkspace');
+		const config = vscode.workspace.getConfiguration('clockify');
+		const limit = config.get<number>('downloadLimit')!;
+
 		if (!workspace) {
 			return [messageTreeItem('Select workspace')];
 		}
 
 		if (!element) {
 			try {
-				const tags = await getTags(workspace.id);
+				const tags = await getTags(workspace.id, undefined, 1, limit);
 				if (tags.length === 0) {
 					return [messageTreeItem('No Tags')];
 				}
