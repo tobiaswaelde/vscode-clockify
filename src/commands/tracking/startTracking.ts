@@ -13,33 +13,47 @@ import { providerStore } from '../../treeView/stores';
 import { TimeentriesProvider } from '../../treeView/timeentries/timeentries.provider';
 
 export async function startTracking(context: vscode.ExtensionContext) {
-	// 1. Select Workspace
-	// 2. Select Project
-	// 3. Select Task
-	// 4. Description
-	// 5. Billable
-	// 6. Select Tags
+	const config = vscode.workspace.getConfiguration('clockify');
+	let workspaceId = config.get<string>('tracking.workspaceId')!;
+	let projectId = config.get<string>('tracking.projectId')!;
+	// let taskId = config.get<string>('tracking.taskId')!;
+	let tagIds = config.get<string[]>('tracking.tagIds')!;
+	let billable = config.get<boolean>('tracking.billable')!;
+
 	try {
 		let newTimeentry: TimeEntryRequest = {} as TimeEntryRequest;
 		newTimeentry.start = new Date().toISOString();
 
-		const workspaceId = await selectWorkspace();
+		// 1. Select Workspace
+		if (!workspaceId) {
+			workspaceId = await selectWorkspace();
+		}
 		newTimeentry.workspaceId = workspaceId;
 
-		const projectId = await selectProject(workspaceId, false);
+	  // 2. Select Project
+		if (!projectId) {
+			projectId = await selectProject(workspaceId, false);
+		}
 		newTimeentry.projectId = projectId;
 
-		const taskId = await selectTask(workspaceId, projectId, false);
-		newTimeentry.taskId = taskId;
+		// 3. Select Task
+		if(projectId) {
+			newTimeentry.taskId = await selectTask(workspaceId, projectId, false);
+		}
 
-		const description = await getDescription(false);
-		newTimeentry.description = description;
+		// 4. Description
+		newTimeentry.description = await getDescription(false);
 
-		const billable = await selectBillable(false);
+		// 5. Billable
+		if (billable === undefined) {
+			billable = await selectBillable(false);
+		}
 		newTimeentry.billable = billable;
 
-		//#region GET TAGS ITEMS
-		const tagIds = await selectTags(workspaceId, false);
+		// 6. Select Tags
+		if (tagIds === []) {
+			tagIds = await selectTags(workspaceId, false);
+		}
 		newTimeentry.tagIds = tagIds;
 
 		// Add Time Entry
@@ -47,15 +61,15 @@ export async function startTracking(context: vscode.ExtensionContext) {
 		if (timeEntry) {
 			context.globalState.update('workspaceId', workspaceId);
 			vscode.window.showInformationMessage('Tracking started');
+
+			// Update status bar item
+			context.globalState.update('tracking:isTracking', true);
+			updateStatusBarItem(context, true);
+
+			// Update tree view
+			const timentriesProvider = providerStore.get<TimeentriesProvider>('timeentries');
+			timentriesProvider.refresh();
 		}
-
-		// Update status bar item
-		context.globalState.update('tracking:isTracking', true);
-		updateStatusBarItem(context, true);
-
-		// Update tree view
-		const timentriesProvider = providerStore.get<TimeentriesProvider>('timeentries');
-		timentriesProvider.refresh();
 	} catch (err) {
 		console.log(err);
 	}

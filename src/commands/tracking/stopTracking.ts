@@ -8,7 +8,7 @@ import { selectWorkspace } from '../selectWorkspace';
 import { updateStatusBarItem } from '../../statusbar/init';
 
 export async function stopTracking(context: vscode.ExtensionContext) {
-	const workspaceId = context.globalState.get<string>('workspaceId');
+	const workspaceId = context.globalState.get<string>('workspaceId') || <string>getConfig('tracking.workspaceId');
 	if (!workspaceId) {
 		context.globalState.update('tracking:isTracking', false);
 		updateStatusBarItem(context);
