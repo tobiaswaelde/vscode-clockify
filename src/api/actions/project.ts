@@ -13,7 +13,8 @@ export async function getProjects(
 	workspaceId: string,
 	name?: string,
 	page: number = 1,
-	pageSize: number = 50
+	pageSize: number = 500,
+	archived: boolean = false
 ): Promise<ProjectDtoImpl[]> {
 	let query = `/workspaces/${workspaceId}/projects`;
 	let queryParamsSet = false;
@@ -30,6 +31,8 @@ export async function getProjects(
 		query += `${queryParamsSet ? '&' : '?'}page-size=${pageSize}`;
 		queryParamsSet = true;
 	}
+	query += `${queryParamsSet ? '&' : '?'}archived=${archived}`;
+	queryParamsSet = true;
 	//#endregion
 
 	let projects: ProjectDtoImpl[] = [];
