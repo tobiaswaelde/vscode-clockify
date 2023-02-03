@@ -1,0 +1,35 @@
+# ToDo
+- [ ] core
+  - [ ] set API key
+  - [ ] reset config
+  - [ ] start tracking
+  - [ ] stop tracking
+  - [ ] toggle tracking
+  - [ ] 
+- [ ] Statusbar
+  - [ ] show time
+  - [ ] option to display average
+  - [ ] show tracking status (with icon)
+- [ ] Tree View
+  - [ ] refresh all
+  - [ ] providers
+    - [ ] workspaces
+      - [ ] select workspace
+      - [ ] add workspace
+      - [ ] refresh workspaces
+    - [ ] clients
+      - [ ] select client
+      - [ ] add client
+      - [ ] refresh clients
+    - [ ] projects
+      - [ ] select project
+      - [ ] add project
+      - [ ] refreesh projects
+    - [ ] tasks
+      - [ ] add task
+      - [ ] refresh tasks
+    - [ ] tags
+      - [ ] add tags
+      - [ ] refresh tags
+    - [ ] time entries
+      - [ ] refresh time entries
