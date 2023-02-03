@@ -1,0 +1,7 @@
+#TODO remove later
+.deprecated
+
+out
+node_modules
+.vscode-test/
+*.vsix
