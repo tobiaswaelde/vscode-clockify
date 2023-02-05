@@ -468,9 +468,6 @@ export class Clockify {
 	}
 
 	//#endregion
-	//#region Time Sheet Templates
-
-	//#endregion
 	//#region User
 
 	/**
