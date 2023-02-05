@@ -52,12 +52,12 @@
         "clockify.tracking.projectId": {
           "type": "string",
           "default": "",
-          "markdownDescription": "The ID of the default project in the workspace. `#clockify.tracking.workspaceId` must be set."
+          "markdownDescription": "The ID of the default project in the workspace. `#clockify.tracking.workspaceId#` must be set."
         },
         "clockify.tracking.taskId": {
           "type": "string",
           "default": "",
-          "description": "The ID of the default task in the workspace. `#clockify.tracking.workspaceId` must be set."
+          "markdownDescription": "The ID of the default task in the workspace. `#clockify.tracking.workspaceId#` must be set."
         },
         "clockify.tracking.tagIds": {
           "type": "array",
@@ -66,7 +66,7 @@
             "title": "Tag ID"
           },
           "default": [],
-          "description": "The IDs of the default tags in the workspace. `#clockify.tracking.workspaceId` must be set."
+          "markdownDescription": "The IDs of the default tags in the workspace. `#clockify.tracking.workspaceId#` must be set."
         },
         "clockify.tracking.billable": {
           "type": "boolean",
