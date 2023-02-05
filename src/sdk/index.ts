@@ -5,6 +5,7 @@ import {
 	ClientRequest,
 	ProjectImpl,
 	ProjectRequest,
+	StopTimeEntryRequest,
 	Tag,
 	TagRequest,
 	Task,
@@ -414,19 +415,54 @@ export class Clockify {
 		}
 	}
 
+	/**
+	 * Add a new time entry for another user in workspace.
+	 *
+	 * Adding time for others is a premium feature. This API endpoint works only for workspaces with active Premium subscription.
+	 *
+	 * If you leave out end time, you'll start a timer for that person.
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {string} userId The ID of the user
+	 * @param {TimeEntryRequest} newTimeEntry The data of the new time entry
+	 * @returns {TimeEntry|undefined} The created time entry
+	 */
 	public static async addTimeEntryForUser(
 		workspaceId: string,
 		userId: string,
-		newTimeEntry: TimeEntryRequest
+		timeEntry: TimeEntryRequest
 	): Promise<TimeEntry | undefined> {
 		try {
 			const res = await this.http.post(
 				`/workspaces/${workspaceId}/user/${userId}/time-entries`,
-				newTimeEntry
+				timeEntry
 			);
 			return res.data as TimeEntry;
 		} catch (err) {
 			showError('Error creating time entry for user', err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Stops currently running time entry in workspace.
+	 *
+	 * Admins can stop someone else's running timers on Premium workspaces (Add time for others feature).
+	 *
+	 * If workspace has a required field enabled (eg. the Timesheet is enabled and project is a required field as a result), you won't be able to stop the timer until you fill in the required field(s). You'll simply get "Entity not created" message.
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {string} userId The ID of the user
+	 * @param {StopTimeEntryRequest} newTimeEntry The data of the time entry
+	 */
+	public static async stopTimeEntryForUser(
+		workspaceId: string,
+		userId: string,
+		newTimeEntry: StopTimeEntryRequest
+	): Promise<TimeEntry | undefined> {
+		try {
+			const res = await this.http.patch(`/workspaces/${workspaceId}/user/${userId}/time-entries`);
+			return res.data as TimeEntry;
+		} catch (err) {
+			showError('Error stopping time entry');
 			return undefined;
 		}
 	}
