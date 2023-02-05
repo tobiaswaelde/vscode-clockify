@@ -1,5 +1,5 @@
 import { ExtensionContext, commands } from 'vscode';
-import { ContextValue } from '../config/context';
+import { ContextValueKey } from '../config/context';
 
 /**
  * Handles extension context
@@ -28,7 +28,7 @@ export class Context {
 	 * @param {ContextValue} key The key
 	 * @param {any} value The value
 	 */
-	public static set(key: ContextValue, value: any) {
+	public static set(key: ContextValueKey, value: any) {
 		commands.executeCommand('setContext', `clockify.${key}`, value);
 	}
 }

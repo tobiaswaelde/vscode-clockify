@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ConfigurationKeys as ConfigurationKey } from '../config/config';
+import { ConfigurationKey } from '../config/config';
 
 /**
  * Handles extensions config

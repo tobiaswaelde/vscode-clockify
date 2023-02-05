@@ -1,4 +1,4 @@
-export type ConfigurationKeys =
+export type ConfigurationKey =
 	| 'apiKey'
 	| 'fetchLimit'
 	| 'tracking.workspaceId'

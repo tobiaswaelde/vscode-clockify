@@ -7,5 +7,5 @@ import { setApiKey } from './set-api-key';
  * @param {ExtensionContext} ctx The extension context
  */
 export async function registerCommands(ctx: ExtensionContext) {
-	ctx.subscriptions.push(commands.registerCommand(Commands.SetApiKey, setApiKey));
+	ctx.subscriptions.push(commands.registerCommand(Commands.setApiKey, setApiKey));
 }
