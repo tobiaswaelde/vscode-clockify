@@ -26,10 +26,65 @@
   "contributes": {
     "commands": [
       {
-        "command": "vscode-clockify.helloWorld",
-        "title": "Hello World"
+        "command": "clockify.setApiKey",
+        "title": "Set API key",
+        "category": "Clockify"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Clockify Tracker",
+      "properties": {
+        "clockify.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "The clockify API key."
+        },
+        "clockify.fetchLimit": {
+          "type": "number",
+          "default": 200,
+          "description": "Limit the number of items that will be fetched for displaying in the tree view."
+        },
+        "clockify.tracking.workspaceId": {
+          "type": "string",
+          "default": "",
+          "description": "The ID of the default workspace."
+        },
+        "clockify.tracking.projectId": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "The ID of the default project in the workspace. `#clockify.tracking.workspaceId` must be set."
+        },
+        "clockify.tracking.taskId": {
+          "type": "string",
+          "default": "",
+          "description": "The ID of the default task in the workspace. `#clockify.tracking.workspaceId` must be set."
+        },
+        "clockify.tracking.tagIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "title": "Tag ID"
+          },
+          "default": [],
+          "description": "The IDs of the default tags in the workspace. `#clockify.tracking.workspaceId` must be set."
+        },
+        "clockify.tracking.billable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Check if Time Entry is billable."
+        },
+        "clockify.tracking.autostart": {
+          "type": "boolean",
+          "default": false,
+          "description": "Start tracking with opening the IDE."
+        },
+        "clockify.tracking.autostop": {
+          "type": "boolean",
+          "default": true,
+          "description": "Stop tracking with closing the IDE."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",
