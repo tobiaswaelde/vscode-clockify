@@ -17,7 +17,7 @@ export class Config {
 	 * @param {string} key The key
 	 * @returns The value
 	 */
-	public static getConfig<T>(key: string): T | undefined {
+	public static get<T>(key: string): T | undefined {
 		let config = this.getConfiguration();
 		return config.get<T>(key);
 	}
@@ -31,7 +31,7 @@ export class Config {
 	 *	- If `false` updates workspace.
 	 *	- If `undefined` or `null` updates workspace folder settings
 	 */
-	public static setConfig(key: string, value: any, global: boolean | null = null) {
+	public static set(key: string, value: any, global: boolean | null = null) {
 		let config = this.getConfiguration();
 		config.update(key, value, global);
 	}
