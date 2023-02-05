@@ -1,5 +1,5 @@
 import { ExtensionContext, commands } from 'vscode';
-import { ContextValue } from '../types/context';
+import { ContextValue } from '../config/context';
 
 /**
  * Handles extension context

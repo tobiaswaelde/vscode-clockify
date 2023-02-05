@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { ConfigurationKeys as ConfigurationKey } from '../config/config';
 
 /**
  * Handles extensions config
@@ -14,24 +15,24 @@ export class Config {
 
 	/**
 	 * Gets the value for the given key in the extensions configuration
-	 * @param {string} key The key
+	 * @param {ConfigurationKey} key The key
 	 * @returns The value
 	 */
-	public static get<T>(key: string): T | undefined {
+	public static get<T>(key: ConfigurationKey): T | undefined {
 		let config = this.getConfiguration();
 		return config.get<T>(key);
 	}
 
 	/**
 	 * Update the value for the given key in the extensions configuration
-	 * @param {string} key The key
+	 * @param {ConfigurationKey} key The key
 	 * @param {any} value The value
 	 * @param {boolean|undefined} global The target of the configuration
 	 *	- If `true` updates global settings.
 	 *	- If `false` updates workspace.
 	 *	- If `undefined` or `null` updates workspace folder settings
 	 */
-	public static set(key: string, value: any, global: boolean | null = null) {
+	public static set(key: ConfigurationKey, value: any, global: boolean | null = null) {
 		let config = this.getConfiguration();
 		config.update(key, value, global);
 	}
