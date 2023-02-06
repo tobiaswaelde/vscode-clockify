@@ -1,7 +1,7 @@
 import { Clockify } from '../sdk';
-import { Config } from './config';
-import { Context } from './context';
-import { GlobalState } from './global-state';
+import { Config } from '../util/config';
+import { Context } from '../util/context';
+import { GlobalState } from '../util/global-state';
 
 /**
  * Check if API key is set.
