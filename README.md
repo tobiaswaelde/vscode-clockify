@@ -11,7 +11,7 @@
 
 Implements [Clockify](https://clockify.me/) time tracker in VSCode
 
-![Clockify logo](assets/logo.png)
+![Clockify logo](assets/logo/logo-full.png)
 
 ## Installation
 Launch VS Code Quick Open (`Ctrl+P`), paste the following command, and press enter:
