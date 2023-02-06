@@ -1,3 +1,4 @@
+import { IconType } from '../types/icon-type';
 import { getFilePath } from './fs';
 
 /**
@@ -18,4 +19,13 @@ export function getIconPath(name?: string, darkName?: string) {
 		light: lightIconPath,
 		dark: darkIconPath,
 	};
+}
+
+/**
+ * Get the icon path for a specific value type
+ * @param type The type of the value
+ * @returns The path to the icon
+ */
+export function getValueTypeIconPath(type: IconType) {
+	return getFilePath('assets', 'icons', 'valuetypes', `${type}.svg`);
 }
