@@ -20,5 +20,6 @@ export function checkApiKey() {
 		Context.set('projects:selected', false);
 	}
 
+	Context.set('apiKey', apiKey);
 	Clockify.authenticate(apiKey);
 }
