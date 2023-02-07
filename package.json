@@ -29,6 +29,11 @@
         "command": "clockify.setApiKey",
         "title": "Set API key",
         "category": "Clockify"
+      },
+      {
+        "command": "clockify.workspaces.selection",
+        "title": "Select Workspace",
+        "category": "Clockify"
       }
     ],
     "configuration": {

@@ -2,6 +2,7 @@ import { Clockify } from '../sdk';
 import { Config } from '../util/config';
 import { Context } from '../util/context';
 import { GlobalState } from '../util/global-state';
+import * as vscode from 'vscode';
 
 /**
  * Check if API key is set.
@@ -11,15 +12,23 @@ import { GlobalState } from '../util/global-state';
 export function checkApiKey() {
 	const apiKey = Config.get<string>('apiKey');
 
-	if (!apiKey) {
+	if (!apiKey || apiKey === '') {
+		Context.set('initialized', false);
+		GlobalState.set('initialized', false);
+		console.log('API key not set.');
+
 		GlobalState.set('selectedWorkspace', null);
 		GlobalState.set('selectedClient', null);
 		GlobalState.set('selectedProject', null);
 		Context.set('workspaces:selected', false);
 		Context.set('clients:selected', false);
 		Context.set('projects:selected', false);
+		return;
 	}
 
 	Context.set('apiKey', apiKey);
 	Clockify.authenticate(apiKey);
+	Context.set('initialized', true);
+	GlobalState.set('initialized', true);
+	console.log('API key set.', apiKey);
 }

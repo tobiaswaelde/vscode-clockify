@@ -1,6 +1,6 @@
 import { Context } from './context';
 
-type GlobalStateKey = 'selectedWorkspace' | 'selectedClient' | 'selectedProject';
+type GlobalStateKey = 'initialized' | 'selectedWorkspace' | 'selectedClient' | 'selectedProject';
 
 /**
  * Handles global state

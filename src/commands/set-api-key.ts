@@ -1,6 +1,9 @@
 import * as vscode from 'vscode';
 import { Clockify } from '../sdk';
 import { Config } from '../util/config';
+import { Context } from '../util/context';
+import { ProviderStore } from '../util/stores/provider-store';
+import { WorkspacesProvider } from '../views/treeview/workspaces';
 
 export async function setApiKey() {
 	// ask user for the api key
@@ -10,6 +13,7 @@ export async function setApiKey() {
 		ignoreFocusOut: true,
 	});
 	if (!apiKey) {
+		Context.set('initialized', false);
 		return;
 	}
 
@@ -20,4 +24,7 @@ export async function setApiKey() {
 	Clockify.authenticate(apiKey);
 
 	//TODO refresh tree view providers
+	ProviderStore.get<WorkspacesProvider>('workspaces').refresh();
+
+	Context.set('initialized', true);
 }
