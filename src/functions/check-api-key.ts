@@ -2,7 +2,6 @@ import { Clockify } from '../sdk';
 import { Config } from '../util/config';
 import { Context } from '../util/context';
 import { GlobalState } from '../util/global-state';
-import * as vscode from 'vscode';
 
 /**
  * Check if API key is set.

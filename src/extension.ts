@@ -4,9 +4,7 @@ import { registerCommands } from './commands';
 import { checkApiKey } from './functions/check-api-key';
 import { registerProvider } from './util/stores/register-provider';
 import { WorkspacesProvider } from './views/treeview/workspaces';
-import { ProviderStore } from './util/stores/provider-store';
 import { Commands } from './config/commands';
-import { GlobalState } from './util/global-state';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
