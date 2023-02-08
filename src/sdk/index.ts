@@ -1,6 +1,14 @@
 import axios from 'axios';
 import * as qs from 'qs';
 import {
+	GetClientsFilter,
+	GetProjectsFilter,
+	GetTagsFilter,
+	GetTasksFilter,
+	GetTimeEntriesForUserFilter,
+	GetTimeEntryFilter,
+} from './filters';
+import {
 	Client,
 	ClientRequest,
 	ProjectImpl,
@@ -39,17 +47,11 @@ export class Clockify {
 	/**
 	 * Find clients in workspace
 	 * @param {string} workspaceId The ID of the workspace
-	 * @param {string} name If provided, clients will be filtered by name
-	 * @param {number} page Page
-	 * @param {number} pageSize Page size
+	 * @param {GetClientsFilter} filter The filter
 	 * @returns {Array<Client>} The clients in the workspace
 	 */
-	public static async getClients(
-		workspaceId: string,
-		name?: string,
-		page: number = 1,
-		pageSize: number = 50
-	): Promise<Client[]> {
+	public static async getClients(workspaceId: string, filter: GetClientsFilter): Promise<Client[]> {
+		const { name, page, pageSize } = filter;
 		try {
 			//eslint-disable-next-line @typescript-eslint/naming-convention
 			const q = qs.stringify({ name, page, 'page-size': pageSize }, { encodeValuesOnly: true });
@@ -64,7 +66,7 @@ export class Clockify {
 
 	/**
 	 * Add a new client to a workspace
-	 * @param {string} workspaceId The workspace to add the client to
+	 * @param {string} workspaceId The ID of the workspace to add the client to
 	 * @param {ClientRequest} newClient The data of the client to add
 	 * @returns {Client|undefined} The created client
 	 */
@@ -87,19 +89,14 @@ export class Clockify {
 	/**
 	 * Find projects in workspace
 	 * @param {string} workspaceId The ID of the workspace
-	 * @param {string} name If provided, filter projects by name
-	 * @param {boolean} archived If provided, filter projects by archived status
-	 * @param {number} page Page
-	 * @param {number} pageSize Page size
+	 * @param {GetProjectsFilter} filter The filter
 	 * @returns {Array<ProjectImpl>} The projects in the workspace
 	 */
 	public static async getProjects(
 		workspaceId: string,
-		name?: string,
-		archived?: boolean,
-		page: number = 1,
-		pageSize: number = 500
+		filter: GetProjectsFilter
 	): Promise<ProjectImpl[]> {
+		const { name, archived, page, pageSize } = filter;
 		try {
 			const q = qs.stringify(
 				//eslint-disable-next-line @typescript-eslint/naming-convention
@@ -159,17 +156,11 @@ export class Clockify {
 	/**
 	 * Find tags in workspace
 	 * @param {string} workspaceId The ID of the workspace
-	 * @param {string} name If provided, filter tags by name
-	 * @param page Page
-	 * @param pageSize Page size
+	 * @param {GetTagsFilter} filter The filter
 	 * @returns {Array<Tag>} The tags in the workspace
 	 */
-	public static async getTags(
-		workspaceId: string,
-		name?: string,
-		page: number = 1,
-		pageSize: number = 1
-	): Promise<Tag[]> {
+	public static async getTags(workspaceId: string, filter: GetTagsFilter): Promise<Tag[]> {
+		const { name, page, pageSize } = filter;
 		try {
 			//eslint-disable-next-line @typescript-eslint/naming-convention
 			const q = qs.stringify({ name, page, 'page-size': pageSize }, { encodeValuesOnly: true });
@@ -205,20 +196,15 @@ export class Clockify {
 	 * Find tasks on project
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {string} projectId The ID of the project
-	 * @param {boolean} isActive If `true`, only active tasks will be returned. Otherwise only finished tasks will be returned.
-	 * @param {string} name If provided, tasks will be filtered by name.
-	 * @param {number} page Page
-	 * @param {number} pageSize Page size
-	 * @returns The tasks oon the given project
+	 * @param {GetTasksFilter} filter The filter
+	 * @returns {Array<Task>} The tasks oon the given project
 	 */
 	public static async getTasks(
 		workspaceId: string,
 		projectId: string,
-		isActive?: boolean,
-		name?: string,
-		page: number = 1,
-		pageSize: number = 50
+		filter: GetTasksFilter
 	): Promise<Task[]> {
+		const { isActive, name, page, pageSize } = filter;
 		try {
 			const q = qs.stringify(
 				//eslint-disable-next-line @typescript-eslint/naming-convention
@@ -290,16 +276,15 @@ export class Clockify {
 	 * Get time entry in workspace
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {string} timeEntryId The ID of the time entry
-	 * @param {boolean} considerDurationFormat If provided, returned timeentry's duration will be rounded to minutes or seconds based on duration format (hh:mm or hh:mm:ss) from workspace settings.
-	 * @param {boolean} hydrated If provided, returned timeentry's project,task and tags will be returned in full and not just their ids. Note that if you request hydrated entity version, projectId, taskId and tagIds will be changed to project, task and tags in request response.
-	 * @returns The time entry
+	 * @param {GetTimeEntryFilter} filter The filter
+	 * @returns {TimeEntry|undefined} The time entry
 	 */
 	public static async getTimeEntry(
 		workspaceId: string,
 		timeEntryId: string,
-		considerDurationFormat: boolean = false,
-		hydrated: boolean = false
+		filter: GetTimeEntryFilter
 	): Promise<TimeEntry | undefined> {
+		const { considerDurationFormat, hydrated } = filter;
 		try {
 			const q = qs.stringify(
 				{
@@ -348,38 +333,29 @@ export class Clockify {
 	 * Find time entries for the given user in the workspace.
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {string} userId The ID of the user
-	 * @param {string} description If provided, time entries will be filtered by description.
-	 * @param {string} start If provided, only time entries that started after the specified datetime will be returned. Datetime must be in ISO-8601 format (eg. "2019-04-16T05:15:32.998Z"). You send time based on your timezone (from Profile Settings), and get results in UTC.
-	 * @param {string} end If provided, only time entries that started before the specified datetime will be returned. Datetime must be in ISO-8601 format (eg. 2019-04-16T05:15:32.998Z"). You send time based on your timezone (from Profile Settings), and get results in UTC.
-	 * @param {string} project If provided, time entries will be filtered by project.
-	 * @param {string} task If provided, time entries will be filtered by task.
-	 * @param {Array<string>} tags If provided, time entries will be filtered by tags. This parameter is an array of tag ids.
-	 * @param {boolean} projectRequired If `true`, only time entries with project will be returned.
-	 * @param {boolean} taskRequired If `true`, only time entries with task will be returned.
-	 * @param {boolean} considerDurationFormat If `true`, returned timeentry's duration will be rounded to minutes or seconds based on duration format (hh:mm or hh:mm:ss) from workspace settings.
-	 * @param {boolean} hydrated If `true`, returned timeentry's project,task and tags will be returned in full and not just their ids. Note that if you request hydrated entity version, projectId, taskId and tagIds will be changed to project, task and tags in request response.
-	 * @param {boolean} inProgress If `true`, all other filters will be ignored and, if present, currently running time entry will be returned.
-	 * @param page Page
-	 * @param pageSize Page size
+	 * @param {GetTimeEntriesForUserFilter} filter The filter
 	 * @returns
 	 */
 	public static async getTimeEntriesForUser(
 		workspaceId: string,
 		userId: string,
-		description?: string,
-		start?: string,
-		end?: string,
-		project?: string,
-		task?: string,
-		tags?: string[],
-		projectRequired: boolean = false,
-		taskRequired: boolean = false,
-		considerDurationFormat: boolean = false,
-		hydrated: boolean = false,
-		inProgress: boolean = false,
-		page: number = 1,
-		pageSize: number = 50
+		filter: GetTimeEntriesForUserFilter
 	): Promise<TimeEntry[]> {
+		const {
+			description,
+			start,
+			end,
+			project,
+			task,
+			tags,
+			projectRequired,
+			taskRequired,
+			considerDurationFormat,
+			hydrated,
+			inProgress,
+			page,
+			pageSize,
+		} = filter;
 		try {
 			const q = qs.stringify(
 				{
