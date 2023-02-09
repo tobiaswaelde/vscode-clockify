@@ -1,6 +1,8 @@
 import { commands, window } from 'vscode';
 import { Commands } from '../../../../config/commands';
 import { Clockify } from '../../../../sdk';
+import { refreshClients } from '../../clients/commands/refresh-clients';
+import { refreshWorkspaces } from './refresh-workspaces';
 import { selectWorkspace } from './select-workspace';
 
 export async function addWorkspace(): Promise<void> {
@@ -18,7 +20,7 @@ export async function addWorkspace(): Promise<void> {
 	const workspace = await Clockify.addWorkspace({ name });
 	if (workspace) {
 		selectWorkspace(workspace);
-		commands.executeCommand(Commands.workspacesRefresh);
+		refreshWorkspaces();
 		window.showInformationMessage(`Workspace '${workspace.name}' added successfully.`);
 	}
 }

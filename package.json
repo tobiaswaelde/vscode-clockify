@@ -31,6 +31,13 @@
         "category": "Clockify"
       },
       {
+        "command": "clockify.workspaces.refresh",
+        "title": "Refresh Workspaces",
+        "shortTitle": "Refresh",
+        "category": "Clockify",
+        "icon": "$(refresh)"
+      },
+      {
         "command": "clockify.workspaces.selection",
         "title": "Select Workspace",
         "shortTitle": "Select",
@@ -44,11 +51,38 @@
         "icon": "$(add)"
       },
       {
-        "command": "clockify.workspaces.refresh",
-        "title": "Refresh Workspaces",
+        "command": "clockify.clients.refresh",
+        "title": "Refresh Clients",
         "shortTitle": "Refresh",
         "category": "Clockify",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "clockify.clients.selection",
+        "title": "Select Client",
+        "shortTitle": "Select",
+        "category": "Clockify"
+      },
+      {
+        "command": "clockify.clients.add",
+        "title": "Add Client",
+        "shortTitle": "Add",
+        "category": "Clockify",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clockify.clients.edit",
+        "title": "Edit Client",
+        "shortTitle": "Edit",
+        "category": "Clockify",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "clockify.clients.delete",
+        "title": "Delete Client",
+        "shortTitle": "Delete",
+        "category": "Clockify",
+        "icon": "$(trash)"
       }
     ],
     "configuration": {
@@ -170,6 +204,27 @@
           "command": "clockify.workspaces.refresh",
           "when": "view == clockify-workspaces",
           "group": "navigation@2"
+        },
+        {
+          "command": "clockify.clients.add",
+          "when": "view == clockify-clients",
+          "group": "navigation@1"
+        },
+        {
+          "command": "clockify.clients.refresh",
+          "when": "view == clockify-clients",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "clockify.clients.edit",
+          "when": "view == clockify-clients && viewItem == client",
+          "group": "inline"
+        },
+        {
+          "command": "clockify.clients.delete",
+          "when": "view == clockify-clients && viewItem == client"
         }
       ]
     }

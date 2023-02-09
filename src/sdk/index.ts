@@ -50,11 +50,16 @@ export class Clockify {
 	 * @param {GetClientsFilter} filter The filter
 	 * @returns {Array<Client>} The clients in the workspace
 	 */
-	public static async getClients(workspaceId: string, filter: GetClientsFilter): Promise<Client[]> {
-		const { name, page, pageSize } = filter;
+	public static async getClients(
+		workspaceId: string,
+		filter?: GetClientsFilter
+	): Promise<Client[]> {
 		try {
-			//eslint-disable-next-line @typescript-eslint/naming-convention
-			const q = qs.stringify({ name, page, 'page-size': pageSize }, { encodeValuesOnly: true });
+			const q = qs.stringify(
+				//eslint-disable-next-line @typescript-eslint/naming-convention
+				{ name: filter?.name, page: filter?.page, 'page-size': filter?.pageSize },
+				{ encodeValuesOnly: true }
+			);
 
 			const res = await this.http.get(`/workspaces/${workspaceId}/clients?${q}`);
 			return res.data satisfies Client[];
@@ -79,6 +84,46 @@ export class Clockify {
 			return res.data as Client;
 		} catch (err) {
 			showError('Error adding client.', err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Update client in workspace
+	 * @param {string} workspaceId The ID of the workspace the client belongs to
+	 * @param {string} clientId The ID of the client to update
+	 * @param {ClientRequest} data The data to update
+	 * @returns {Client} The updated client or `undefined`
+	 */
+	public static async updateClient(
+		workspaceId: string,
+		clientId: string,
+		data: ClientRequest
+	): Promise<Client | undefined> {
+		try {
+			const res = await this.http.put(`/workspaces/${workspaceId}/clients/${clientId}`, data);
+			return res.data as Client;
+		} catch (err) {
+			showError('Error updating client.', err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Delete client from workspace
+	 * @param {string} workspaceId The ID of the workspace to delete the client from
+	 * @param {string} clientId The ID of the client to delete
+	 * @returns {Client} The deleted client or `undefined`
+	 */
+	public static async deleteClient(
+		workspaceId: string,
+		clientId: string
+	): Promise<Client | undefined> {
+		try {
+			const res = await this.http.delete(`/workspaces/${workspaceId}/clients/${clientId}`);
+			return res.data as Client;
+		} catch (err) {
+			showError('Error deleting client.', err);
 			return undefined;
 		}
 	}

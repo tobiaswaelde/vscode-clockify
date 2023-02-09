@@ -5,6 +5,7 @@ import { checkApiKey } from './functions/check-api-key';
 import { registerProvider } from './util/stores/register-provider';
 import { WorkspacesProvider } from './views/treeview/workspaces';
 import { Commands } from './config/commands';
+import { ClientsProvider } from './views/treeview/clients';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
@@ -17,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// tree view
 	registerProvider('workspaces', new WorkspacesProvider(context));
+	registerProvider('clients', new ClientsProvider(context));
 
 	// refresh treeview when config changes
 	vscode.workspace.onDidChangeConfiguration((e) => {

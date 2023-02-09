@@ -89,7 +89,7 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
-			commands.registerCommand(Commands.workspacesRefresh, () => refreshWorkspaces()),
+			commands.registerCommand(Commands.workspacesRefresh, (x) => refreshWorkspaces(x)),
 			commands.registerCommand(Commands.workspacesSelection, selectWorkspace),
 			commands.registerCommand(Commands.workspacesAdd, addWorkspace)
 		);
