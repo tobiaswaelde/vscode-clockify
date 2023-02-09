@@ -1,6 +1,5 @@
-import { GlobalState } from './../../../../util/global-state';
 import { TreeItem, TreeItemCollapsibleState } from 'vscode';
-import { Client } from '../../../../sdk/types';
+import { Client } from '../../../../sdk/types/client';
 import { sensify } from '../../../../util/data';
 import { getIconPath } from '../../../../util/icon';
 

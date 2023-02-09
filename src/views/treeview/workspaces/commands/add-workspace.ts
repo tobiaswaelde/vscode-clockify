@@ -1,7 +1,5 @@
-import { commands, window } from 'vscode';
-import { Commands } from '../../../../config/commands';
+import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
-import { refreshClients } from '../../clients/commands/refresh-clients';
 import { refreshWorkspaces } from './refresh-workspaces';
 import { selectWorkspace } from './select-workspace';
 

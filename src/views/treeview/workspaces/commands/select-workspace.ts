@@ -1,4 +1,4 @@
-import { Workspace } from './../../../../sdk/types';
+import { Workspace } from '../../../../sdk/types/workspace';
 import { GlobalState } from '../../../../util/global-state';
 import { refreshClients } from '../../clients/commands/refresh-clients';
 

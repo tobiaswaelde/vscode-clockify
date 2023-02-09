@@ -1,4 +1,4 @@
-import { Client } from '../../../../sdk/types';
+import { Client } from '../../../../sdk/types/client';
 import { GlobalState } from '../../../../util/global-state';
 
 export async function selectClient(client: Client): Promise<void> {

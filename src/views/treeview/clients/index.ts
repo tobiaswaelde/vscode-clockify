@@ -1,6 +1,6 @@
 import { MessageTreeItem } from './../util/message-tree-item';
 import { Config } from './../../../util/config';
-import { Workspace } from './../../../sdk/types';
+import { Workspace } from '../../../sdk/types/workspace';
 import {
 	commands,
 	Event,

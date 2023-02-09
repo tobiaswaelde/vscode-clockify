@@ -1,5 +1,5 @@
-import { Workspace } from './../../../../sdk/types';
-import { window, commands } from 'vscode';
+import { Workspace } from '../../../../sdk/types/workspace';
+import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
 import { GlobalState } from '../../../../util/global-state';
 import { showError } from '../../../../sdk/util';

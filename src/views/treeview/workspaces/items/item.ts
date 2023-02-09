@@ -1,5 +1,5 @@
 import { Config } from './../../../../util/config';
-import { Workspace } from './../../../../sdk/types';
+import { Workspace } from '../../../../sdk/types/workspace';
 import { TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { getIconPath } from '../../../../util/icon';
 import { Commands } from '../../../../config/commands';

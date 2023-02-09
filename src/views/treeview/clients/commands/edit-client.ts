@@ -1,6 +1,6 @@
 import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
-import { Workspace } from '../../../../sdk/types';
+import { Workspace } from '../../../../sdk/types/workspace';
 import { showError } from '../../../../sdk/util';
 import { GlobalState } from '../../../../util/global-state';
 import { ClientItem } from '../items/item';

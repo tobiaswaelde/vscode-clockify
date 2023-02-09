@@ -8,23 +8,18 @@ import {
 	GetTimeEntriesForUserFilter,
 	GetTimeEntryFilter,
 } from './filters';
+import { Client, ClientRequest } from './types/client';
+import { Project, ProjectRequest } from './types/project';
+import { Tag, TagRequest } from './types/tag';
+import { Task, TaskRequest } from './types/task';
 import {
-	Client,
-	ClientRequest,
-	ProjectImpl,
-	ProjectRequest,
-	StopTimeEntryRequest,
-	Tag,
-	TagRequest,
-	Task,
-	TaskRequest,
 	TimeEntry,
 	TimeEntryRequest,
+	StopTimeEntryRequest,
 	UpdateTimeEntryRequest,
-	User,
-	Workspace,
-	WorkspaceRequest,
-} from './types';
+} from './types/time-entry';
+import { User } from './types/user';
+import { Workspace, WorkspaceRequest } from './types/workspace';
 import { showError } from './util';
 
 const BASE_URL = 'https://api.clockify.me/api/v1';
@@ -135,12 +130,12 @@ export class Clockify {
 	 * Find projects in workspace
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {GetProjectsFilter} filter The filter
-	 * @returns {Array<ProjectImpl>} The projects in the workspace
+	 * @returns {Array<Project>} The projects in the workspace
 	 */
 	public static async getProjects(
 		workspaceId: string,
 		filter: GetProjectsFilter
-	): Promise<ProjectImpl[]> {
+	): Promise<Project[]> {
 		const { name, archived, page, pageSize } = filter;
 		try {
 			const q = qs.stringify(
@@ -150,7 +145,7 @@ export class Clockify {
 			);
 
 			const res = await this.http.get(`/workspaces/${workspaceId}/projects?${q}`);
-			return res.data as ProjectImpl[];
+			return res.data as Project[];
 		} catch (err) {
 			showError('Error fetching projects.', err);
 			return [];
@@ -161,15 +156,15 @@ export class Clockify {
 	 * Add a new project to the workspace
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {ProjectRequest} newProject The data of the project to add
-	 * @returns {ProjectImpl|undefined} The created project
+	 * @returns {Project|undefined} The created project
 	 */
 	public static async addProject(
 		workspaceId: string,
 		newProject: ProjectRequest
-	): Promise<ProjectImpl | undefined> {
+	): Promise<Project | undefined> {
 		try {
 			const res = await this.http.post(`/workspaces/${workspaceId}/projects`, newProject);
-			return res.data as ProjectImpl;
+			return res.data as Project;
 		} catch (err) {
 			showError('Error adding project.', err);
 			return undefined;
@@ -180,15 +175,15 @@ export class Clockify {
 	 * Delete project from workspace
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {string} projectId The ID of the project to delete
-	 * @returns {ProjectImpl|undefined} The deleted project
+	 * @returns {Project|undefined} The deleted project
 	 */
 	public static async deleteProject(
 		workspaceId: string,
 		projectId: string
-	): Promise<ProjectImpl | undefined> {
+	): Promise<Project | undefined> {
 		try {
 			const res = await this.http.delete(`/workspaces/${workspaceId}/projects/${projectId}`);
-			return res.data as ProjectImpl;
+			return res.data as Project;
 		} catch (err) {
 			showError('Error deleting project.', err);
 			return undefined;
