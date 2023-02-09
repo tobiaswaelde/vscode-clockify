@@ -11,6 +11,7 @@ export async function selectWorkspace(workspace: Workspace): Promise<void> {
 
 	if (workspace) {
 		GlobalState.set('selectedWorkspace', workspace);
+		console.log('workspace selected', workspace.id);
 		//TODO refesh tree views
 	}
 }

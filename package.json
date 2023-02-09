@@ -33,7 +33,22 @@
       {
         "command": "clockify.workspaces.selection",
         "title": "Select Workspace",
+        "shortTitle": "Select",
         "category": "Clockify"
+      },
+      {
+        "command": "clockify.workspaces.add",
+        "title": "Add Workspace",
+        "shortTitle": "Add",
+        "category": "Clockify",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clockify.workspaces.refresh",
+        "title": "Refresh Workspaces",
+        "shortTitle": "Refresh",
+        "category": "Clockify",
+        "icon": "$(refresh)"
       }
     ],
     "configuration": {
@@ -48,6 +63,16 @@
           "type": "number",
           "default": 200,
           "description": "Limit the number of items that will be fetched for displaying in the tree view."
+        },
+        "clockify.hideSensitiveData": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show/hide sensitive data. Can be useful for screenshots."
+        },
+        "clockify.workspaces.showNumberOfMembers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show/hide the number of members for each workspace."
         },
         "clockify.tracking.workspaceId": {
           "type": "string",
@@ -133,7 +158,21 @@
         "contents": "To use the extension first add your API key. You can find your API key [here](https://app.clockify.me/user/settings#:~:text=Manage%20email%20preferences-,API,-Connect%20Clockify%20to)",
         "when": "!clockify.apiKey"
       }
-    ]
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "clockify.workspaces.add",
+          "when": "view == clockify-workspaces",
+          "group": "navigation@1"
+        },
+        {
+          "command": "clockify.workspaces.refresh",
+          "when": "view == clockify-workspaces",
+          "group": "navigation@2"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run package",

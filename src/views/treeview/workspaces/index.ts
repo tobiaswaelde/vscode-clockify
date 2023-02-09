@@ -14,6 +14,9 @@ import { Commands } from '../../../config/commands';
 import { selectWorkspace } from './commands/select-workspace';
 import { apiKeySet } from '../../../helpers';
 import { WorkspaceInfoItem } from './items/info-item';
+import { addWorkspace } from './commands/add-workspace';
+import { refreshWorkspaces } from './commands/refresh-workspaces';
+import { sensify } from '../../../util/data';
 
 type OnDidChangeEventData = WorkspaceTreeItem | undefined;
 
@@ -57,19 +60,16 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 		// render workspace info items
 		if (element instanceof WorkspaceItem) {
 			const workspace = element.workspace;
+
+			const hourlyRate = Math.round((workspace.hourlyRate.amount / 100) * 100) / 100;
+
 			return [
 				new WorkspaceInfoItem({
 					name: 'Hourly Rate',
-					value: `${Math.round((workspace.hourlyRate.amount / 100) * 100) / 100} ${
-						workspace.hourlyRate.currency
-					}`,
+					value: `${sensify(hourlyRate)} ${workspace.hourlyRate.currency}`,
 					icon: 'number',
 				}),
 			];
-		}
-
-		if (element instanceof WorkspaceInfoItem) {
-			return [];
 		}
 
 		return [];
@@ -89,8 +89,9 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
-			commands.registerCommand(Commands.workspacesRefresh, () => this.refresh()),
-			commands.registerCommand(Commands.workspacesSelection, selectWorkspace)
+			commands.registerCommand(Commands.workspacesRefresh, () => refreshWorkspaces()),
+			commands.registerCommand(Commands.workspacesSelection, selectWorkspace),
+			commands.registerCommand(Commands.workspacesAdd, addWorkspace)
 		);
 	}
 }

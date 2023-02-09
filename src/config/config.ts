@@ -1,6 +1,8 @@
 export type ConfigurationKey =
 	| 'apiKey'
 	| 'fetchLimit'
+	| 'hideSensitiveData'
+	| 'workspaces.showNumberOfMembers'
 	| 'tracking.workspaceId'
 	| 'tracking.projectId'
 	| 'tracking.taskId'

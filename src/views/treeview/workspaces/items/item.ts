@@ -1,16 +1,17 @@
+import { Config } from './../../../../util/config';
 import { Workspace } from './../../../../sdk/types';
 import { TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { getIconPath } from '../../../../util/icon';
 import { Commands } from '../../../../config/commands';
+import { sensify } from '../../../../util/data';
 
 export class WorkspaceItem extends TreeItem {
 	contextValue = 'workspace';
 
 	constructor(public workspace: Workspace) {
-		super(workspace.name, TreeItemCollapsibleState.Collapsed);
+		super(sensify(workspace.name), TreeItemCollapsibleState.Collapsed);
 
 		this.iconPath = getIconPath('workspaces');
-		console.log(this.iconPath);
 
 		this.command = {
 			command: Commands.workspacesSelection,
@@ -19,5 +20,11 @@ export class WorkspaceItem extends TreeItem {
 		};
 
 		this.tooltip = workspace.id;
+
+		if (Config.get('workspaces.showNumberOfMembers') === true) {
+			this.description = `- ${workspace.memberships.length} ${
+				workspace.memberships.length === 1 ? 'User' : 'Users'
+			}`;
+		}
 	}
 }

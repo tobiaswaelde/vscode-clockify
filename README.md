@@ -26,3 +26,27 @@ Or you can just search for "Clockify" in the Extensions view.
 
 ## Getting Started
 [Getting Started](https://github.com/tobiaswaelde/vscode-clockify/wiki/Home)
+
+
+## Configuration
+
+*All keys starting with `simpleChangelog.`*
+
+| Settings key                   | Type                | Default value | Description |
+| ------------------------------ | ------------------- | ------------- | ----------- |
+| apiKey                         | string              | ` `           |             |
+| fetchLimit                     | number              | `200`         |             |
+| hideSensitiveData              | boolean             | `false`       |             |
+| workspaces.showNumberOfMembers | boolean             | `true`        |             |
+| tracking.workspaceId           | string              | ` `           |             |
+| tracking.projectId             | string              | ` `           |             |
+| tracking.taskId                | string              | ` `           |             |
+| tracking.tagIds                | array&lt;string&gt; | `[]`          |             |
+| tracking.billable              | boolean             | `false`       |             |
+| tracking.autostart             | boolean             | `false`       |             |
+| tracking.autostop              | boolean             | `true`        |             |
+|                                |                     |               |             |
+|                                |                     |               |             |
+|                                |                     |               |             |
+|                                |                     |               |             |
+|                                |                     |               |             |
