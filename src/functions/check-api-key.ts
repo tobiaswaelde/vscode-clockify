@@ -14,7 +14,6 @@ export function checkApiKey() {
 	if (!apiKey || apiKey === '') {
 		Context.set('initialized', false);
 		GlobalState.set('initialized', false);
-		console.log('API key not set.');
 
 		GlobalState.set('selectedWorkspace', null);
 		GlobalState.set('selectedClient', null);
@@ -29,5 +28,4 @@ export function checkApiKey() {
 	Clockify.authenticate(apiKey);
 	Context.set('initialized', true);
 	GlobalState.set('initialized', true);
-	console.log('API key set.', apiKey);
 }
