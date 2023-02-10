@@ -67,33 +67,27 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 					new FieldValueItem('client.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
 				);
 			}
-			if (email) {
-				items.push(
-					new FieldValueItem('client.email', {
-						name: 'Email',
-						value: sensify(email),
-						icon: 'string',
-					})
-				);
-			}
-			if (address) {
-				items.push(
-					new FieldValueItem(
-						'client.address',
-						{ name: 'Address', value: sensify(address), icon: 'geopoint' },
-						true
-					)
-				);
-			}
-			if (note) {
-				items.push(
-					new FieldValueItem(
-						'client.note',
-						{ name: 'Note', value: sensify(note), icon: 'string-abc' },
-						true
-					)
-				);
-			}
+			items.push(
+				new FieldValueItem('client.email', {
+					name: 'Email',
+					value: sensify(email ?? ''),
+					icon: 'string',
+				})
+			);
+			items.push(
+				new FieldValueItem(
+					'client.address',
+					{ name: 'Address', value: sensify(address ?? ''), icon: 'geopoint' },
+					true
+				)
+			);
+			items.push(
+				new FieldValueItem(
+					'client.note',
+					{ name: 'Note', value: sensify(note ?? ''), icon: 'string-abc' },
+					true
+				)
+			);
 
 			return items;
 		}
