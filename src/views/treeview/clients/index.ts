@@ -58,12 +58,15 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 
 		// render client information
 		if (element instanceof ClientItem) {
+			const showIds = Config.get<boolean>('showIds');
 			const { id, email, address, note } = element.client;
-			const items: ClientTreeItem[] = [];
 
-			items.push(
-				new FieldValueItem('client.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
-			);
+			const items: ClientTreeItem[] = [];
+			if (showIds) {
+				items.push(
+					new FieldValueItem('client.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
+				);
+			}
 			if (email) {
 				items.push(
 					new FieldValueItem('client.email', {

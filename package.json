@@ -103,6 +103,11 @@
           "default": false,
           "description": "Show/hide sensitive data. Can be useful for screenshots."
         },
+        "clockify.showIds": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show/Hide IDs of the data."
+        },
         "clockify.workspaces.showNumberOfMembers": {
           "type": "boolean",
           "default": true,

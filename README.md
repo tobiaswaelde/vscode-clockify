@@ -37,6 +37,7 @@ Or you can just search for "Clockify" in the Extensions view.
 | apiKey                         | string              | ` `           |             |
 | fetchLimit                     | number              | `200`         |             |
 | hideSensitiveData              | boolean             | `false`       |             |
+| showIds                        | boolean             | `false`       |             |
 | workspaces.showNumberOfMembers | boolean             | `true`        |             |
 | tracking.workspaceId           | string              | ` `           |             |
 | tracking.projectId             | string              | ` `           |             |
