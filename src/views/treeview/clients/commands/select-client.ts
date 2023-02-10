@@ -1,5 +1,6 @@
 import { Client } from '../../../../sdk/types/client';
 import { GlobalState } from '../../../../util/global-state';
+import { refreshProjects } from '../../projects/commands/refresh-projects';
 
 export async function selectClient(client: Client): Promise<void> {
 	const selectedClient = GlobalState.get('selectedClient') as Client | undefined;
@@ -13,7 +14,7 @@ export async function selectClient(client: Client): Promise<void> {
 		GlobalState.set('selectedClient', client);
 		GlobalState.set('selectedProject', null);
 
-		console.log('client selected', client.id);
 		//TODO refresh tree views
+		refreshProjects();
 	}
 }

@@ -71,15 +71,49 @@
         "icon": "$(add)"
       },
       {
-        "command": "clockify.clients.edit",
-        "title": "Edit Client",
-        "shortTitle": "Edit",
+        "command": "clockify.clients.rename",
+        "title": "Rename Client",
+        "shortTitle": "Rename",
         "category": "Clockify",
         "icon": "$(edit)"
       },
       {
         "command": "clockify.clients.delete",
         "title": "Delete Client",
+        "shortTitle": "Delete",
+        "category": "Clockify",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "clockify.projects.refresh",
+        "title": "Refresh Projects",
+        "shortTitle": "Refresh",
+        "category": "Clockify",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "clockify.projects.selection",
+        "title": "Select Project",
+        "shortTitle": "Select",
+        "category": "Clockify"
+      },
+      {
+        "command": "clockify.projects.add",
+        "title": "Add Project",
+        "shortTitle": "Add",
+        "category": "Clockify",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clockify.projects.rename",
+        "title": "Rename Project",
+        "shortTitle": "Rename",
+        "category": "Clockify",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "clockify.projects.delete",
+        "title": "Delete Project",
         "shortTitle": "Delete",
         "category": "Clockify",
         "icon": "$(trash)"
@@ -219,17 +253,36 @@
           "command": "clockify.clients.refresh",
           "when": "view == clockify-clients",
           "group": "navigation@2"
+        },
+        {
+          "command": "clockify.projects.add",
+          "when": "view == clockify-projects",
+          "group": "navigation@1"
+        },
+        {
+          "command": "clockify.projects.refresh",
+          "when": "view == clockify-projects",
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [
         {
-          "command": "clockify.clients.edit",
+          "command": "clockify.clients.rename",
           "when": "view == clockify-clients && viewItem == client",
           "group": "inline"
         },
         {
           "command": "clockify.clients.delete",
           "when": "view == clockify-clients && viewItem == client"
+        },
+        {
+          "command": "clockify.projects.rename",
+          "when": "view == clockify-projects && viewItem == project",
+          "group": "inline"
+        },
+        {
+          "command": "clockify.projects.delete",
+          "when": "view == clockify-projects && viewItem == project"
         }
       ]
     }
@@ -260,6 +313,7 @@
   },
   "dependencies": {
     "axios": "^1.3.1",
+    "moment": "^2.29.4",
     "qs": "^6.11.0",
     "querystring": "^0.2.1"
   }

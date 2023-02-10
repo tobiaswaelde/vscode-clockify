@@ -6,7 +6,7 @@ import { GlobalState } from '../../../../util/global-state';
 import { ClientItem } from '../items/item';
 import { refreshClients } from './refresh-clients';
 
-export async function editClient(element: ClientItem): Promise<void> {
+export async function renameClient(element: ClientItem): Promise<void> {
 	// check if workspace exists
 	const workspace = GlobalState.get('selectedWorkspace') as Workspace;
 	if (!workspace) {

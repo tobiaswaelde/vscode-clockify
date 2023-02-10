@@ -3,6 +3,7 @@ import { GlobalState } from '../../../../util/global-state';
 import { refreshClients } from '../../clients/commands/refresh-clients';
 
 export async function selectWorkspace(workspace: Workspace): Promise<void> {
+	console.log('select workspace', workspace.id);
 	const selectedWorkspace = GlobalState.get('selectedWorkspace') as Workspace | undefined;
 
 	// skip if workspace is already selected

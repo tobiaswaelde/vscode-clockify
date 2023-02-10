@@ -2,7 +2,7 @@ type Pagination = {
 	/** The page */
 	page?: number;
 
-	/** The page size */
+	/** The page size, maximum is `5000` */
 	pageSize?: number;
 };
 
@@ -23,6 +23,9 @@ export type GetProjectsFilter = Pagination & {
 
 	/** The archived status of the project */
 	archived?: boolean;
+
+	/** The clients of the project */
+	clientId?: string;
 };
 
 /**

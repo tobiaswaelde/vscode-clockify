@@ -134,13 +134,17 @@ export class Clockify {
 	 */
 	public static async getProjects(
 		workspaceId: string,
-		filter: GetProjectsFilter
+		filter?: GetProjectsFilter
 	): Promise<Project[]> {
-		const { name, archived, page, pageSize } = filter;
 		try {
 			const q = qs.stringify(
-				//eslint-disable-next-line @typescript-eslint/naming-convention
-				{ name, archived, page, 'page-size': pageSize },
+				{
+					name: filter?.name,
+					archived: filter?.archived,
+					page: filter?.page,
+					//eslint-disable-next-line @typescript-eslint/naming-convention
+					'page-size': filter?.pageSize,
+				},
 				{ encodeValuesOnly: true }
 			);
 

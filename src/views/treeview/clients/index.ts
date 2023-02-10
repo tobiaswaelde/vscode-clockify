@@ -18,7 +18,7 @@ import { refreshClients } from './commands/refresh-clients';
 import { selectClient } from './commands/select-client';
 import { addClient } from './commands/add-client';
 import { deleteClient } from './commands/delete-client';
-import { editClient } from './commands/edit-client';
+import { renameClient } from './commands/rename-client';
 import { FieldValueItem } from '../../../util/treeview/field-value-item';
 import { sensify } from '../../../util/data';
 
@@ -112,7 +112,7 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 			commands.registerCommand(Commands.clientsRefresh, () => refreshClients()),
 			commands.registerCommand(Commands.clientsSelection, selectClient),
 			commands.registerCommand(Commands.clientsAdd, addClient),
-			commands.registerCommand(Commands.clientsEdit, editClient),
+			commands.registerCommand(Commands.clientsRename, renameClient),
 			commands.registerCommand(Commands.clientsDelete, (x) => deleteClient(x))
 		);
 	}

@@ -1,4 +1,5 @@
 import { TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Commands } from '../../../../config/commands';
 import { Client } from '../../../../sdk/types/client';
 import { sensify } from '../../../../util/data';
 import { getIconPath } from '../../../../util/icon';
@@ -10,12 +11,10 @@ export class ClientItem extends TreeItem {
 		super(sensify(client.name), TreeItemCollapsibleState.Collapsed);
 
 		this.command = {
-			command: 'clockify.clients.selection',
+			command: Commands.clientsSelection,
 			title: '',
 			arguments: [client],
 		};
-
-		this.tooltip = client.id;
 
 		this.iconPath = getIconPath('clients');
 	}

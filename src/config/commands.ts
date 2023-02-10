@@ -13,6 +13,12 @@ export enum Commands {
 	clientsRefresh = 'clockify.clients.refresh',
 	clientsSelection = 'clockify.clients.selection',
 	clientsAdd = 'clockify.clients.add',
-	clientsEdit = 'clockify.clients.edit',
+	clientsRename = 'clockify.clients.rename',
 	clientsDelete = 'clockify.clients.delete',
+	// projects
+	projectsRefresh = 'clockify.projects.refresh',
+	projectsSelection = 'clockify.projects.selection',
+	projectsAdd = 'clockify.projects.add',
+	projectsRename = 'clockify.projects.rename',
+	projectsDelete = 'clockify.projects.delete',
 }
