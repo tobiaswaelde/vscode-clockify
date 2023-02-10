@@ -1,4 +1,4 @@
-import { MessageTreeItem } from './../util/message-tree-item';
+import { MessageTreeItem } from '../../../util/treeview/message-tree-item';
 import { Config } from './../../../util/config';
 import { Workspace } from '../../../sdk/types/workspace';
 import {
@@ -19,6 +19,8 @@ import { selectClient } from './commands/select-client';
 import { addClient } from './commands/add-client';
 import { deleteClient } from './commands/delete-client';
 import { editClient } from './commands/edit-client';
+import { FieldValueItem } from '../../../util/treeview/field-value-item';
+import { sensify } from '../../../util/data';
 
 type OnDidChangeEventData = ClientTreeItem | undefined;
 
@@ -52,6 +54,45 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 
 			clients.sort((a, b) => a.name.localeCompare(b.name));
 			return clients.map((client) => new ClientItem(client));
+		}
+
+		// render client information
+		if (element instanceof ClientItem) {
+			const { id, email, address, note } = element.client;
+			const items: ClientTreeItem[] = [];
+
+			items.push(
+				new FieldValueItem('client.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
+			);
+			if (email) {
+				items.push(
+					new FieldValueItem('client.email', {
+						name: 'Email',
+						value: sensify(email),
+						icon: 'string',
+					})
+				);
+			}
+			if (address) {
+				items.push(
+					new FieldValueItem(
+						'client.address',
+						{ name: 'Address', value: sensify(address), icon: 'geopoint' },
+						true
+					)
+				);
+			}
+			if (note) {
+				items.push(
+					new FieldValueItem(
+						'client.note',
+						{ name: 'Note', value: sensify(note), icon: 'string-abc' },
+						true
+					)
+				);
+			}
+
+			return items;
 		}
 
 		return [];

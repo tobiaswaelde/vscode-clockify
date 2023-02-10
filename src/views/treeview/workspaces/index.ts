@@ -1,4 +1,4 @@
-import { MessageTreeItem } from '../util/message-tree-item';
+import { MessageTreeItem } from '../../../util/treeview/message-tree-item';
 import {
 	commands,
 	Event,
@@ -13,10 +13,10 @@ import { WorkspaceItem } from './items/item';
 import { Commands } from '../../../config/commands';
 import { selectWorkspace } from './commands/select-workspace';
 import { apiKeySet } from '../../../helpers';
-import { WorkspaceInfoItem } from './items/info-item';
 import { addWorkspace } from './commands/add-workspace';
 import { refreshWorkspaces } from './commands/refresh-workspaces';
 import { sensify } from '../../../util/data';
+import { FieldValueItem } from '../../../util/treeview/field-value-item';
 
 type OnDidChangeEventData = WorkspaceTreeItem | undefined;
 
@@ -59,17 +59,26 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 
 		// render workspace info items
 		if (element instanceof WorkspaceItem) {
-			const workspace = element.workspace;
+			const { id, hourlyRate } = element.workspace;
 
-			const hourlyRate = Math.round((workspace.hourlyRate.amount / 100) * 100) / 100;
+			const formattedHourlyRate = Math.round((hourlyRate.amount / 100) * 100) / 100;
 
-			return [
-				new WorkspaceInfoItem({
+			const items: WorkspaceTreeItem[] = [];
+			items.push(
+				new FieldValueItem('workspace.id', {
+					name: 'ID',
+					value: sensify(id),
+					icon: 'bytes',
+				})
+			);
+			items.push(
+				new FieldValueItem('workspace.hourlyRate', {
 					name: 'Hourly Rate',
-					value: `${sensify(hourlyRate)} ${workspace.hourlyRate.currency}`,
+					value: `${sensify(formattedHourlyRate)} ${hourlyRate.currency}`,
 					icon: 'number',
-				}),
-			];
+				})
+			);
+			return items;
 		}
 
 		return [];

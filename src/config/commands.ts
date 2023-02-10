@@ -4,6 +4,7 @@
 export enum Commands {
 	// general
 	setApiKey = 'clockify.setApiKey',
+	refresh = 'clockify.refresh',
 	// workspaces
 	workspacesRefresh = 'clockify.workspaces.refresh',
 	workspacesSelection = 'clockify.workspaces.selection',

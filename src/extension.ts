@@ -4,8 +4,8 @@ import { registerCommands } from './commands';
 import { checkApiKey } from './functions/check-api-key';
 import { registerProvider } from './util/stores/register-provider';
 import { WorkspacesProvider } from './views/treeview/workspaces';
-import { Commands } from './config/commands';
 import { ClientsProvider } from './views/treeview/clients';
+import { refresh } from './commands/refresh';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 		// only listen for config changes in clockify config
 		if (e.affectsConfiguration('clockify')) {
 			checkApiKey();
-			vscode.commands.executeCommand(Commands.workspacesRefresh);
+			refresh();
 		}
 	});
 }

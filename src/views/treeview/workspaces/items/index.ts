@@ -1,5 +1,5 @@
-import { MessageTreeItem } from '../../util/message-tree-item';
-import { WorkspaceInfoItem } from './info-item';
+import { FieldValueItem } from '../../../../util/treeview/field-value-item';
+import { MessageTreeItem } from '../../../../util/treeview/message-tree-item';
 import { WorkspaceItem } from './item';
 
-export type WorkspaceTreeItem = MessageTreeItem | WorkspaceItem | WorkspaceInfoItem;
+export type WorkspaceTreeItem = MessageTreeItem | FieldValueItem | WorkspaceItem;

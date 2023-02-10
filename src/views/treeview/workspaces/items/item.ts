@@ -19,8 +19,6 @@ export class WorkspaceItem extends TreeItem {
 			arguments: [workspace],
 		};
 
-		this.tooltip = workspace.id;
-
 		if (Config.get('workspaces.showNumberOfMembers') === true) {
 			this.description = `- ${workspace.memberships.length} ${
 				workspace.memberships.length === 1 ? 'User' : 'Users'

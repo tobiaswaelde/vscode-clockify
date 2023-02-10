@@ -7,7 +7,7 @@ export class ClientItem extends TreeItem {
 	contextValue = 'client';
 
 	constructor(public client: Client) {
-		super(sensify(client.name), TreeItemCollapsibleState.None);
+		super(sensify(client.name), TreeItemCollapsibleState.Collapsed);
 
 		this.command = {
 			command: 'clockify.clients.selection',
