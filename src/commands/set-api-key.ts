@@ -1,17 +1,13 @@
-import * as vscode from 'vscode';
 import { Clockify } from '../sdk';
 import { Config } from '../util/config';
 import { Context } from '../util/context';
+import { Dialogs } from '../util/dialogs';
 import { ProviderStore } from '../util/stores/provider-store';
 import { WorkspacesProvider } from '../views/treeview/workspaces';
 
 export async function setApiKey() {
 	// ask user for the api key
-	const apiKey = await vscode.window.showInputBox({
-		prompt: 'Enter your API key.',
-		placeHolder: 'Enter your API key',
-		ignoreFocusOut: true,
-	});
+	const apiKey = await Dialogs.askForApiKey();
 	if (!apiKey) {
 		Context.set('initialized', false);
 		return;

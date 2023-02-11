@@ -529,7 +529,9 @@ export class Clockify {
 	public static async getWorkspaces(): Promise<Workspace[]> {
 		try {
 			const res = await this.http.get('/workspaces');
-			return res.data as Workspace[];
+			const workspaces = res.data as Workspace[];
+			workspaces.sort((a, b) => a.name.localeCompare(b.name));
+			return workspaces;
 		} catch (err) {
 			showError('Error fetching workspaces.', err);
 			return [];

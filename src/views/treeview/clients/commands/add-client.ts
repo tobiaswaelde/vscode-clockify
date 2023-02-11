@@ -2,16 +2,16 @@ import { Workspace } from '../../../../sdk/types/workspace';
 import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
 import { GlobalState } from '../../../../util/global-state';
-import { showError } from '../../../../sdk/util';
 import { selectClient } from './select-client';
 import { refreshClients } from './refresh-clients';
 import { Dialogs } from '../../../../util/dialogs';
 
 export async function addClient(): Promise<void> {
-	// check if workspace exists
-	const workspace = GlobalState.get('selectedWorkspace') as Workspace | undefined;
+	// get workspace
+	const workspace =
+		GlobalState.get<Workspace>('selectedWorkspace') || (await Dialogs.selectWorkspace());
 	if (!workspace) {
-		return showError('No workspace selected.');
+		return;
 	}
 
 	// get the name for the new client
