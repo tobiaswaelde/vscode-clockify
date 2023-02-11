@@ -5,7 +5,7 @@ import { refreshProjects } from '../../projects/commands/refresh-projects';
 
 export async function selectWorkspace(workspace: Workspace): Promise<void> {
 	console.log('select workspace', workspace.id);
-	const selectedWorkspace = GlobalState.get('selectedWorkspace') as Workspace | undefined;
+	const selectedWorkspace = GlobalState.get<Workspace>('selectedWorkspace');
 
 	// skip if workspace is already selected
 	if (selectedWorkspace && selectedWorkspace.id === workspace.id) {

@@ -37,8 +37,8 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 	}
 
 	async getChildren(element?: ProjectTreeItem | undefined): Promise<ProjectTreeItem[]> {
-		const workspace = GlobalState.get('selectedWorkspace') as Workspace | undefined;
-		const client = GlobalState.get('selectedClient') as Client | undefined;
+		const workspace = GlobalState.get<Workspace>('selectedWorkspace');
+		const client = GlobalState.get<Client>('selectedClient');
 		const limit = Config.get<number>('fetchLimit') ?? 200;
 		const showIds = Config.get('showIds') ?? false;
 

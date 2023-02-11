@@ -4,7 +4,7 @@ import { refreshProjects } from '../../projects/commands/refresh-projects';
 import { refreshClients } from './refresh-clients';
 
 export async function selectClient(client?: Client): Promise<void> {
-	const selectedClient = GlobalState.get('selectedClient') as Client | undefined;
+	const selectedClient = GlobalState.get<Client>('selectedClient');
 
 	// skip if current client is already selected
 	if (selectedClient && selectedClient.id === client?.id) {
