@@ -2,6 +2,7 @@ import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
 import { Workspace } from '../../../../sdk/types/workspace';
 import { showError } from '../../../../sdk/util';
+import { Dialogs } from '../../../../util/dialogs';
 import { GlobalState } from '../../../../util/global-state';
 import { ClientItem } from '../items/item';
 import { refreshClients } from './refresh-clients';
@@ -14,11 +15,7 @@ export async function deleteClient(element: ClientItem): Promise<void> {
 	}
 
 	// ask the user if he really wants to delete the client
-	const res = await window.showErrorMessage(
-		'Do you really want to delete the selected client?',
-		'Yes',
-		'No'
-	);
+	const res = await Dialogs.askForConfirmation('Do you really want to delete the selected client?');
 	if (res !== 'Yes') {
 		return;
 	}

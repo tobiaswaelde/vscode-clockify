@@ -1,15 +1,12 @@
 import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
+import { Dialogs } from '../../../../util/dialogs';
 import { refreshWorkspaces } from './refresh-workspaces';
 import { selectWorkspace } from './select-workspace';
 
 export async function addWorkspace(): Promise<void> {
 	// get the name for the new workspace
-	const name = await window.showInputBox({
-		title: 'Enter a name for your workspace',
-		placeHolder: 'Name of the workspace',
-		ignoreFocusOut: true,
-	});
+	const name = await Dialogs.getWorkspaceName();
 	if (!name) {
 		return;
 	}

@@ -2,6 +2,7 @@ import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
 import { Workspace } from '../../../../sdk/types/workspace';
 import { showError } from '../../../../sdk/util';
+import { Dialogs } from '../../../../util/dialogs';
 import { GlobalState } from '../../../../util/global-state';
 import { ClientItem } from '../items/item';
 import { refreshClients } from './refresh-clients';
@@ -14,12 +15,7 @@ export async function renameClient(element: ClientItem): Promise<void> {
 	}
 
 	// get the name for the new client
-	const name = await window.showInputBox({
-		title: "Enter the client's name",
-		placeHolder: "The client's name",
-		ignoreFocusOut: true,
-		value: element.client.name,
-	});
+	const name = await Dialogs.getClientName(element.client.name);
 	if (!name) {
 		return;
 	}

@@ -5,6 +5,7 @@ import { GlobalState } from '../../../../util/global-state';
 import { showError } from '../../../../sdk/util';
 import { selectClient } from './select-client';
 import { refreshClients } from './refresh-clients';
+import { Dialogs } from '../../../../util/dialogs';
 
 export async function addClient(): Promise<void> {
 	// check if workspace exists
@@ -14,11 +15,7 @@ export async function addClient(): Promise<void> {
 	}
 
 	// get the name for the new client
-	const name = await window.showInputBox({
-		title: "Enter the client's name",
-		placeHolder: "The client's name",
-		ignoreFocusOut: true,
-	});
+	const name = await Dialogs.getClientName();
 	if (!name) {
 		return;
 	}
