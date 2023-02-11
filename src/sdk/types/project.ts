@@ -25,14 +25,14 @@ export type ProjectId = {
 
 export type ProjectRequest = {
 	name: string;
-	clientId: string;
+	clientId?: string;
 	isPublic: boolean;
-	estimate: EstimateRequest;
+	estimate?: EstimateRequest;
 	color: string;
 	billable: boolean;
-	hourlyRate: HourlyRateRequest;
-	memberships: MembershipRequest[];
-	tasks: TaskRequest[];
+	hourlyRate?: HourlyRateRequest;
+	memberships?: MembershipRequest[];
+	tasks?: TaskRequest[];
 };
 
 export type ProjectSummary = {

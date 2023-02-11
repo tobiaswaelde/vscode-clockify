@@ -1,5 +1,12 @@
 import { Workspace } from './../../../sdk/types/workspace';
-import { Event, EventEmitter, ExtensionContext, TreeDataProvider, TreeItem } from 'vscode';
+import {
+	commands,
+	Event,
+	EventEmitter,
+	ExtensionContext,
+	TreeDataProvider,
+	TreeItem,
+} from 'vscode';
 import { GlobalState } from '../../../util/global-state';
 import { ProjectTreeItem } from './items';
 import { Client } from '../../../sdk/types/client';
@@ -10,6 +17,9 @@ import { ProjectItem } from './items/item';
 import { FieldValueItem } from '../../../util/treeview/field-value-item';
 import { sensify } from '../../../util/data';
 import * as moment from 'moment';
+import 'moment-duration-format';
+import { Commands } from '../../../config/commands';
+import { addProject } from './commands/add-project';
 
 type OnDidChangeEventData = ProjectTreeItem | undefined;
 
@@ -18,7 +28,9 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 		new EventEmitter<OnDidChangeEventData>();
 	readonly onDidChangeTreeData: Event<OnDidChangeEventData> = this._onDidChangeTreeData.event;
 
-	constructor(private context: ExtensionContext) {}
+	constructor(private context: ExtensionContext) {
+		this.registerCommands(context);
+	}
 
 	getTreeItem(element: ProjectTreeItem): TreeItem | Thenable<TreeItem> {
 		return element;
@@ -49,7 +61,6 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 		// render project info items
 		if (element instanceof ProjectItem) {
 			const { id, billable, clientName, duration, estimate, hourlyRate } = element.project;
-			console.log(estimate);
 
 			const items: ProjectTreeItem[] = [];
 			if (showIds) {
@@ -58,16 +69,23 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 				);
 			}
 			items.push(
+				new FieldValueItem('project.client', {
+					name: 'Client',
+					value: sensify(clientName),
+					icon: 'reference',
+				})
+			);
+			items.push(
 				new FieldValueItem('project.estimate', {
 					name: 'Estimate',
-					value: sensify(moment.duration(estimate.estimate).asHours().toFixed(2)) + ' h',
+					value: moment.duration(estimate.estimate).format('h[h] m[m]'),
 					icon: 'timestamp',
 				})
 			);
 			items.push(
 				new FieldValueItem('project.duration', {
 					name: 'Duration',
-					value: sensify(moment.duration(duration).asHours().toFixed(2)) + ' h',
+					value: moment.duration(duration).format('h[h] m[m]'),
 					icon: 'timestamp',
 				})
 			);
@@ -103,5 +121,7 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 	 * Register commands related to the tree view provider
 	 * @param ctx The extension context
 	 */
-	private registerCommands(ctx: ExtensionContext) {}
+	private registerCommands(ctx: ExtensionContext) {
+		ctx.subscriptions.push(commands.registerCommand(Commands.projectsAdd, addProject));
+	}
 }

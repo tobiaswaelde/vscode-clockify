@@ -57,7 +57,9 @@ export class Clockify {
 			);
 
 			const res = await this.http.get(`/workspaces/${workspaceId}/clients?${q}`);
-			return res.data satisfies Client[];
+			const clients = res.data as Client[];
+			clients.sort((a, b) => a.name.localeCompare(b.name));
+			return clients;
 		} catch (err) {
 			showError('Error fetching clients.', err);
 			return [];

@@ -1,7 +1,7 @@
+import { GlobalState } from './../../../../util/global-state';
 import { Config } from './../../../../util/config';
 import { Workspace } from '../../../../sdk/types/workspace';
-import { TreeItem, TreeItemCollapsibleState } from 'vscode';
-import { getIconPath } from '../../../../util/icon';
+import { ThemeIcon, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { Commands } from '../../../../config/commands';
 import { sensify } from '../../../../util/data';
 
@@ -9,15 +9,18 @@ export class WorkspaceItem extends TreeItem {
 	contextValue = 'workspace';
 
 	constructor(public workspace: Workspace) {
-		super(sensify(workspace.name), TreeItemCollapsibleState.Collapsed);
+		const selectedWorkspace = GlobalState.get<Workspace>('selectedWorkspace');
+		const selected = workspace.id === selectedWorkspace?.id;
 
-		this.iconPath = getIconPath('workspaces');
+		super(sensify(workspace.name), TreeItemCollapsibleState.Collapsed);
 
 		this.command = {
 			command: Commands.workspacesSelection,
 			title: '',
 			arguments: [workspace],
 		};
+
+		this.iconPath = new ThemeIcon(selected ? 'circle-filled' : 'circle-outline');
 
 		if (Config.get('workspaces.showNumberOfMembers') === true) {
 			this.description = `- ${workspace.memberships.length} ${
