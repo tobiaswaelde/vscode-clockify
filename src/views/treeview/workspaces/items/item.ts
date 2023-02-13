@@ -4,13 +4,15 @@ import { Workspace } from '../../../../sdk/types/workspace';
 import { ThemeIcon, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { Commands } from '../../../../config/commands';
 import { sensify } from '../../../../util/data';
+import { WorkspaceTreeItem } from '.';
+import { FieldValueItem } from '../../../../util/treeview/field-value-item';
 
 export class WorkspaceItem extends TreeItem {
 	contextValue = 'workspace';
 
 	constructor(public workspace: Workspace) {
 		const selectedWorkspace = GlobalState.get<Workspace>('selectedWorkspace');
-		const selected = workspace.id === selectedWorkspace?.id;
+		const isSelected = workspace.id === selectedWorkspace?.id;
 
 		super(sensify(workspace.name), TreeItemCollapsibleState.Collapsed);
 
@@ -20,12 +22,38 @@ export class WorkspaceItem extends TreeItem {
 			arguments: [workspace],
 		};
 
-		this.iconPath = new ThemeIcon(selected ? 'circle-filled' : 'circle-outline');
+		this.iconPath = new ThemeIcon(isSelected ? 'circle-filled' : 'circle-outline');
 
 		if (Config.get('workspaces.showNumberOfMembers') === true) {
 			this.description = `- ${workspace.memberships.length} ${
 				workspace.memberships.length === 1 ? 'User' : 'Users'
 			}`;
 		}
+	}
+
+	public async getChildren(): Promise<WorkspaceTreeItem[]> {
+		const showIds = Config.get<boolean>('showIds') ?? false;
+		const { id, hourlyRate } = this.workspace;
+
+		const formattedHourlyRate = Math.round((hourlyRate.amount / 100) * 100) / 100;
+
+		const items: WorkspaceTreeItem[] = [];
+		if (showIds) {
+			items.push(
+				new FieldValueItem('workspace.id', {
+					name: 'ID',
+					value: sensify(id),
+					icon: 'bytes',
+				})
+			);
+		}
+		items.push(
+			new FieldValueItem('workspace.hourlyRate', {
+				name: 'Hourly Rate',
+				value: `${sensify(formattedHourlyRate)} ${hourlyRate.currency}`,
+				icon: 'number',
+			})
+		);
+		return items;
 	}
 }

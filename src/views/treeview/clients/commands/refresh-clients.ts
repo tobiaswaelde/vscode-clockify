@@ -5,7 +5,6 @@ import { refreshProjects } from '../../projects/commands/refresh-projects';
 import { ClientItem } from '../items/item';
 
 export function refreshClients(element?: ClientItem): void {
-	// GlobalState.set('selectedClient', null);
 	GlobalState.set('selectedProject', null);
 
 	const clientsProvider = ProviderStore.get<ClientsProvider>('clients');

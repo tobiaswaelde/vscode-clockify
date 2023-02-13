@@ -14,10 +14,6 @@ import { MessageTreeItem } from '../../../util/treeview/message-tree-item';
 import { Config } from '../../../util/config';
 import { Clockify } from '../../../sdk';
 import { ProjectItem } from './items/item';
-import { FieldValueItem } from '../../../util/treeview/field-value-item';
-import { sensify } from '../../../util/data';
-import * as moment from 'moment';
-import 'moment-duration-format';
 import { Commands } from '../../../config/commands';
 import { addProject } from './commands/add-project';
 
@@ -40,7 +36,6 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 		const workspace = GlobalState.get<Workspace>('selectedWorkspace');
 		const client = GlobalState.get<Client>('selectedClient');
 		const limit = Config.get<number>('fetchLimit') ?? 200;
-		const showIds = Config.get('showIds') ?? false;
 
 		// check if workspace is selected
 		if (!workspace) {
@@ -60,50 +55,7 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 
 		// render project info items
 		if (element instanceof ProjectItem) {
-			const { id, billable, clientName, duration, estimate, hourlyRate } = element.project;
-
-			const items: ProjectTreeItem[] = [];
-			if (showIds) {
-				items.push(
-					new FieldValueItem('project.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
-				);
-			}
-			items.push(
-				new FieldValueItem('project.client', {
-					name: 'Client',
-					value: sensify(clientName),
-					icon: 'reference',
-				})
-			);
-			items.push(
-				new FieldValueItem('project.estimate', {
-					name: 'Estimate',
-					value: moment.duration(estimate.estimate).format('h[h] m[m]'),
-					icon: 'timestamp',
-				})
-			);
-			items.push(
-				new FieldValueItem('project.duration', {
-					name: 'Duration',
-					value: moment.duration(duration).format('h[h] m[m]'),
-					icon: 'timestamp',
-				})
-			);
-			items.push(
-				new FieldValueItem('project.billable', {
-					name: 'Billable',
-					value: billable ? 'Yes' : 'No',
-					icon: 'boolean',
-				})
-			);
-			items.push(
-				new FieldValueItem('project.hourlyRate', {
-					name: 'Hourly Rate',
-					value: `${Math.round((hourlyRate.amount / 100) * 100) / 100} ${hourlyRate.currency}`,
-					icon: 'number',
-				})
-			);
-			return items;
+			return element.getChildren();
 		}
 
 		return [];

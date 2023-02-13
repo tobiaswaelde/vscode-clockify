@@ -2,6 +2,7 @@ import { Workspace } from '../../../../sdk/types/workspace';
 import { GlobalState } from '../../../../util/global-state';
 import { refreshClients } from '../../clients/commands/refresh-clients';
 import { refreshProjects } from '../../projects/commands/refresh-projects';
+import { refreshWorkspaces } from './refresh-workspaces';
 
 export async function selectWorkspace(workspace: Workspace): Promise<void> {
 	console.log('select workspace', workspace.id);
@@ -19,6 +20,7 @@ export async function selectWorkspace(workspace: Workspace): Promise<void> {
 
 		console.log('workspace selected', workspace.id);
 		//TODO refresh tree views
+		refreshWorkspaces();
 		refreshClients();
 		refreshProjects();
 	}

@@ -19,8 +19,6 @@ import { selectClient } from './commands/select-client';
 import { addClient } from './commands/add-client';
 import { deleteClient } from './commands/delete-client';
 import { renameClient } from './commands/rename-client';
-import { FieldValueItem } from '../../../util/treeview/field-value-item';
-import { sensify } from '../../../util/data';
 
 type OnDidChangeEventData = ClientTreeItem | undefined;
 
@@ -58,38 +56,7 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 
 		// render client information
 		if (element instanceof ClientItem) {
-			const showIds = Config.get<boolean>('showIds');
-			const { id, email, address, note } = element.client;
-
-			const items: ClientTreeItem[] = [];
-			if (showIds) {
-				items.push(
-					new FieldValueItem('client.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
-				);
-			}
-			items.push(
-				new FieldValueItem('client.email', {
-					name: 'Email',
-					value: sensify(email ?? ''),
-					icon: 'string',
-				})
-			);
-			items.push(
-				new FieldValueItem(
-					'client.address',
-					{ name: 'Address', value: sensify(address ?? ''), icon: 'geopoint' },
-					true
-				)
-			);
-			items.push(
-				new FieldValueItem(
-					'client.note',
-					{ name: 'Note', value: sensify(note ?? ''), icon: 'string-abc' },
-					true
-				)
-			);
-
-			return items;
+			return element.getChildren();
 		}
 
 		return [];
