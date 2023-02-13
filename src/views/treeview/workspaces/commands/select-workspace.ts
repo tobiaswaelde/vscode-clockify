@@ -2,6 +2,7 @@ import { Workspace } from '../../../../sdk/types/workspace';
 import { GlobalState } from '../../../../util/global-state';
 import { refreshClients } from '../../clients/commands/refresh-clients';
 import { refreshProjects } from '../../projects/commands/refresh-projects';
+import { refreshTasks } from '../../tasks/commands/refresh-tasks';
 import { refreshWorkspaces } from './refresh-workspaces';
 
 export async function selectWorkspace(workspace: Workspace): Promise<void> {
@@ -21,5 +22,6 @@ export async function selectWorkspace(workspace: Workspace): Promise<void> {
 		refreshWorkspaces();
 		refreshClients();
 		refreshProjects();
+		refreshTasks();
 	}
 }

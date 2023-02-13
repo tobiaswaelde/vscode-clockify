@@ -1,5 +1,6 @@
 import { Project } from '../../../../sdk/types/project';
 import { GlobalState } from '../../../../util/global-state';
+import { refreshTasks } from '../../tasks/commands/refresh-tasks';
 import { refreshProjects } from './refresh-projects';
 
 export async function selectProject(project?: Project): Promise<void> {
@@ -18,4 +19,5 @@ export async function selectProject(project?: Project): Promise<void> {
 	}
 
 	refreshProjects();
+	refreshTasks();
 }

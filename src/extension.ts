@@ -7,6 +7,7 @@ import { WorkspacesProvider } from './views/treeview/workspaces';
 import { ClientsProvider } from './views/treeview/clients';
 import { refresh } from './commands/refresh';
 import { ProjectsProvider } from './views/treeview/projects';
+import { TasksProvider } from './views/treeview/tasks';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
@@ -21,6 +22,7 @@ export function activate(context: vscode.ExtensionContext) {
 	registerProvider('workspaces', new WorkspacesProvider(context));
 	registerProvider('clients', new ClientsProvider(context));
 	registerProvider('projects', new ProjectsProvider(context));
+	registerProvider('tasks', new TasksProvider(context));
 
 	// refresh treeview when config changes
 	vscode.workspace.onDidChangeConfiguration((e) => {

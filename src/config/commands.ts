@@ -21,4 +21,7 @@ export enum Commands {
 	projectsAdd = 'clockify.projects.add',
 	projectsRename = 'clockify.projects.rename',
 	projectsDelete = 'clockify.projects.delete',
+	// tasks
+	tasksRefresh = 'clockify.tasks.refresh',
+	tasksAdd = 'clockify.tasks.add',
 }

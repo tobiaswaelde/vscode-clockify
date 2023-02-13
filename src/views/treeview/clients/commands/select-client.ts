@@ -1,6 +1,7 @@
 import { Client } from '../../../../sdk/types/client';
 import { GlobalState } from '../../../../util/global-state';
 import { refreshProjects } from '../../projects/commands/refresh-projects';
+import { refreshTasks } from '../../tasks/commands/refresh-tasks';
 import { refreshClients } from './refresh-clients';
 
 export async function selectClient(client?: Client): Promise<void> {
@@ -18,4 +19,5 @@ export async function selectClient(client?: Client): Promise<void> {
 	//TODO refresh tree views
 	refreshClients();
 	refreshProjects();
+	refreshTasks();
 }

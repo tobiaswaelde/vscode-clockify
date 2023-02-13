@@ -117,6 +117,20 @@
         "shortTitle": "Delete",
         "category": "Clockify",
         "icon": "$(trash)"
+      },
+      {
+        "command": "clockify.tasks.refresh",
+        "title": "Refresh Tasks",
+        "shortTitle": "Refresh",
+        "category": "Clockify",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "clockify.tasks.add",
+        "title": "Add Task",
+        "shortTitle": "Add",
+        "category": "Clockify",
+        "icon": "$(add)"
       }
     ],
     "configuration": {

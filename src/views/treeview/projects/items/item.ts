@@ -24,8 +24,6 @@ export class ProjectItem extends TreeItem {
 			arguments: [project],
 		};
 
-		this.description = project.public ? 'public' : 'private';
-
 		this.iconPath = new ThemeIcon(isSelected ? 'circle-filled' : 'circle-outline');
 	}
 
@@ -73,6 +71,13 @@ export class ProjectItem extends TreeItem {
 				name: 'Hourly Rate',
 				value: `${Math.round((hourlyRate.amount / 100) * 100) / 100} ${hourlyRate.currency}`,
 				icon: 'number',
+			})
+		);
+		items.push(
+			new FieldValueItem('project.isPublic', {
+				name: 'Public',
+				value: this.project.public ? 'Yes' : 'No',
+				icon: 'boolean',
 			})
 		);
 
