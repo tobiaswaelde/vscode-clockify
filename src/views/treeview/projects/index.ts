@@ -18,6 +18,8 @@ import { Commands } from '../../../config/commands';
 import { addProject } from './commands/add-project';
 import { refreshProjects } from './commands/refresh-projects';
 import { selectProject } from './commands/select-project';
+import { renameProject } from './commands/rename-project';
+import { deleteProject } from './commands/delete-project';
 
 type OnDidChangeEventData = ProjectTreeItem | undefined;
 
@@ -89,7 +91,9 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 		ctx.subscriptions.push(
 			commands.registerCommand(Commands.projectsRefresh, () => refreshProjects()),
 			commands.registerCommand(Commands.projectsSelection, selectProject),
-			commands.registerCommand(Commands.projectsAdd, addProject)
+			commands.registerCommand(Commands.projectsAdd, addProject),
+			commands.registerCommand(Commands.projectsRename, renameProject),
+			commands.registerCommand(Commands.projectsDelete, (x) => deleteProject(x))
 		);
 	}
 }
