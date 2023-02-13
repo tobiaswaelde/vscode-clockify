@@ -5,7 +5,6 @@ import { refreshProjects } from '../../projects/commands/refresh-projects';
 import { refreshWorkspaces } from './refresh-workspaces';
 
 export async function selectWorkspace(workspace: Workspace): Promise<void> {
-	console.log('select workspace', workspace.id);
 	const selectedWorkspace = GlobalState.get<Workspace>('selectedWorkspace');
 
 	// skip if workspace is already selected
@@ -18,7 +17,6 @@ export async function selectWorkspace(workspace: Workspace): Promise<void> {
 		GlobalState.set('selectedClient', null);
 		GlobalState.set('selectedProject', null);
 
-		console.log('workspace selected', workspace.id);
 		//TODO refresh tree views
 		refreshWorkspaces();
 		refreshClients();

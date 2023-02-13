@@ -27,7 +27,7 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 		new EventEmitter<OnDidChangeEventData>();
 	readonly onDidChangeTreeData: Event<OnDidChangeEventData> = this._onDidChangeTreeData.event;
 
-	constructor(private context: ExtensionContext) {
+	constructor(context: ExtensionContext) {
 		this.registerCommands(context);
 	}
 
@@ -37,7 +37,6 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 
 	async getChildren(element?: ClientItem | undefined): Promise<ClientTreeItem[]> {
 		const workspace = GlobalState.get('selectedWorkspace') as Workspace;
-		const limit = Config.get<number>('fetchLimit') ?? 200;
 
 		if (!workspace) {
 			return [new MessageTreeItem('Select workspace', undefined, 'info')];
@@ -45,11 +44,16 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 
 		// render client item
 		if (element === undefined) {
+			const limit = Config.get<number>('fetchLimit') ?? 200;
+
 			const clients = await Clockify.getClients(workspace.id, { page: 1, pageSize: limit });
+
+			// show info if no clients were found
 			if (clients.length === 0) {
 				return [new MessageTreeItem('No clients.', undefined, 'alert')];
 			}
 
+			// sort clients by name and return them
 			clients.sort((a, b) => a.name.localeCompare(b.name));
 			return clients.map((client) => new ClientItem(client));
 		}

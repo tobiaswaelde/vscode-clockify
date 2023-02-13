@@ -23,7 +23,7 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 		new EventEmitter<OnDidChangeEventData>();
 	readonly onDidChangeTreeData: Event<OnDidChangeEventData> = this._onDidChangeTreeData.event;
 
-	constructor(private context: ExtensionContext) {
+	constructor(context: ExtensionContext) {
 		this.registerCommands(context);
 	}
 
@@ -45,6 +45,7 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 		// render workspace items
 		if (element === undefined) {
 			const workspaces = await Clockify.getWorkspaces();
+
 			// show info if no workspaces were found
 			if (workspaces.length === 0) {
 				return [new MessageTreeItem('No workspaces found.', undefined, 'info')];
