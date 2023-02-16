@@ -1,8 +1,9 @@
 import { QuickPickItem, window } from 'vscode';
 import { PROJECT_COLORS } from '../config/colors';
 import { Clockify } from '../sdk';
-import { GetClientsFilter } from '../sdk/filters';
+import { GetClientsFilter, GetProjectsFilter } from '../sdk/filters';
 import { Client } from '../sdk/types/client';
+import { Project } from '../sdk/types/project';
 import { Workspace } from '../sdk/types/workspace';
 
 interface IdQuickPickItem extends QuickPickItem {
@@ -98,7 +99,9 @@ export class Dialogs {
 			description: x.email,
 			detail: x.note,
 		}));
-		clientItems.unshift({ id: 'none', label: 'No Client' });
+		if (allowNone) {
+			clientItems.unshift({ id: 'none', label: 'No Client' });
+		}
 
 		const res = await window.showQuickPick(clientItems, {
 			title: 'Select Client',
@@ -140,6 +143,38 @@ export class Dialogs {
 		});
 
 		return res === 'Billable';
+	}
+	public static async selectProject(
+		workspaceId: string,
+		filter?: GetProjectsFilter
+	): Promise<Project | undefined> {
+		const projects = await Clockify.getProjects(workspaceId, filter);
+		const projectItems: IdQuickPickItem[] = projects.map((x) => ({
+			id: x.id,
+			label: x.name,
+			// description:x.clientName,
+			detail: x.clientName,
+		}));
+
+		const res = await window.showQuickPick(projectItems, {
+			title: 'Select Project',
+			placeHolder: 'Select Project',
+			ignoreFocusOut: true,
+		});
+
+		if (res) {
+			return projects.find((x) => x.id === res.id);
+		}
+	}
+	//#endregion
+
+	//#region Tasks
+	public static async getTaskName(name?: string): Promise<string | undefined> {
+		return window.showInputBox({
+			ignoreFocusOut: true,
+			placeHolder: 'Enter a name for the task',
+			prompt: 'Task name',
+		});
 	}
 	//#endregion
 }

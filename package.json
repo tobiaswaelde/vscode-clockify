@@ -277,6 +277,16 @@
           "command": "clockify.projects.refresh",
           "when": "view == clockify-projects",
           "group": "navigation@2"
+        },
+        {
+          "command": "clockify.tasks.add",
+          "when": "view == clockify-tasks",
+          "group": "navigation@1"
+        },
+        {
+          "command": "clockify.tasks.refresh",
+          "when": "view == clockify-tasks",
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [

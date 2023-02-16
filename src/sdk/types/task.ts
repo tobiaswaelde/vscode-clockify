@@ -14,9 +14,9 @@ export type TaskId = {
 };
 
 export type TaskRequest = {
-	id: string;
+	id?: string;
 	name: string;
-	assigneeId: string;
-	estimate: string;
-	status: string;
+	assigneeId?: string;
+	estimate?: string;
+	status?: string;
 };

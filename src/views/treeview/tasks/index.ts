@@ -16,6 +16,7 @@ import { Config } from '../../../util/config';
 import { TaskItem } from './items/item';
 import { Commands } from '../../../config/commands';
 import { refreshTasks } from './commands/refresh-tasks';
+import { addTask } from './commands/add-task';
 
 type OnDidChangeEventData = TaskTreeItem | undefined;
 
@@ -77,6 +78,9 @@ export class TasksProvider implements TreeDataProvider<TaskTreeItem> {
 	 * @param ctx The extension context
 	 */
 	private registerCommands(ctx: ExtensionContext) {
-		ctx.subscriptions.push(commands.registerCommand(Commands.tasksRefresh, () => refreshTasks()));
+		ctx.subscriptions.push(
+			commands.registerCommand(Commands.tasksRefresh, () => refreshTasks()),
+			commands.registerCommand(Commands.tasksAdd, addTask)
+		);
 	}
 }

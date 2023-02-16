@@ -16,7 +16,7 @@ export async function addProject(): Promise<void> {
 
 	// get client
 	const client =
-		GlobalState.get<Client>('selectedClient') || (await Dialogs.selectClient(workspace.id));
+		GlobalState.get<Client>('selectedClient') || (await Dialogs.selectClient(workspace.id, true));
 	if (client === undefined) {
 		return;
 	}
