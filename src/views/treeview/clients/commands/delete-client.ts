@@ -9,7 +9,7 @@ import { refreshClients } from './refresh-clients';
 
 export async function deleteClient(element: ClientItem): Promise<void> {
 	// check if workspace exists
-	const workspace = GlobalState.get('selectedWorkspace') as Workspace;
+	const workspace = GlobalState.get<Workspace>('selectedWorkspace');
 	if (!workspace || !element.client) {
 		return showError('No workspace selected.');
 	}
@@ -24,6 +24,6 @@ export async function deleteClient(element: ClientItem): Promise<void> {
 	const deletedClient = await Clockify.deleteClient(workspace.id, element.client.id);
 	if (deletedClient) {
 		window.showInformationMessage(`Client '${deletedClient.name}' deleted.`);
+		refreshClients();
 	}
-	refreshClients();
 }

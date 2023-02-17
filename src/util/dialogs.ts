@@ -174,6 +174,18 @@ export class Dialogs {
 			ignoreFocusOut: true,
 			placeHolder: 'Enter a name for the task',
 			prompt: 'Task name',
+			value: name,
+		});
+	}
+	//#endregion
+
+	//#region Tags
+	public static async getTagName(name?: string): Promise<string | undefined> {
+		return window.showInputBox({
+			ignoreFocusOut: true,
+			placeHolder: 'Enter a name for the tag',
+			prompt: 'Tag name',
+			value: name,
 		});
 	}
 	//#endregion

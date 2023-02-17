@@ -131,6 +131,34 @@
         "shortTitle": "Add",
         "category": "Clockify",
         "icon": "$(add)"
+      },
+      {
+        "command": "clockify.tags.refresh",
+        "title": "Refresh Tags",
+        "shortTitle": "Refresh",
+        "category": "Clockify",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "clockify.tags.add",
+        "title": "Add Tag",
+        "shortTitle": "Add",
+        "category": "Clockify",
+        "icon": "$(add)"
+      },
+      {
+        "command": "clockify.tags.rename",
+        "title": "Rename Tag",
+        "shortTitle": "Rename",
+        "category": "Clockify",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "clockify.tags.delete",
+        "title": "Delete Tag",
+        "shortTitle": "Delete",
+        "category": "Clockify",
+        "icon": "$(trash)"
       }
     ],
     "configuration": {
@@ -287,6 +315,16 @@
           "command": "clockify.tasks.refresh",
           "when": "view == clockify-tasks",
           "group": "navigation@2"
+        },
+        {
+          "command": "clockify.tags.add",
+          "when": "view == clockify-tags",
+          "group": "navigation@1"
+        },
+        {
+          "command": "clockify.tags.refresh",
+          "when": "view == clockify-tags",
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [
@@ -307,6 +345,15 @@
         {
           "command": "clockify.projects.delete",
           "when": "view == clockify-projects && viewItem == project"
+        },
+        {
+          "command": "clockify.tags.rename",
+          "when": "view == clockify-tags && viewItem == tag",
+          "group": "inline"
+        },
+        {
+          "command": "clockify.tags.delete",
+          "when": "view == clockify-tags && viewItem == tag"
         }
       ]
     }

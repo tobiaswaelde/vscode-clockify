@@ -2,6 +2,7 @@ export type Tag = {
 	id: string;
 	name: string;
 	workspaceId: string;
+	archived: boolean;
 };
 
 export type TagId = {
@@ -9,5 +10,6 @@ export type TagId = {
 };
 
 export type TagRequest = {
-	name: string;
+	name?: string;
+	archived?: boolean;
 };

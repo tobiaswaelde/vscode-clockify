@@ -34,6 +34,9 @@ export type GetProjectsFilter = Pagination & {
 export type GetTagsFilter = Pagination & {
 	/** The name of the tag */
 	name?: string;
+
+	/** if `true`, only return archived tags */
+	archived?: boolean;
 };
 
 /**

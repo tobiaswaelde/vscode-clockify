@@ -24,4 +24,9 @@ export enum Commands {
 	// tasks
 	tasksRefresh = 'clockify.tasks.refresh',
 	tasksAdd = 'clockify.tasks.add',
+	// tags
+	tagsRefresh = 'clockify.tags.refresh',
+	tagsAdd = 'clockify.tags.add',
+	tagsRename = 'clockify.tags.rename',
+	tagsDelete = 'clockify.tags.delete',
 }

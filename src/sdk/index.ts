@@ -235,6 +235,43 @@ export class Clockify {
 		}
 	}
 
+	/**
+	 * Update tag in workspace
+	 * @param {string} workspaceId The ID of the workspace the tag belongs to
+	 * @param {string} tagId The ID of the tag to update
+	 * @param {TagRequest} data The data to update
+	 * @returns {Tag} The updated tag or `undefined`
+	 */
+	public static async updateTag(
+		workspaceId: string,
+		tagId: string,
+		data: TagRequest
+	): Promise<Tag | undefined> {
+		try {
+			const res = await this.http.put(`/workspaces/${workspaceId}/tags/${tagId}`, data);
+			return res.data as Tag;
+		} catch (err) {
+			showError('Error updating tag.', err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Delete tag from workspace
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {string} tagId The ID of the tag to delete
+	 * @returns {Project|undefined} The deleted tag
+	 */
+	public static async deleteTag(workspaceId: string, tagId: string): Promise<Tag | undefined> {
+		try {
+			const res = await this.http.delete(`/workspaces/${workspaceId}/tags/${tagId}`);
+			return res.data as Tag;
+		} catch (err) {
+			showError('Error deleting tag.', err);
+			return undefined;
+		}
+	}
+
 	//#endregion
 	//#region Tasks
 

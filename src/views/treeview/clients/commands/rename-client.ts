@@ -9,12 +9,12 @@ import { refreshClients } from './refresh-clients';
 
 export async function renameClient(element: ClientItem): Promise<void> {
 	// check if workspace exists
-	const workspace = GlobalState.get('selectedWorkspace') as Workspace;
+	const workspace = GlobalState.get<Workspace>('selectedWorkspace');
 	if (!workspace) {
 		return showError('No workspace selected.');
 	}
 
-	// get the name for the new client
+	// get the new name for the client
 	const name = await Dialogs.getClientName(element.client.name);
 	if (!name) {
 		return;
@@ -24,6 +24,6 @@ export async function renameClient(element: ClientItem): Promise<void> {
 	const updatedClient = await Clockify.updateClient(workspace.id, element.client.id, { name });
 	if (updatedClient) {
 		window.showInformationMessage('Client updated.');
+		refreshClients();
 	}
-	refreshClients();
 }
