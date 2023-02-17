@@ -1,6 +1,6 @@
 # ToDo
 - [ ] core
-  - [ ] set API key
+  - [x] set API key
   - [ ] reset config
   - [ ] start tracking
   - [ ] stop tracking
@@ -14,22 +14,39 @@
   - [ ] refresh all
   - [ ] providers
     - [ ] workspaces
-      - [ ] select workspace
-      - [ ] add workspace
-      - [ ] refresh workspaces
+      - [x] select workspace
+      - [x] add workspace
+      - [x] refresh workspaces
     - [ ] clients
-      - [ ] select client
-      - [ ] add client
-      - [ ] refresh clients
+      - [x] select client
+      - [x] add client
+      - [x] refresh clients
+      - [x] rename client
+      - [x] delete client
+      - [ ] update email
+      - [ ] update address
+      - [ ] update note
     - [ ] projects
-      - [ ] select project
-      - [ ] add project
-      - [ ] refreesh projects
+      - [x] select project
+      - [x] add project
+      - [x] refresh projects
+      - [x] rename project
+      - [x] delete project
+      - [ ] select client
+      - [ ] change billable
+      - [ ] change hourly rate
+      - [ ] update visibility (public/private)
     - [ ] tasks
-      - [ ] add task
-      - [ ] refresh tasks
+      - [x] add task
+      - [x] refresh tasks
+      - [ ] rename task
+      - [ ] update status
     - [ ] tags
-      - [ ] add tags
-      - [ ] refresh tags
+      - [x] add tags
+      - [x] refresh tags
+      - [x] rename tag
+      - [x] delete tag
+      - [ ] archive/unarchive tag
+      - [ ] show/hide archived tags
     - [ ] time entries
       - [ ] refresh time entries
