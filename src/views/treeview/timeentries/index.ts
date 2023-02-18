@@ -1,5 +1,5 @@
 import { Workspace } from './../../../sdk/types/workspace';
-import { commands, Event, EventEmitter, ExtensionContext, TreeDataProvider, window } from 'vscode';
+import { commands, Event, EventEmitter, ExtensionContext, TreeDataProvider } from 'vscode';
 import { Commands } from '../../../config/commands';
 import { Clockify } from '../../../sdk';
 import { GlobalState } from '../../../util/global-state';
@@ -8,7 +8,6 @@ import { TimeentryTreeItem } from './items';
 import { MessageTreeItem } from '../../../util/treeview/message-tree-item';
 import { Config } from '../../../util/config';
 import { TimeentryItem } from './items/item';
-import { FieldValueItem } from '../../../util/treeview/field-value-item';
 
 type OnDidChangeEventData = TimeentryTreeItem | undefined;
 

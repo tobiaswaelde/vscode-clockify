@@ -2,7 +2,7 @@ import moment = require('moment');
 import { TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { TimeentryTreeItem } from '.';
 import { Clockify } from '../../../../sdk';
-import { TimeEntry, TimeEntryImpl } from '../../../../sdk/types/time-entry';
+import { TimeEntryImpl } from '../../../../sdk/types/time-entry';
 import { Config } from '../../../../util/config';
 import { sensify } from '../../../../util/data';
 import { FieldValueItem } from '../../../../util/treeview/field-value-item';
@@ -45,7 +45,7 @@ export class TimeentryItem extends TreeItem {
 			workspaceId,
 			projectId,
 			taskId,
-			timeInterval: { start, end, duration },
+			timeInterval: { start, end },
 			billable,
 			tagIds,
 		} = this.timeentry;
