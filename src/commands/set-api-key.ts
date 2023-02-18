@@ -2,8 +2,7 @@ import { Clockify } from '../sdk';
 import { Config } from '../util/config';
 import { Context } from '../util/context';
 import { Dialogs } from '../util/dialogs';
-import { ProviderStore } from '../util/stores/provider-store';
-import { WorkspacesProvider } from '../views/treeview/workspaces';
+import { refresh } from './refresh';
 
 export async function setApiKey() {
 	// ask user for the api key
@@ -19,8 +18,8 @@ export async function setApiKey() {
 	// authenticate the SDK
 	Clockify.authenticate(apiKey);
 
-	//TODO refresh tree view providers
-	ProviderStore.get<WorkspacesProvider>('workspaces').refresh();
+	// refresh tree view providers
+	refresh();
 
 	Context.set('initialized', true);
 }

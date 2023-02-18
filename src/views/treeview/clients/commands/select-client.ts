@@ -16,7 +16,7 @@ export async function selectClient(client?: Client): Promise<void> {
 
 	GlobalState.set('selectedProject', null);
 
-	//TODO refresh tree views
+	// refresh tree views
 	refreshClients();
 	refreshProjects();
 	refreshTasks();

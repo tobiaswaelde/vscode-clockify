@@ -14,11 +14,9 @@ export async function selectProject(project?: Project): Promise<void> {
 		GlobalState.set('selectedProject', project);
 	}
 
-	if (project) {
-		GlobalState.set('selectedProject', project);
-		//TODO refresh tree views
-	}
+	GlobalState.set('selectedProject', project);
 
+	// refresh tree views
 	refreshProjects();
 	refreshTasks();
 	refreshTimeentries();
