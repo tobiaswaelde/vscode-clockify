@@ -11,13 +11,11 @@ export class TaskItem extends TreeItem {
 
 	constructor(public task: Task) {
 		super(sensify(task.name), TreeItemCollapsibleState.Collapsed);
-
-		// this.description = moment.duration(task.estimate).format('h[h] m[m]');
 	}
 
 	public async getChildren(): Promise<TaskTreeItem[]> {
 		const showIds = Config.get<boolean>('showIds');
-		const { id, assigneeId } = this.task;
+		const { id } = this.task;
 
 		const status = this.task.status === 'ACTIVE' ? 'Active' : 'Done';
 		const estimate = moment.duration(this.task.estimate).format('h[h] m[m]');
