@@ -18,6 +18,7 @@ import { Config } from '../../../util/config';
 import { TagItem } from './items/item';
 import { renameTag } from './commands/rename-tag';
 import { deleteTag } from './commands/delete-tag';
+import { archiveTag } from './commands/archive-tag';
 
 type OnDidChangeEventData = TagTreeItem | undefined;
 
@@ -53,9 +54,11 @@ export class TagsProvider implements TreeDataProvider<TagTreeItem> {
 				];
 			}
 
-			// order tags by name and return them
+			// order tags by name and archive status and return them
 			tags.sort((a, b) => a.name.localeCompare(b.name));
-			return tags.map((x) => new TagItem(x));
+			const normalTags = tags.filter((x) => x.archived === false);
+			const archivedTags = tags.filter((x) => x.archived === true);
+			return [...normalTags, ...archivedTags].map((x) => new TagItem(x));
 		}
 
 		return [];
@@ -78,7 +81,9 @@ export class TagsProvider implements TreeDataProvider<TagTreeItem> {
 			commands.registerCommand(Commands.tagsRefresh, () => refreshTags()),
 			commands.registerCommand(Commands.tagsAdd, addTag),
 			commands.registerCommand(Commands.tagsRename, renameTag),
-			commands.registerCommand(Commands.tagsDelete, (x) => deleteTag(x))
+			commands.registerCommand(Commands.tagsDelete, (x) => deleteTag(x)),
+			commands.registerCommand(Commands.tagsArchive, (x) => archiveTag(x, true)),
+			commands.registerCommand(Commands.tagsUnarchive, (x) => archiveTag(x, false))
 		);
 	}
 }

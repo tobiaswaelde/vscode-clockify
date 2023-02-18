@@ -9,6 +9,10 @@ export class TagItem extends TreeItem {
 		super(sensify(tag.name), TreeItemCollapsibleState.None);
 
 		this.iconPath = new ThemeIcon('tag');
-		this.description = tag.archived ? 'Archived' : undefined;
+
+		if (tag.archived) {
+			this.contextValue = 'tag-archived';
+			this.description = 'archived';
+		}
 	}
 }

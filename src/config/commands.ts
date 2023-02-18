@@ -29,4 +29,6 @@ export enum Commands {
 	tagsAdd = 'clockify.tags.add',
 	tagsRename = 'clockify.tags.rename',
 	tagsDelete = 'clockify.tags.delete',
+	tagsArchive = 'clockify.tags.archive',
+	tagsUnarchive = 'clockify.tags.unarchive',
 }

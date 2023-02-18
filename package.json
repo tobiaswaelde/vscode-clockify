@@ -159,6 +159,21 @@
         "shortTitle": "Delete",
         "category": "Clockify",
         "icon": "$(trash)"
+      },
+      {
+        "command": "clockify.tags.archive",
+        "title": "Archive Tag",
+        "shortTitle": "Archive",
+        "category": "Clockify",
+        "icon": "$(archive)",
+        "enablement": "viewItem == tag"
+      },
+      {
+        "command": "clockify.tags.unarchive",
+        "title": "Unarchive Tag",
+        "shortTitle": "Unarchive",
+        "category": "Clockify",
+        "icon": "$(inbox)"
       }
     ],
     "configuration": {
@@ -354,6 +369,14 @@
         {
           "command": "clockify.tags.delete",
           "when": "view == clockify-tags && viewItem == tag"
+        },
+        {
+          "command": "clockify.tags.archive",
+          "when": "view == clockify-tags && viewItem == tag"
+        },
+        {
+          "command": "clockify.tags.unarchive",
+          "when": "view == clockify-tags && viewItem == tag-archived"
         }
       ]
     }

@@ -10,6 +10,6 @@ export type TagId = {
 };
 
 export type TagRequest = {
-	name?: string;
+	name: string;
 	archived?: boolean;
 };
