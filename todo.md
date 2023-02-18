@@ -49,4 +49,9 @@
       - [x] archive/unarchive tag
       - [ ] show/hide archived tags
     - [ ] time entries
-      - [ ] refresh time entries
+      - [x] refresh time entries
+      - [ ] update project
+      - [ ] update task
+      - [ ] update billable
+      - [ ] add tag
+      - [ ] remove tag
