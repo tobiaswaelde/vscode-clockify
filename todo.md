@@ -46,7 +46,7 @@
       - [x] refresh tags
       - [x] rename tag
       - [x] delete tag
-      - [ ] archive/unarchive tag
+      - [x] archive/unarchive tag
       - [ ] show/hide archived tags
     - [ ] time entries
       - [ ] refresh time entries
