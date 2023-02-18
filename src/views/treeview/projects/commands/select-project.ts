@@ -14,8 +14,6 @@ export async function selectProject(project?: Project): Promise<void> {
 		GlobalState.set('selectedProject', project);
 	}
 
-	GlobalState.set('selectedProject', project);
-
 	// refresh tree views
 	refreshProjects();
 	refreshTasks();
