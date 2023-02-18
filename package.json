@@ -186,6 +186,13 @@
         "category": "Clockify",
         "icon": "$(inbox)",
         "enablement": "viewItem == tag-archived"
+      },
+      {
+        "command": "clockify.timeentries.refresh",
+        "title": "Refresh Time Entries",
+        "shortTitle": "Refresh",
+        "category": "Clockify",
+        "icon": "$(refresh)"
       }
     ],
     "configuration": {
@@ -352,6 +359,11 @@
           "command": "clockify.tags.refresh",
           "when": "view == clockify-tags",
           "group": "navigation@2"
+        },
+        {
+          "command": "clockify.timeentries.refresh",
+          "when": "view == clockify-timeentries",
+          "group": "navigation@1"
         }
       ],
       "view/item/context": [

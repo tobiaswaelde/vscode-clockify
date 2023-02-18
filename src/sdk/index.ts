@@ -17,6 +17,7 @@ import {
 	TimeEntryRequest,
 	StopTimeEntryRequest,
 	UpdateTimeEntryRequest,
+	TimeEntryImpl,
 } from './types/time-entry';
 import { User } from './types/user';
 import { Workspace, WorkspaceRequest } from './types/workspace';
@@ -159,6 +160,25 @@ export class Clockify {
 	}
 
 	/**
+	 * Find project by ID
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {string} projectId The ID of the project
+	 * @returns {Porject} The project or undefined
+	 */
+	public static async getProject(
+		workspaceId: string,
+		projectId: string
+	): Promise<Project | undefined> {
+		try {
+			const res = await this.http.get(`/workspaces/${workspaceId}/projects/${projectId}`);
+			return res.data as Project;
+		} catch (err) {
+			showError(`Error fetchin project with ID '${projectId}'.`, err);
+			return undefined;
+		}
+	}
+
+	/**
 	 * Add a new project to the workspace
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {ProjectRequest} newProject The data of the project to add
@@ -217,6 +237,33 @@ export class Clockify {
 			showError('Error fetching tags.', err);
 			return [];
 		}
+	}
+
+	/**
+	 * Find tag by ID
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {srting} tagId The ID of the tag
+	 * @returns {Tag} The tag or undefined
+	 */
+	public static async getTag(workpaceId: string, tagId: string): Promise<Tag | undefined> {
+		try {
+			const res = await this.http.get(`/workspaces/${workpaceId}/tags/${tagId}`);
+			return res.data as Tag;
+		} catch (err) {
+			showError(`Error fetching tag with ID '${tagId}'.`, err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Find multiple tags by ID
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {Array<string>} tagIds The IDs of the tags
+	 * @returns {Tag[]}
+	 */
+	public static async getTagsByID(workspaceId: string, tagIds: string[]): Promise<Tag[]> {
+		const tags = await Promise.all(tagIds.map((tagId) => this.getTag(workspaceId, tagId)));
+		return tags.filter((x) => x) as Tag[];
 	}
 
 	/**
@@ -280,7 +327,7 @@ export class Clockify {
 	 * @param {string} workspaceId The ID of the workspace
 	 * @param {string} projectId The ID of the project
 	 * @param {GetTasksFilter} filter The filter
-	 * @returns {Array<Task>} The tasks oon the given project
+	 * @returns {Array<Task>} The tasks on the given project
 	 */
 	public static async getTasks(
 		workspaceId: string,
@@ -302,6 +349,29 @@ export class Clockify {
 		} catch (err) {
 			showError('Error fetching tasks.', err);
 			return [];
+		}
+	}
+
+	/**
+	 * Find task by ID
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {string} projectId The ID of the project
+	 * @param {string} taskId The ID of the Task
+	 * @returns {Task} The task or undefined
+	 */
+	public static async getTask(
+		workspaceId: string,
+		projectId: string,
+		taskId: string
+	): Promise<Task | undefined> {
+		try {
+			const res = await this.http.get(
+				`/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`
+			);
+			return res.data as Task;
+		} catch (err) {
+			showError(`Error fetching task with ID '${taskId}'.`, err);
+			return undefined;
 		}
 	}
 
@@ -422,8 +492,8 @@ export class Clockify {
 	public static async getTimeEntriesForUser(
 		workspaceId: string,
 		userId: string,
-		filter: GetTimeEntriesForUserFilter
-	): Promise<TimeEntry[]> {
+		filter: GetTimeEntriesForUserFilter = {}
+	): Promise<TimeEntryImpl[]> {
 		const {
 			description,
 			start,
@@ -467,7 +537,7 @@ export class Clockify {
 			const res = await this.http.get(
 				`/workspaces/${workspaceId}/user/${userId}/time-entries?${q}`
 			);
-			return res.data as TimeEntry[];
+			return res.data as TimeEntryImpl[];
 		} catch (err) {
 			showError('Error fetching time entries for user.', err);
 			return [];

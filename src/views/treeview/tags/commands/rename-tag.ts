@@ -14,8 +14,6 @@ export async function renameTag(element: TagItem): Promise<void> {
 		return showError('No workspace selected.');
 	}
 
-	console.log(element.tag);
-
 	// get the new name of the tag
 	const name = await Dialogs.getTagName(element.tag.name);
 	if (!name) {

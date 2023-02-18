@@ -31,4 +31,6 @@ export enum Commands {
 	tagsDelete = 'clockify.tags.delete',
 	tagsArchive = 'clockify.tags.archive',
 	tagsUnarchive = 'clockify.tags.unarchive',
+	// timeentries
+	timeentriesRefresh = 'clockify.timeentries.refresh',
 }

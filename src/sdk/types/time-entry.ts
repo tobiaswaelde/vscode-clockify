@@ -30,9 +30,9 @@ export type TimeEntryImpl = {
 	description: string;
 	id: string;
 	isLocked: boolean;
-	projectId: string;
-	tagIds: string[];
-	taskId: string;
+	projectId: string | null;
+	tagIds: string[] | null;
+	taskId: string | null;
 	timeInterval: TimeInterval;
 	userId: string;
 	workspaceId: string;
@@ -75,7 +75,7 @@ export type TimeEntrySummary = {
 
 export type TimeInterval = {
 	duration: string;
-	end: Date;
+	end: Date | null;
 	start: Date;
 };
 
