@@ -75,14 +75,16 @@
         "title": "Rename Client",
         "shortTitle": "Rename",
         "category": "Clockify",
-        "icon": "$(edit)"
+        "icon": "$(edit)",
+        "enablement": "viewItem == client"
       },
       {
         "command": "clockify.clients.delete",
         "title": "Delete Client",
         "shortTitle": "Delete",
         "category": "Clockify",
-        "icon": "$(trash)"
+        "icon": "$(trash)",
+        "enablement": "viewItem == client"
       },
       {
         "command": "clockify.projects.refresh",
@@ -109,14 +111,16 @@
         "title": "Rename Project",
         "shortTitle": "Rename",
         "category": "Clockify",
-        "icon": "$(edit)"
+        "icon": "$(edit)",
+        "enablement": "viewItem == project"
       },
       {
         "command": "clockify.projects.delete",
         "title": "Delete Project",
         "shortTitle": "Delete",
         "category": "Clockify",
-        "icon": "$(trash)"
+        "icon": "$(trash)",
+        "enablement": "viewItem == project"
       },
       {
         "command": "clockify.tasks.refresh",
@@ -151,14 +155,16 @@
         "title": "Rename Tag",
         "shortTitle": "Rename",
         "category": "Clockify",
-        "icon": "$(edit)"
+        "icon": "$(edit)",
+        "enablement": "viewItem == tag"
       },
       {
         "command": "clockify.tags.delete",
         "title": "Delete Tag",
         "shortTitle": "Delete",
         "category": "Clockify",
-        "icon": "$(trash)"
+        "icon": "$(trash)",
+        "enablement": "viewItem == tag"
       },
       {
         "command": "clockify.tags.archive",
@@ -173,7 +179,8 @@
         "title": "Unarchive Tag",
         "shortTitle": "Unarchive",
         "category": "Clockify",
-        "icon": "$(inbox)"
+        "icon": "$(inbox)",
+        "enablement": "viewItem == tag-archived"
       }
     ],
     "configuration": {
