@@ -31,6 +31,11 @@
         "category": "Clockify"
       },
       {
+        "command": "clockify.refresh",
+        "title": "Refresh",
+        "category": "Clockify"
+      },
+      {
         "command": "clockify.workspaces.refresh",
         "title": "Refresh Workspaces",
         "shortTitle": "Refresh",
