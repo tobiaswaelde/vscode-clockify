@@ -41,7 +41,10 @@ export class TimeentriesProvider implements TreeDataProvider<TimeentryTreeItem> 
 			if (!user) {
 				return [new MessageTreeItem('Error getting current user.', undefined, 'error')];
 			}
-			const timeentries = await Clockify.getTimeEntriesForUser(workspace.id, user.id);
+			const timeentries = await Clockify.getTimeEntriesForUser(workspace.id, user.id, {
+				page: 1,
+				pageSize: limit,
+			});
 			return timeentries.map((x) => new TimeentryItem(x));
 		}
 
