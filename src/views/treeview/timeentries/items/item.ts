@@ -39,7 +39,6 @@ export class TimeentryItem extends TreeItem {
 	public async getChildren(): Promise<TimeentryTreeItem[]> {
 		const showIds = Config.get<boolean>('showIds');
 
-		console.log(this.timeentry);
 		const {
 			id,
 			workspaceId,
