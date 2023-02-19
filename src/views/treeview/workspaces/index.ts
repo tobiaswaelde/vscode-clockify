@@ -15,6 +15,7 @@ import { selectWorkspace } from './commands/select-workspace';
 import { apiKeySet } from '../../../helpers';
 import { addWorkspace } from './commands/add-workspace';
 import { refreshWorkspaces } from './commands/refresh-workspaces';
+import { setWorkspaceAsDefault } from './commands/set-as-default';
 
 type OnDidChangeEventData = WorkspaceTreeItem | undefined;
 
@@ -80,6 +81,7 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 		ctx.subscriptions.push(
 			commands.registerCommand(Commands.workspacesRefresh, (x) => refreshWorkspaces(x)),
 			commands.registerCommand(Commands.workspacesSelection, selectWorkspace),
+			commands.registerCommand(Commands.workspacesSetDefault, (x) => setWorkspaceAsDefault(x)),
 			commands.registerCommand(Commands.workspacesAdd, addWorkspace)
 		);
 	}
