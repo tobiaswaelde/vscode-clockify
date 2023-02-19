@@ -49,7 +49,7 @@ export class Tracking {
 		console.log('stop tracking');
 	}
 
-	public static async update(): Promise<boolean> {
+	public static async update() {
 		console.log('[tracking] update');
 
 		if (!this.workspaceId) {
@@ -62,9 +62,10 @@ export class Tracking {
 		if (!user) {
 			this.isTracking = false;
 			this.timeEntry = undefined;
-			return false;
+			return;
 		}
 
+		// find running time entries in all workspaces
 		const workspaces = await Clockify.getWorkspaces();
 		const timeentries = (
 			await Promise.all(workspaces.map((x) => Clockify.getTimeEntriesForUser(x.id, user.id)))
@@ -81,12 +82,11 @@ export class Tracking {
 
 			this.isTracking = true;
 			this.timeEntry = latestTimeEntry;
-			return true;
+			return;
 		}
 
 		this.isTracking = false;
 		this.timeEntry = undefined;
-		return false;
 	}
 
 	private static async getWorkspaceId(): Promise<string | undefined> {
