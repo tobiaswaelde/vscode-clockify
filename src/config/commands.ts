@@ -8,6 +8,7 @@ export enum Commands {
 	// workspaces
 	workspacesRefresh = 'clockify.workspaces.refresh',
 	workspacesSelection = 'clockify.workspaces.selection',
+	workspacesSetDefault = 'clockify.workspaces.setAsDefault',
 	workspacesAdd = 'clockify.workspaces.add',
 	// clients
 	clientsRefresh = 'clockify.clients.refresh',
@@ -18,11 +19,13 @@ export enum Commands {
 	// projects
 	projectsRefresh = 'clockify.projects.refresh',
 	projectsSelection = 'clockify.projects.selection',
+	projectsSetDefault = 'clockify.projects.setAsDefault',
 	projectsAdd = 'clockify.projects.add',
 	projectsRename = 'clockify.projects.rename',
 	projectsDelete = 'clockify.projects.delete',
 	// tasks
 	tasksRefresh = 'clockify.tasks.refresh',
+	tasksSetDefault = 'clockify.tasks.setAsDefault',
 	tasksAdd = 'clockify.tasks.add',
 	// tags
 	tagsRefresh = 'clockify.tags.refresh',
@@ -33,4 +36,8 @@ export enum Commands {
 	tagsUnarchive = 'clockify.tags.unarchive',
 	// timeentries
 	timeentriesRefresh = 'clockify.timeentries.refresh',
+
+	// tracking
+	trackingStart = 'clockify.tracking.start',
+	trackingStop = 'clockify.tracking.stop',
 }

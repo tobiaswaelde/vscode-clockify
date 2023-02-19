@@ -332,7 +332,7 @@ export class Clockify {
 	public static async getTasks(
 		workspaceId: string,
 		projectId: string,
-		filter: GetTasksFilter
+		filter: GetTasksFilter = {}
 	): Promise<Task[]> {
 		const { isActive, name, page, pageSize } = filter;
 		try {
@@ -644,6 +644,21 @@ export class Clockify {
 		} catch (err) {
 			showError('Error fetching workspaces.', err);
 			return [];
+		}
+	}
+
+	/**
+	 * Find workspace by ID
+	 * @param {string} workspaceId The ID of the workspace
+	 * @returns {Workspace} The workspace or undefined
+	 */
+	public static async getWorkspace(workspaceId: string): Promise<Workspace | undefined> {
+		try {
+			const workspaces = await this.getWorkspaces();
+			return workspaces.find((x) => x.id === workspaceId);
+		} catch (err) {
+			showError('Error fetching workspace.', err);
+			return undefined;
 		}
 	}
 

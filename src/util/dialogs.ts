@@ -1,9 +1,10 @@
 import { QuickPickItem, window } from 'vscode';
 import { PROJECT_COLORS } from '../config/colors';
 import { Clockify } from '../sdk';
-import { GetClientsFilter, GetProjectsFilter } from '../sdk/filters';
+import { GetClientsFilter, GetProjectsFilter, GetTasksFilter } from '../sdk/filters';
 import { Client } from '../sdk/types/client';
 import { Project } from '../sdk/types/project';
+import { Task } from '../sdk/types/task';
 import { Workspace } from '../sdk/types/workspace';
 
 interface IdQuickPickItem extends QuickPickItem {
@@ -176,6 +177,26 @@ export class Dialogs {
 			prompt: 'Task name',
 			value: name,
 		});
+	}
+	public static async selectTask(
+		workspaceId: string,
+		projectId: string,
+		filter?: GetTasksFilter
+	): Promise<Task | undefined> {
+		const tasks = await Clockify.getTasks(workspaceId, projectId, filter);
+		const taskItems: IdQuickPickItem[] = tasks.map((x) => ({
+			id: x.id,
+			label: x.name,
+		}));
+
+		const res = await window.showQuickPick(taskItems, {
+			title: 'Select Task',
+			placeHolder: 'Select Task',
+			ignoreFocusOut: true,
+		});
+		if (res) {
+			return tasks.find((x) => x.id === res.id);
+		}
 	}
 	//#endregion
 

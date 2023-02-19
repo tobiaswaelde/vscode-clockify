@@ -49,6 +49,13 @@
         "category": "Clockify"
       },
       {
+        "command": "clockify.workspaces.setAsDefault",
+        "title": "Set as default for this workspace",
+        "shortTitle": "Set Default",
+        "category": "Clockify",
+        "enablement": "viewItem == workspace"
+      },
+      {
         "command": "clockify.workspaces.add",
         "title": "Add Workspace",
         "shortTitle": "Add",
@@ -105,6 +112,13 @@
         "category": "Clockify"
       },
       {
+        "command": "clockify.projects.setAsDefault",
+        "title": "Set as default for this workspace",
+        "shortTitle": "Set Default",
+        "category": "Clockify",
+        "enablement": "viewItem == project"
+      },
+      {
         "command": "clockify.projects.add",
         "title": "Add Project",
         "shortTitle": "Add",
@@ -133,6 +147,13 @@
         "shortTitle": "Refresh",
         "category": "Clockify",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "clockify.tasks.setAsDefault",
+        "title": "Set as default for this workspace",
+        "shortTitle": "Set Default",
+        "category": "Clockify",
+        "enablement": "viewItem == task"
       },
       {
         "command": "clockify.tasks.add",
@@ -368,6 +389,10 @@
       ],
       "view/item/context": [
         {
+          "command": "clockify.workspaces.setAsDefault",
+          "when": "view == clockify-workspaces && viewItem == workspace"
+        },
+        {
           "command": "clockify.clients.rename",
           "when": "view == clockify-clients && viewItem == client",
           "group": "inline"
@@ -382,8 +407,16 @@
           "group": "inline"
         },
         {
+          "command": "clockify.projects.setAsDefault",
+          "when": "view == clockify-projects && viewItem == project"
+        },
+        {
           "command": "clockify.projects.delete",
           "when": "view == clockify-projects && viewItem == project"
+        },
+        {
+          "command": "clockify.tasks.setAsDefault",
+          "when": "view == clockify-tasks && viewItem == task"
         },
         {
           "command": "clockify.tags.rename",

@@ -7,7 +7,6 @@ export type ConfigurationKey =
 	| 'tracking.workspaceId'
 	| 'tracking.projectId'
 	| 'tracking.taskId'
-	| 'tracking.tagIds'
 	| 'tracking.billable'
 	| 'tracking.autostart'
 	| 'tracking.autostop';

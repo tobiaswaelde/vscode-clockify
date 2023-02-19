@@ -1,6 +1,5 @@
+import { GlobalStateKey } from '../config/state';
 import { Context } from './context';
-
-type GlobalStateKey = 'initialized' | 'selectedWorkspace' | 'selectedClient' | 'selectedProject';
 
 /**
  * Handles global state

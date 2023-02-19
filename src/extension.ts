@@ -10,8 +10,10 @@ import { ProjectsProvider } from './views/treeview/projects';
 import { TasksProvider } from './views/treeview/tasks';
 import { TagsProvider } from './views/treeview/tags';
 import { TimeentriesProvider } from './views/treeview/timeentries';
+import { StatusBar } from './views/statusbar';
+import { Tracking } from './helpers/tracking';
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
 	Context.setObject(context);
 	Context.set('initialized', false);
@@ -19,6 +21,13 @@ export function activate(context: vscode.ExtensionContext) {
 	checkApiKey();
 
 	registerCommands(context);
+
+	// tracking
+	Tracking.initialize();
+	Tracking.update();
+	setInterval(() => {
+		Tracking.update();
+	}, 5000);
 
 	// tree view
 	registerProvider('workspaces', new WorkspacesProvider(context));
@@ -36,6 +45,12 @@ export function activate(context: vscode.ExtensionContext) {
 			refresh();
 		}
 	});
+
+	// status bar
+	await StatusBar.initialize(context);
+	setInterval(() => {
+		StatusBar.update();
+	}, 1000);
 }
 
-export function deactivate() {}
+export async function deactivate() {}
