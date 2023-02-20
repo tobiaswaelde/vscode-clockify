@@ -147,8 +147,9 @@ export class Dialogs {
 	}
 	public static async selectProject(
 		workspaceId: string,
+		allowNone: boolean = false,
 		filter?: GetProjectsFilter
-	): Promise<Project | undefined> {
+	): Promise<Project | null | undefined> {
 		const projects = await Clockify.getProjects(workspaceId, filter);
 		const projectItems: IdQuickPickItem[] = projects.map((x) => ({
 			id: x.id,
@@ -156,6 +157,9 @@ export class Dialogs {
 			// description:x.clientName,
 			detail: x.clientName,
 		}));
+		if (allowNone) {
+			projectItems.unshift({ id: 'none', label: 'No Project' });
+		}
 
 		const res = await window.showQuickPick(projectItems, {
 			title: 'Select Project',
@@ -164,6 +168,9 @@ export class Dialogs {
 		});
 
 		if (res) {
+			if (res.id === 'none') {
+				return null;
+			}
 			return projects.find((x) => x.id === res.id);
 		}
 	}
@@ -181,13 +188,17 @@ export class Dialogs {
 	public static async selectTask(
 		workspaceId: string,
 		projectId: string,
+		allowNone: boolean = false,
 		filter?: GetTasksFilter
-	): Promise<Task | undefined> {
+	): Promise<Task | null | undefined> {
 		const tasks = await Clockify.getTasks(workspaceId, projectId, filter);
 		const taskItems: IdQuickPickItem[] = tasks.map((x) => ({
 			id: x.id,
 			label: x.name,
 		}));
+		if (allowNone) {
+			taskItems.unshift({ id: 'none', label: 'No Task' });
+		}
 
 		const res = await window.showQuickPick(taskItems, {
 			title: 'Select Task',
@@ -195,6 +206,9 @@ export class Dialogs {
 			ignoreFocusOut: true,
 		});
 		if (res) {
+			if (res.id === 'none') {
+				return null;
+			}
 			return tasks.find((x) => x.id === res.id);
 		}
 	}

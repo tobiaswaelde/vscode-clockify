@@ -43,18 +43,18 @@ export type TimeEntryIdsRequest = {
 };
 
 export type TimeEntryRequest = {
-	id: string;
+	id?: string;
 	start: string;
-	billable: boolean;
-	description: string;
-	projectId: string;
-	userId: string;
-	taskId: string;
-	end: string;
-	tagIds: string[];
-	timeInterval: TimeEntriesDurationRequest;
-	workspaceId: string;
-	isLocked: boolean;
+	billable?: boolean;
+	description?: string;
+	projectId?: string;
+	userId?: string;
+	taskId?: string;
+	end?: string;
+	tagIds?: string[];
+	timeInterval?: TimeEntriesDurationRequest;
+	workspaceId?: string;
+	isLocked?: boolean;
 };
 
 export type TimeEntrySummary = {
