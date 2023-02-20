@@ -16,8 +16,6 @@ export class Tracking {
 	public static project?: Project;
 	public static task?: Task;
 
-	public static async initialize() {}
-
 	public static async start() {
 		// skip is tracker is already active
 		if (this.isTracking) {
