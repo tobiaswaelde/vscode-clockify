@@ -8,6 +8,7 @@ import { Config } from '../../../../util/config';
 import { sensify } from '../../../../util/data';
 import { GlobalState } from '../../../../util/global-state';
 import { FieldValueItem } from '../../../../util/treeview/field-value-item';
+import { IdValueItem } from '../../../../util/treeview/id-value-item';
 
 export class ProjectItem extends TreeItem {
 	contextValue = 'project';
@@ -34,9 +35,7 @@ export class ProjectItem extends TreeItem {
 		const items: ProjectTreeItem[] = [];
 
 		if (showIds) {
-			items.push(
-				new FieldValueItem('project.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
-			);
+			items.push(new IdValueItem('project.id', id));
 		}
 		items.push(
 			new FieldValueItem('project.client', {

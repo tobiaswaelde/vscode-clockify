@@ -6,6 +6,7 @@ import { TimeEntryImpl } from '../../../../sdk/types/time-entry';
 import { Config } from '../../../../util/config';
 import { sensify } from '../../../../util/data';
 import { FieldValueItem } from '../../../../util/treeview/field-value-item';
+import { IdValueItem } from '../../../../util/treeview/id-value-item';
 
 export class TimeentryItem extends TreeItem {
 	contextValue = 'timeentry';
@@ -60,9 +61,7 @@ export class TimeentryItem extends TreeItem {
 		const items: TimeentryTreeItem[] = [];
 		// ID
 		if (showIds) {
-			items.push(
-				new FieldValueItem('client.id', { name: 'ID', value: sensify(id), icon: 'bytes' })
-			);
+			items.push(new IdValueItem('timeentry.id', id));
 		}
 
 		// project

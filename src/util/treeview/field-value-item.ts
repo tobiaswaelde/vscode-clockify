@@ -1,4 +1,4 @@
-import { MarkdownString, TreeItem, TreeItemCollapsibleState } from 'vscode';
+import { Command, MarkdownString, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { FieldValue } from '../../types/field-value';
 import { getValueTypeIconPath } from '../icon';
 
@@ -12,7 +12,8 @@ export class FieldValueItem extends TreeItem {
 	constructor(
 		public contextValue: string,
 		value: FieldValue,
-		tooltip?: true | string | MarkdownString
+		tooltip?: true | string | MarkdownString,
+		public command?: Command
 	) {
 		super(value.name, TreeItemCollapsibleState.None);
 

@@ -6,6 +6,7 @@ import { Commands } from '../../../../config/commands';
 import { sensify } from '../../../../util/data';
 import { WorkspaceTreeItem } from '.';
 import { FieldValueItem } from '../../../../util/treeview/field-value-item';
+import { IdValueItem } from '../../../../util/treeview/id-value-item';
 
 export class WorkspaceItem extends TreeItem {
 	contextValue = 'workspace';
@@ -39,13 +40,7 @@ export class WorkspaceItem extends TreeItem {
 
 		const items: WorkspaceTreeItem[] = [];
 		if (showIds) {
-			items.push(
-				new FieldValueItem('workspace.id', {
-					name: 'ID',
-					value: sensify(id),
-					icon: 'bytes',
-				})
-			);
+			items.push(new IdValueItem('workspace.id', id));
 		}
 		items.push(
 			new FieldValueItem('workspace.hourlyRate', {

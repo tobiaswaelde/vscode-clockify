@@ -5,6 +5,7 @@ export enum Commands {
 	// general
 	setApiKey = 'clockify.setApiKey',
 	refresh = 'clockify.refresh',
+	copyToClipboard = 'clockify.copyToClipboard',
 	// workspaces
 	workspacesRefresh = 'clockify.workspaces.refresh',
 	workspacesSelection = 'clockify.workspaces.selection',

@@ -5,6 +5,7 @@ import { TaskTreeItem } from '.';
 import { Config } from '../../../../util/config';
 import { FieldValueItem } from '../../../../util/treeview/field-value-item';
 import { sensify } from '../../../../util/data';
+import { IdValueItem } from '../../../../util/treeview/id-value-item';
 
 export class TaskItem extends TreeItem {
 	contextValue = 'task';
@@ -22,7 +23,7 @@ export class TaskItem extends TreeItem {
 
 		const items: TaskTreeItem[] = [];
 		if (showIds) {
-			items.push(new FieldValueItem('task.id', { name: 'ID', value: sensify(id), icon: 'bytes' }));
+			items.push(new IdValueItem('task.id', id));
 		}
 		items.push(
 			new FieldValueItem('task.status', { name: 'Status', value: status, icon: 'boolean' })
