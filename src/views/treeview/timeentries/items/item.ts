@@ -12,7 +12,7 @@ export class TimeentryItem extends TreeItem {
 
 	constructor(public timeentry: TimeEntryImpl) {
 		const isRunning = timeentry.timeInterval.end === null;
-		const title = `${isRunning ? '🚀' : ''} ${timeentry.description || 'No description'}`;
+		const title = `${isRunning ? '🚀' : ''} ${sensify(timeentry.description) || 'No description'}`;
 
 		super(title, TreeItemCollapsibleState.Collapsed);
 
@@ -69,7 +69,7 @@ export class TimeentryItem extends TreeItem {
 		items.push(
 			new FieldValueItem('timeentry.project', {
 				name: 'Project',
-				value: project?.name || '',
+				value: sensify(project?.name || ''),
 				icon: 'reference',
 			})
 		);
@@ -78,7 +78,7 @@ export class TimeentryItem extends TreeItem {
 		items.push(
 			new FieldValueItem('timeentry.task', {
 				name: 'Task',
-				value: task?.name || '',
+				value: sensify(task?.name || ''),
 				icon: 'reference',
 			})
 		);
@@ -123,7 +123,7 @@ export class TimeentryItem extends TreeItem {
 		items.push(
 			new FieldValueItem('timeentry.tags', {
 				name: 'Tags',
-				value: tags.map((x) => x.name).join(', '),
+				value: tags.map((x) => sensify(x.name)).join(', '),
 				icon: 'reference',
 			})
 		);
