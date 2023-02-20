@@ -80,13 +80,13 @@ export type TimeInterval = {
 };
 
 export type UpdateTimeEntryRequest = {
-	start: string;
-	billable: boolean;
-	description: string;
-	projectId: string;
-	taskId: string;
+	start?: string;
+	billable?: boolean;
+	description?: string;
+	projectId?: string;
+	taskId?: string;
 	end: string;
-	tagIds: string[];
+	tagIds?: string[];
 };
 
 export type StopTimeEntryRequest = {

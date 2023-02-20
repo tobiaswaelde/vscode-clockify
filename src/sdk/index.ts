@@ -585,13 +585,16 @@ export class Clockify {
 	public static async stopTimeEntryForUser(
 		workspaceId: string,
 		userId: string,
-		newTimeEntry: StopTimeEntryRequest
+		data: StopTimeEntryRequest
 	): Promise<TimeEntry | undefined> {
 		try {
-			const res = await this.http.patch(`/workspaces/${workspaceId}/user/${userId}/time-entries`);
+			const res = await this.http.patch(
+				`/workspaces/${workspaceId}/user/${userId}/time-entries`,
+				data
+			);
 			return res.data as TimeEntry;
 		} catch (err) {
-			showError('Error stopping time entry');
+			showError('Error stopping time entry', err);
 			return undefined;
 		}
 	}

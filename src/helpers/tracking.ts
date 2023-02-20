@@ -1,3 +1,4 @@
+import { StatusBar } from './../views/statusbar/index';
 import { TimeEntryImpl } from './../sdk/types/time-entry';
 import { Workspace } from './../sdk/types/workspace';
 import { Clockify } from '../sdk';
@@ -6,11 +7,12 @@ import { Dialogs } from '../util/dialogs';
 import * as moment from 'moment';
 import { Project } from '../sdk/types/project';
 import { Task } from '../sdk/types/task';
+import { showError } from '../sdk/util';
 
 export class Tracking {
-	private static workspaceId?: string;
-	private static projectId?: string;
-	private static taskId?: string;
+	// private static workspaceId?: string;
+	// private static projectId?: string;
+	// private static taskId?: string;
 
 	public static isTracking: boolean = false;
 	public static timeEntry?: TimeEntryImpl;
@@ -19,50 +21,75 @@ export class Tracking {
 	public static task?: Task;
 
 	public static initialize() {
-		this.workspaceId = Config.get<string>('tracking.workspaceId');
+		// this.workspaceId = Config.get<string>('tracking.workspaceId');
 	}
 
 	public static async start() {
 		const start = moment();
 
-		const workspaceId = await this.getWorkspaceId();
-		if (!workspaceId) {
-			return;
-		}
-		const workspace = await this.getWorkspace();
-		if (!workspace) {
-			return;
-		}
-		this.workspaceId = workspaceId;
-		this.workspace = workspace;
-		this.projectId = await this.getProjectId();
-		this.taskId = await this.getTaskId();
+		// const workspaceId = await this.getWorkspaceId();
+		// if (!workspaceId) {
+		// 	return;
+		// }
+		// const workspace = await this.getWorkspace();
+		// if (!workspace) {
+		// 	return;
+		// }
+		// this.workspaceId = workspaceId;
+		// this.workspace = workspace;
+		// this.projectId = await this.getProjectId();
+		// this.taskId = await this.getTaskId();
 
-		this.update();
+		// this.update();
 
-		// add time entry
+		// // add time entry
 
-		console.log('tracking:', this.isTracking);
+		// console.log('tracking:', this.isTracking);
 	}
 
+	/**
+	 * Stop current running timer
+	 */
 	public static async stop() {
-		console.log('stop tracking');
+		if (!this.workspace) {
+			return;
+		}
+
+		// get current user
+		const user = await Clockify.getCurrentUser();
+		if (!user) {
+			return undefined;
+		}
+
+		// send stop request
+		const end = new Date().toISOString();
+		await Clockify.stopTimeEntryForUser(this.workspace.id, user.id, { end });
+
+		// update status bar
+		this.isTracking = false;
+		this.timeEntry = undefined;
+		await StatusBar.update();
 	}
 
 	public static async update() {
-		console.log('[tracking] update');
-
-		if (!this.workspaceId) {
+		const timeEntry = await this.getRunningTimeEntry();
+		if (!timeEntry) {
 			this.isTracking = false;
 			this.timeEntry = undefined;
-			return false;
+		} else {
+			this.isTracking = true;
+			this.timeEntry = timeEntry;
+			this.updateWorkspace();
+			this.updateProject();
+			this.updateTask();
 		}
+	}
 
+	private static async getRunningTimeEntry(): Promise<TimeEntryImpl | undefined> {
+		// get current user
 		const user = await Clockify.getCurrentUser();
 		if (!user) {
-			this.isTracking = false;
-			this.timeEntry = undefined;
-			return;
+			return undefined;
 		}
 
 		// find running time entries in all workspaces
@@ -72,84 +99,113 @@ export class Tracking {
 		).flat();
 		const startedTimeEntries = timeentries.filter((x) => x.timeInterval.end === null);
 
+		// get running time entry
 		if (startedTimeEntries.length > 0) {
-			const latestTimeEntry = startedTimeEntries[0];
-			this.workspaceId = latestTimeEntry.workspaceId;
-			this.projectId = latestTimeEntry.projectId || undefined;
-			this.taskId = latestTimeEntry.taskId || undefined;
-			this.workspace = await Clockify.getWorkspace(latestTimeEntry.workspaceId);
-			this.project = await this.getProject();
+			return startedTimeEntries[0];
+		}
 
-			this.isTracking = true;
-			this.timeEntry = latestTimeEntry;
+		return undefined;
+	}
+	private static async updateWorkspace() {
+		if (
+			!this.timeEntry || // no active time entry
+			this.workspace?.id === this.timeEntry.workspaceId // workspace not changed
+		) {
 			return;
 		}
 
-		this.isTracking = false;
-		this.timeEntry = undefined;
+		console.log('[tracking] update workspace');
+		this.workspace = await Clockify.getWorkspace(this.timeEntry.workspaceId);
+	}
+	private static async updateProject() {
+		if (
+			!this.timeEntry || // no active time entry
+			!this.timeEntry.projectId || // no project assigned
+			this.project?.id === this.timeEntry.projectId // project not changed
+		) {
+			return;
+		}
+
+		console.log('[tracking] update project');
+		const { workspaceId, projectId } = this.timeEntry;
+		this.project = await Clockify.getProject(workspaceId, projectId);
+	}
+	private static async updateTask() {
+		if (
+			!this.timeEntry || // no active time entry
+			!this.timeEntry.projectId || // no project assigned
+			!this.timeEntry.taskId || // no task assigned
+			this.task?.id === this.timeEntry.taskId // task not changed
+		) {
+			return;
+		}
+
+		console.log('[tracking] update task');
+		const { workspaceId, projectId, taskId } = this.timeEntry;
+		this.task = await Clockify.getTask(workspaceId, projectId, taskId);
 	}
 
-	private static async getWorkspaceId(): Promise<string | undefined> {
-		const workspaceWorkspaceId = Config.get<string>('tracking.workspaceId');
-		if (workspaceWorkspaceId) {
-			return workspaceWorkspaceId;
-		}
+	// private static async getWorkspaceId(): Promise<string | undefined> {
+	// 	const workspaceWorkspaceId = Config.get<string>('tracking.workspaceId');
+	// 	if (workspaceWorkspaceId) {
+	// 		return workspaceWorkspaceId;
+	// 	}
 
-		const workspace = await Dialogs.selectWorkspace();
-		if (workspace) {
-			return workspace.id;
-		}
+	// 	const workspace = await Dialogs.selectWorkspace();
+	// 	if (workspace) {
+	// 		return workspace.id;
+	// 	}
 
-		return undefined;
-	}
-	private static async getWorkspace(): Promise<Workspace | undefined> {
-		const workspaceWorkspaceId = Config.get<string>('tracking.workspaceId');
-		if (workspaceWorkspaceId) {
-			return Clockify.getWorkspace(workspaceWorkspaceId);
-		}
+	// 	return undefined;
+	// }
+	// private static async getWorkspace(): Promise<Workspace | undefined> {
+	// 	const workspaceWorkspaceId = Config.get<string>('tracking.workspaceId');
+	// 	if (workspaceWorkspaceId) {
+	// 		return Clockify.getWorkspace(workspaceWorkspaceId);
+	// 	}
 
-		return Dialogs.selectWorkspace();
-	}
+	// 	return Dialogs.selectWorkspace();
+	// }
 
-	private static async getProjectId(): Promise<string | undefined> {
-		if (!this.workspaceId) {
-			return undefined;
-		}
+	// private static async getProjectId(): Promise<string | undefined> {
+	// 	if (!this.workspaceId) {
+	// 		return undefined;
+	// 	}
 
-		const workspaceProjectId = Config.get<string>('tracking.projectId');
-		if (workspaceProjectId) {
-			return workspaceProjectId;
-		}
+	// 	const workspaceProjectId = Config.get<string>('tracking.projectId');
+	// 	if (workspaceProjectId) {
+	// 		return workspaceProjectId;
+	// 	}
 
-		const project = await Dialogs.selectProject(this.workspaceId);
-		if (project) {
-			return project.id;
-		}
+	// 	const project = await Dialogs.selectProject(this.workspaceId);
+	// 	if (project) {
+	// 		return project.id;
+	// 	}
 
-		return undefined;
-	}
-	private static async getProject(): Promise<Project | undefined> {
-		if (this.workspaceId && this.projectId) {
-			return Clockify.getProject(this.workspaceId, this.projectId);
-		}
-		return undefined;
-	}
+	// 	return undefined;
+	// }
+	// private static async getProject(): Promise<Project | undefined> {
+	// 	if (this.workspaceId && this.projectId) {
+	// 		return Clockify.getProject(this.workspaceId, this.projectId);
+	// 	}
+	// 	return undefined;
+	// }
 
-	private static async getTaskId(): Promise<string | undefined> {
-		if (!this.workspaceId || !this.projectId) {
-			return undefined;
-		}
+	// private static async getTaskId(): Promise<string | undefined> {
+	// 	if (!this.workspaceId || !this.projectId) {
+	// 		return undefined;
+	// 	}
 
-		const workspaceTaskId = Config.get<string>('tracking.taskId');
-		if (workspaceTaskId) {
-			return workspaceTaskId;
-		}
+	// 	const workspaceTaskId = Config.get<string>('tracking.taskId');
+	// 	if (workspaceTaskId) {
+	// 		return workspaceTaskId;
+	// 	}
 
-		const task = await Dialogs.selectTask(this.workspaceId, this.projectId);
-		if (task) {
-			return task.id;
-		}
+	// 	const task = await Dialogs.selectTask(this.workspaceId, this.projectId);
+	// 	if (task) {
+	// 		return task.id;
+	// 	}
 
-		return undefined;
-	}
+	// 	return undefined;
+	// }
 }

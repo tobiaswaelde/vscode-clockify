@@ -12,6 +12,7 @@ export async function registerCommands(ctx: ExtensionContext) {
 	ctx.subscriptions.push(
 		commands.registerCommand(Commands.setApiKey, () => setApiKey()),
 		commands.registerCommand(Commands.refresh, () => refresh()),
-		commands.registerCommand(Commands.trackingStart, () => Tracking.start())
+		commands.registerCommand(Commands.trackingStart, () => Tracking.start()),
+		commands.registerCommand(Commands.trackingStop, () => Tracking.stop())
 	);
 }

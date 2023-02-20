@@ -1,5 +1,4 @@
 import { Context } from './util/context';
-import * as vscode from 'vscode';
 import { registerCommands } from './commands';
 import { checkApiKey } from './functions/check-api-key';
 import { registerProvider } from './util/stores/register-provider';
@@ -12,8 +11,9 @@ import { TagsProvider } from './views/treeview/tags';
 import { TimeentriesProvider } from './views/treeview/timeentries';
 import { StatusBar } from './views/statusbar';
 import { Tracking } from './helpers/tracking';
+import { ExtensionContext, workspace } from 'vscode';
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(context: ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
 	Context.setObject(context);
 	Context.set('initialized', false);
@@ -24,7 +24,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	// tracking
 	Tracking.initialize();
-	Tracking.update();
+	await Tracking.update();
 	setInterval(() => {
 		Tracking.update();
 	}, 5000);
@@ -38,7 +38,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	registerProvider('timeentries', new TimeentriesProvider(context));
 
 	// refresh treeview when config changes
-	vscode.workspace.onDidChangeConfiguration((e) => {
+	workspace.onDidChangeConfiguration((e) => {
 		// only listen for config changes in clockify config
 		if (e.affectsConfiguration('clockify')) {
 			checkApiKey();
