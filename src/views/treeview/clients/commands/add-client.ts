@@ -3,8 +3,8 @@ import { window } from 'vscode';
 import { Clockify } from '../../../../sdk';
 import { GlobalState } from '../../../../util/global-state';
 import { selectClient } from './select-client';
-import { refreshClients } from './refresh-clients';
 import { Dialogs } from '../../../../util/dialogs';
+import { TreeView } from '../..';
 
 export async function addClient(): Promise<void> {
 	// get workspace
@@ -24,7 +24,7 @@ export async function addClient(): Promise<void> {
 	const client = await Clockify.addClient(workspace.id, { name });
 	if (client) {
 		selectClient(client);
-		refreshClients();
+		TreeView.refreshClients();
 		window.showInformationMessage(`Client '${name}' added successfully.`);
 	}
 }

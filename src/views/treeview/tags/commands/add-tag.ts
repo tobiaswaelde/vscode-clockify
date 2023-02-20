@@ -1,9 +1,9 @@
 import { window } from 'vscode';
+import { TreeView } from '../..';
 import { Clockify } from '../../../../sdk';
 import { Workspace } from '../../../../sdk/types/workspace';
 import { Dialogs } from '../../../../util/dialogs';
 import { GlobalState } from '../../../../util/global-state';
-import { refreshTags } from './refresh-tags';
 
 export async function addTag(): Promise<void> {
 	// get workspace
@@ -22,7 +22,7 @@ export async function addTag(): Promise<void> {
 	// add tag
 	const tag = await Clockify.addTag(workspace.id, { name });
 	if (tag) {
-		refreshTags();
+		TreeView.refreshTags();
 		window.showInformationMessage(`Tag '${tag.name}' added.`);
 	}
 }

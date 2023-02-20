@@ -14,11 +14,11 @@ import { GlobalState } from '../../../util/global-state';
 import { ClientTreeItem } from './items';
 import { ClientItem } from './items/item';
 import { Commands } from '../../../config/commands';
-import { refreshClients } from './commands/refresh-clients';
 import { selectClient } from './commands/select-client';
 import { addClient } from './commands/add-client';
 import { deleteClient } from './commands/delete-client';
 import { renameClient } from './commands/rename-client';
+import { TreeView } from '..';
 
 type OnDidChangeEventData = ClientTreeItem | undefined;
 
@@ -80,7 +80,7 @@ export class ClientsProvider implements TreeDataProvider<ClientTreeItem> {
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
-			commands.registerCommand(Commands.clientsRefresh, () => refreshClients()),
+			commands.registerCommand(Commands.clientsRefresh, (x) => TreeView.refreshClients(x)),
 			commands.registerCommand(Commands.clientsSelection, selectClient),
 			commands.registerCommand(Commands.clientsAdd, addClient),
 			commands.registerCommand(Commands.clientsRename, renameClient),

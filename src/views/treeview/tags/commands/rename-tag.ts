@@ -5,7 +5,7 @@ import { showError } from '../../../../sdk/util';
 import { GlobalState } from '../../../../util/global-state';
 import { TagItem } from '../items/item';
 import { Dialogs } from '../../../../util/dialogs';
-import { refreshTags } from './refresh-tags';
+import { TreeView } from '../..';
 
 export async function renameTag(element: TagItem): Promise<void> {
 	// check if workspace exists
@@ -24,6 +24,6 @@ export async function renameTag(element: TagItem): Promise<void> {
 	const updatedTag = await Clockify.updateTag(workspace.id, element.tag.id, { name });
 	if (updatedTag) {
 		window.showInformationMessage('Tag updated.');
-		refreshTags();
+		TreeView.refreshTags();
 	}
 }

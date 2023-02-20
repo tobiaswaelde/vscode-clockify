@@ -15,9 +15,9 @@ import { Clockify } from '../../../sdk';
 import { Config } from '../../../util/config';
 import { TaskItem } from './items/item';
 import { Commands } from '../../../config/commands';
-import { refreshTasks } from './commands/refresh-tasks';
 import { addTask } from './commands/add-task';
 import { setTaskAsDefault } from './commands/set-as-default';
+import { TreeView } from '..';
 
 type OnDidChangeEventData = TaskTreeItem | undefined;
 
@@ -80,7 +80,7 @@ export class TasksProvider implements TreeDataProvider<TaskTreeItem> {
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
-			commands.registerCommand(Commands.tasksRefresh, () => refreshTasks()),
+			commands.registerCommand(Commands.tasksRefresh, (x) => TreeView.refreshTasks(x)),
 			commands.registerCommand(Commands.tasksSetDefault, (x) => setTaskAsDefault(x)),
 			commands.registerCommand(Commands.tasksAdd, addTask)
 		);

@@ -1,11 +1,11 @@
 import { window } from 'vscode';
+import { TreeView } from '../..';
 import { Clockify } from '../../../../sdk';
 import { Workspace } from '../../../../sdk/types/workspace';
 import { showError } from '../../../../sdk/util';
 import { Dialogs } from '../../../../util/dialogs';
 import { GlobalState } from '../../../../util/global-state';
 import { ClientItem } from '../items/item';
-import { refreshClients } from './refresh-clients';
 
 export async function deleteClient(element: ClientItem): Promise<void> {
 	// check if workspace exists
@@ -24,6 +24,6 @@ export async function deleteClient(element: ClientItem): Promise<void> {
 	const deletedClient = await Clockify.deleteClient(workspace.id, element.client.id);
 	if (deletedClient) {
 		window.showInformationMessage(`Client '${deletedClient.name}' deleted.`);
-		refreshClients();
+		TreeView.refreshClients();
 	}
 }

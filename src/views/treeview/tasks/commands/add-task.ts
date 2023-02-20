@@ -4,7 +4,7 @@ import { Project } from './../../../../sdk/types/project';
 import { Workspace } from '../../../../sdk/types/workspace';
 import { Dialogs } from '../../../../util/dialogs';
 import { GlobalState } from '../../../../util/global-state';
-import { refreshTasks } from './refresh-tasks';
+import { TreeView } from '../..';
 
 export async function addTask(): Promise<void> {
 	// get workspace
@@ -32,7 +32,7 @@ export async function addTask(): Promise<void> {
 		name: name,
 	});
 	if (task) {
-		refreshTasks();
+		TreeView.refreshTasks();
 		window.showInformationMessage(`Task '${task.name}' added.`);
 	}
 }

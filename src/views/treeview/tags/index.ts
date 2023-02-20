@@ -12,13 +12,13 @@ import { Commands } from '../../../config/commands';
 import { Clockify } from '../../../sdk';
 import { GlobalState } from '../../../util/global-state';
 import { addTag } from './commands/add-tag';
-import { refreshTags } from './commands/refresh-tags';
 import { TagTreeItem } from './items';
 import { Config } from '../../../util/config';
 import { TagItem } from './items/item';
 import { renameTag } from './commands/rename-tag';
 import { deleteTag } from './commands/delete-tag';
 import { archiveTag } from './commands/archive-tag';
+import { TreeView } from '..';
 
 type OnDidChangeEventData = TagTreeItem | undefined;
 
@@ -78,7 +78,7 @@ export class TagsProvider implements TreeDataProvider<TagTreeItem> {
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
-			commands.registerCommand(Commands.tagsRefresh, () => refreshTags()),
+			commands.registerCommand(Commands.tagsRefresh, (x) => TreeView.refreshTags(x)),
 			commands.registerCommand(Commands.tagsAdd, addTag),
 			commands.registerCommand(Commands.tagsRename, renameTag),
 			commands.registerCommand(Commands.tagsDelete, (x) => deleteTag(x)),

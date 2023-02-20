@@ -5,7 +5,7 @@ import { GlobalState } from '../../../../util/global-state';
 import { showError } from '../../../../sdk/util';
 import { Dialogs } from '../../../../util/dialogs';
 import { Clockify } from '../../../../sdk';
-import { refreshTags } from './refresh-tags';
+import { TreeView } from '../..';
 
 export async function deleteTag(element: TagItem): Promise<void> {
 	// check if workspace exists
@@ -24,6 +24,6 @@ export async function deleteTag(element: TagItem): Promise<void> {
 	const deletedTag = await Clockify.deleteTag(workspace.id, element.tag.id);
 	if (deletedTag) {
 		window.showInformationMessage(`Tag '${deletedTag.name}' deleted.`);
-		refreshTags();
+		TreeView.refreshTags();
 	}
 }

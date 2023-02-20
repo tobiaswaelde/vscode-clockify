@@ -1,8 +1,6 @@
+import { TreeView } from '../..';
 import { Project } from '../../../../sdk/types/project';
 import { GlobalState } from '../../../../util/global-state';
-import { refreshTasks } from '../../tasks/commands/refresh-tasks';
-import { refreshTimeentries } from '../../timeentries/commands/refresh-timeentries';
-import { refreshProjects } from './refresh-projects';
 
 export async function selectProject(project?: Project): Promise<void> {
 	const selectedProject = GlobalState.get<Project>('selectedProject');
@@ -15,7 +13,7 @@ export async function selectProject(project?: Project): Promise<void> {
 	}
 
 	// refresh tree views
-	refreshProjects();
-	refreshTasks();
-	refreshTimeentries();
+	TreeView.refreshProjects();
+	TreeView.refreshTasks();
+	TreeView.refreshTimeentries();
 }

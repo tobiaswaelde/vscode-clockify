@@ -1,7 +1,7 @@
 import { window } from 'vscode';
+import { TreeView } from '../..';
 import { Clockify } from '../../../../sdk';
 import { Dialogs } from '../../../../util/dialogs';
-import { refreshWorkspaces } from './refresh-workspaces';
 import { selectWorkspace } from './select-workspace';
 
 export async function addWorkspace(): Promise<void> {
@@ -15,7 +15,7 @@ export async function addWorkspace(): Promise<void> {
 	const workspace = await Clockify.addWorkspace({ name });
 	if (workspace) {
 		selectWorkspace(workspace);
-		refreshWorkspaces();
+		TreeView.refreshWorkspaces();
 		window.showInformationMessage(`Workspace '${workspace.name}' added successfully.`);
 	}
 }

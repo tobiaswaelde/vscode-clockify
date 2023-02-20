@@ -4,7 +4,7 @@ import { Client } from '../../../../sdk/types/client';
 import { Workspace } from '../../../../sdk/types/workspace';
 import { Dialogs } from '../../../../util/dialogs';
 import { GlobalState } from '../../../../util/global-state';
-import { refreshProjects } from './refresh-projects';
+import { TreeView } from '../..';
 
 export async function addProject(): Promise<void> {
 	// get workspace
@@ -43,7 +43,7 @@ export async function addProject(): Promise<void> {
 		billable: isBillable,
 	});
 	if (project) {
-		refreshProjects();
+		TreeView.refreshProjects();
 		window.showInformationMessage(`Project '${project.name}' added.`);
 	}
 }

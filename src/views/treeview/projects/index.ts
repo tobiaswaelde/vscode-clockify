@@ -16,11 +16,11 @@ import { Clockify } from '../../../sdk';
 import { ProjectItem } from './items/item';
 import { Commands } from '../../../config/commands';
 import { addProject } from './commands/add-project';
-import { refreshProjects } from './commands/refresh-projects';
 import { selectProject } from './commands/select-project';
 import { renameProject } from './commands/rename-project';
 import { deleteProject } from './commands/delete-project';
 import { setProjectAsDefault } from './commands/set-as-default';
+import { TreeView } from '..';
 
 type OnDidChangeEventData = ProjectTreeItem | undefined;
 
@@ -90,7 +90,7 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
-			commands.registerCommand(Commands.projectsRefresh, () => refreshProjects()),
+			commands.registerCommand(Commands.projectsRefresh, (x) => TreeView.refreshProjects(x)),
 			commands.registerCommand(Commands.projectsSelection, selectProject),
 			commands.registerCommand(Commands.projectsSetDefault, (x) => setProjectAsDefault(x)),
 			commands.registerCommand(Commands.projectsAdd, addProject),

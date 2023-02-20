@@ -4,10 +4,9 @@ import { Workspace } from './../sdk/types/workspace';
 import { Clockify } from '../sdk';
 import { Config } from '../util/config';
 import { Dialogs } from '../util/dialogs';
-import * as moment from 'moment';
 import { Project } from '../sdk/types/project';
 import { Task } from '../sdk/types/task';
-import { refreshTimeentries } from '../views/treeview/timeentries/commands/refresh-timeentries';
+import { TreeView } from '../views/treeview';
 
 export class Tracking {
 	public static isTracking: boolean = false;
@@ -41,7 +40,7 @@ export class Tracking {
 			taskId: this.task?.id,
 		});
 		this.update();
-		refreshTimeentries();
+		TreeView.refreshTimeentries();
 	}
 
 	/**
@@ -66,7 +65,7 @@ export class Tracking {
 		this.isTracking = false;
 		this.timeEntry = undefined;
 		await StatusBar.update();
-		refreshTimeentries();
+		TreeView.refreshTimeentries();
 	}
 
 	public static async update() {

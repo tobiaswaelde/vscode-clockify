@@ -2,7 +2,7 @@ import { Clockify } from '../sdk';
 import { Config } from '../util/config';
 import { Context } from '../util/context';
 import { Dialogs } from '../util/dialogs';
-import { refresh } from './refresh';
+import { TreeView } from '../views/treeview';
 
 export async function setApiKey() {
 	// ask user for the api key
@@ -19,7 +19,7 @@ export async function setApiKey() {
 	Clockify.authenticate(apiKey);
 
 	// refresh tree view providers
-	refresh();
+	TreeView.refresh();
 
 	Context.set('initialized', true);
 }

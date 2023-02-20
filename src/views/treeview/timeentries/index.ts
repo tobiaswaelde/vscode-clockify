@@ -3,11 +3,11 @@ import { commands, Event, EventEmitter, ExtensionContext, TreeDataProvider } fro
 import { Commands } from '../../../config/commands';
 import { Clockify } from '../../../sdk';
 import { GlobalState } from '../../../util/global-state';
-import { refreshTimeentries } from './commands/refresh-timeentries';
 import { TimeentryTreeItem } from './items';
 import { MessageTreeItem } from '../../../util/treeview/message-tree-item';
 import { Config } from '../../../util/config';
 import { TimeentryItem } from './items/item';
+import { TreeView } from '..';
 
 type OnDidChangeEventData = TimeentryTreeItem | undefined;
 
@@ -70,7 +70,7 @@ export class TimeentriesProvider implements TreeDataProvider<TimeentryTreeItem> 
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
-			commands.registerCommand(Commands.timeentriesRefresh, () => refreshTimeentries())
+			commands.registerCommand(Commands.timeentriesRefresh, (x) => TreeView.refreshTimeentries(x))
 		);
 	}
 }

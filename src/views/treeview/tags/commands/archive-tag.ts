@@ -1,10 +1,10 @@
 import { window } from 'vscode';
+import { TreeView } from '../..';
 import { Clockify } from '../../../../sdk';
 import { Workspace } from '../../../../sdk/types/workspace';
 import { showError } from '../../../../sdk/util';
 import { GlobalState } from '../../../../util/global-state';
 import { TagItem } from '../items/item';
-import { refreshTags } from './refresh-tags';
 
 export async function archiveTag(element: TagItem, archived?: boolean): Promise<void> {
 	// check if workspace exists
@@ -22,6 +22,6 @@ export async function archiveTag(element: TagItem, archived?: boolean): Promise<
 		window.showInformationMessage(
 			`Tag '${updatedTag.name}' ${updatedTag.archived ? 'archived' : 'unarchived'}.`
 		);
-		refreshTags();
+		TreeView.refreshTags();
 	}
 }
