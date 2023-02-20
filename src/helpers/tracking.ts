@@ -16,6 +16,9 @@ export class Tracking {
 	public static project?: Project;
 	public static task?: Task;
 
+	/**
+	 * Start tracking
+	 */
 	public static async start() {
 		// skip is tracker is already active
 		if (this.isTracking) {
@@ -40,7 +43,6 @@ export class Tracking {
 			projectId: this.project?.id,
 			taskId: this.task?.id,
 		});
-		console.log(newTimeentry);
 		this.update();
 		TreeView.refreshTimeentries();
 	}
