@@ -11,6 +11,7 @@ import { TreeView } from '../views/treeview';
 export class Tracking {
 	public static isTracking: boolean = false;
 	public static timeEntry?: TimeEntryImpl;
+	public static description?: string;
 	public static workspace?: Workspace;
 	public static project?: Project;
 	public static task?: Task;
@@ -32,13 +33,16 @@ export class Tracking {
 		}
 		this.project = await this.getProject();
 		this.task = await this.getTask();
+		this.description = await Dialogs.getDescription('What are you working on?');
 
 		// add time entry
-		Clockify.addTimeEntry(this.workspace.id, {
+		const newTimeentry = await Clockify.addTimeEntry(this.workspace.id, {
 			start,
+			description: this.description,
 			projectId: this.project?.id,
 			taskId: this.task?.id,
 		});
+		console.log(newTimeentry);
 		this.update();
 		TreeView.refreshTimeentries();
 	}
@@ -47,7 +51,7 @@ export class Tracking {
 	 * Stop current running timer
 	 */
 	public static async stop() {
-		if (!this.workspace) {
+		if (!this.workspace || !this.timeEntry) {
 			return;
 		}
 
@@ -55,6 +59,15 @@ export class Tracking {
 		const user = await Clockify.getCurrentUser();
 		if (!user) {
 			return undefined;
+		}
+
+		// ask for description
+		const description = await Dialogs.getDescription('What were you working on?', this.description);
+		if (description) {
+			await Clockify.updateTimeEntry(this.workspace.id, this.timeEntry.id, {
+				description: description,
+				start: this.timeEntry.timeInterval.start,
+			});
 		}
 
 		// send stop request

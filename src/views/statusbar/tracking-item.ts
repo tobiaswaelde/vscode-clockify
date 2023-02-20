@@ -30,6 +30,9 @@ export class StatusBarTrackingItem {
 			this.item.text = duration.format('h[h] m[m] s[s]');
 
 			const tooltipLines: string[] = [];
+			if (Tracking.description) {
+				tooltipLines.push(Tracking.description);
+			}
 			if (Tracking.workspace) {
 				tooltipLines.push(`**Workspace:** ${Tracking.workspace.name}`);
 			}

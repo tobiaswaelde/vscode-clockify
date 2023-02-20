@@ -75,8 +75,8 @@ export type TimeEntrySummary = {
 
 export type TimeInterval = {
 	duration: string;
-	end: Date | null;
-	start: Date;
+	end: string | null;
+	start: string;
 };
 
 export type UpdateTimeEntryRequest = {
@@ -85,7 +85,7 @@ export type UpdateTimeEntryRequest = {
 	description?: string;
 	projectId?: string;
 	taskId?: string;
-	end: string;
+	end?: string;
 	tagIds?: string[];
 };
 

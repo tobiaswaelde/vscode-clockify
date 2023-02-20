@@ -47,6 +47,15 @@ export class Dialogs {
 		});
 		return res?.value;
 	}
+
+	public static async getDescription(title: string, value?: string): Promise<string | undefined> {
+		return window.showInputBox({
+			title: title,
+			placeHolder: 'Enter a description',
+			ignoreFocusOut: true,
+			value: value,
+		});
+	}
 	//#endregion
 
 	//#region workspaces
