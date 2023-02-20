@@ -66,6 +66,10 @@ export class Tracking {
 		if (description) {
 			await Clockify.updateTimeEntry(this.workspace.id, this.timeEntry.id, {
 				description: description,
+				billable: this.timeEntry.billable,
+				projectId: this.timeEntry.projectId,
+				tagIds: this.timeEntry.tagIds || undefined,
+				taskId: this.timeEntry.taskId,
 				start: this.timeEntry.timeInterval.start,
 			});
 		}

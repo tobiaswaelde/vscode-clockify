@@ -52,6 +52,7 @@ export class TimeentryItem extends TreeItem {
 
 		const project =
 			projectId !== null ? await Clockify.getProject(workspaceId, projectId) : undefined;
+		console.log({ projectId, project });
 		const task =
 			taskId !== null && projectId !== null
 				? await Clockify.getTask(workspaceId, projectId, taskId)

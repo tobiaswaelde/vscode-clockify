@@ -83,8 +83,8 @@ export type UpdateTimeEntryRequest = {
 	start?: string;
 	billable?: boolean;
 	description?: string;
-	projectId?: string;
-	taskId?: string;
+	projectId?: string | null;
+	taskId?: string | null;
 	end?: string;
 	tagIds?: string[];
 };
