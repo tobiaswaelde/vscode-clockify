@@ -494,42 +494,27 @@ export class Clockify {
 		userId: string,
 		filter: GetTimeEntriesForUserFilter = {}
 	): Promise<TimeEntryImpl[]> {
-		const {
-			description,
-			start,
-			end,
-			project,
-			task,
-			tags,
-			projectRequired,
-			taskRequired,
-			considerDurationFormat,
-			hydrated,
-			inProgress,
-			page,
-			pageSize,
-		} = filter;
 		try {
 			const q = qs.stringify(
 				{
-					description,
-					start,
-					end,
-					project,
-					task,
-					tags,
+					description: filter.description,
+					start: filter.start,
+					end: filter.end,
+					project: filter.project,
+					task: filter.task,
+					tags: filter.tags,
 					//eslint-disable-next-line @typescript-eslint/naming-convention
-					'project-required': projectRequired ? '1' : undefined,
+					'project-required': filter.projectRequired ? '1' : undefined,
 					//eslint-disable-next-line @typescript-eslint/naming-convention
-					'task-required': taskRequired ? '1' : undefined,
+					'task-required': filter.taskRequired ? '1' : undefined,
 					//eslint-disable-next-line @typescript-eslint/naming-convention
-					'consider-duration-format': considerDurationFormat ? '1' : undefined,
-					hydrated: hydrated ? '1' : undefined,
+					'consider-duration-format': filter.considerDurationFormat ? '1' : undefined,
+					hydrated: filter.hydrated ? '1' : undefined,
 					//eslint-disable-next-line @typescript-eslint/naming-convention
-					'in-progress': inProgress ? '1' : undefined,
-					page,
+					'in-progress': filter.inProgress ? '1' : undefined,
+					page: filter.page,
 					//eslint-disable-next-line @typescript-eslint/naming-convention
-					'page-size': pageSize,
+					'page-size': filter.pageSize,
 				},
 				{ encodeValuesOnly: true }
 			);
