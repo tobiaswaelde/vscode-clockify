@@ -22,14 +22,6 @@ export async function activate(context: ExtensionContext) {
 
 	registerCommands(context);
 
-	//#region tracking
-	Tracking.initialize();
-	await Tracking.update();
-	setInterval(() => {
-		Tracking.update();
-	}, 5000);
-	//#endregion
-
 	//#region tree view
 	registerProvider('workspaces', new WorkspacesProvider(context));
 	registerProvider('clients', new ClientsProvider(context));
@@ -37,6 +29,13 @@ export async function activate(context: ExtensionContext) {
 	registerProvider('tasks', new TasksProvider(context));
 	registerProvider('tags', new TagsProvider(context));
 	registerProvider('timeentries', new TimeentriesProvider(context));
+	//#endregion
+
+	//#region tracking
+	await Tracking.initialize();
+	setInterval(() => {
+		Tracking.update();
+	}, 5000);
 	//#endregion
 
 	//#region status bar
@@ -58,4 +57,6 @@ export async function activate(context: ExtensionContext) {
 	});
 }
 
-export async function deactivate() {}
+export async function deactivate() {
+	await Tracking.dispose();
+}

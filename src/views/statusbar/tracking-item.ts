@@ -6,6 +6,7 @@ import {
 	StatusBarAlignment,
 	MarkdownString,
 } from 'vscode';
+import { Commands } from '../../config/commands';
 import { Tracking } from '../../helpers/tracking';
 
 export class StatusBarTrackingItem {
@@ -42,7 +43,13 @@ export class StatusBarTrackingItem {
 			if (Tracking.task) {
 				tooltipLines.push(`**Task:** ${Tracking.task.name}`);
 			}
+			tooltipLines.push('_Click to update info_');
 			this.item.tooltip = new MarkdownString(tooltipLines.join('\n\n'));
+			this.item.command = {
+				title: 'Update information',
+				command: Commands.trackingUpdateInformation,
+				tooltip: 'Update tracking information',
+			};
 		} else {
 			this.item.text = 'Clockify';
 			this.item.name = 'Current Tracking';

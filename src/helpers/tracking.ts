@@ -17,6 +17,37 @@ export class Tracking {
 	public static task?: Task;
 
 	/**
+	 * Initilaize tracking API
+	 */
+	public static async initialize() {
+		// check for autostart tracking
+		const autostart = Config.get<boolean>('tracking.autostart') || false;
+		if (autostart) {
+			await this.update();
+			if (this.isTracking) {
+				return;
+			}
+			console.log('[tracking] automatically start tracking...');
+			await this.start();
+		} else {
+			await this.update();
+		}
+	}
+
+	/**
+	 * Clean up tracking API
+	 */
+	public static async dispose() {
+		// check autostop tracking
+		const autostop = Config.get<boolean>('tracking.autostop') || false;
+		if (autostop) {
+			console.log('[tracking] automatically stop tracking...');
+			await this.update();
+			await this.stop();
+		}
+	}
+
+	/**
 	 * Start tracking
 	 */
 	public static async start() {
@@ -37,7 +68,7 @@ export class Tracking {
 		this.description = await Dialogs.getDescription('What are you working on?');
 
 		// add time entry
-		const newTimeentry = await Clockify.addTimeEntry(this.workspace.id, {
+		await Clockify.addTimeEntry(this.workspace.id, {
 			start,
 			description: this.description,
 			projectId: this.project?.id,
@@ -85,6 +116,9 @@ export class Tracking {
 		TreeView.refreshTimeentries();
 	}
 
+	/**
+	 * check if tracker is running
+	 */
 	public static async update() {
 		const timeEntry = await this.getRunningTimeEntry();
 		if (!timeEntry) {
@@ -97,6 +131,16 @@ export class Tracking {
 			this.updateProject();
 			this.updateTask();
 		}
+	}
+
+	/**
+	 * Show dialogs to select project, task and description
+	 */
+	public static async updateInformation() {
+		console.log('update information');
+		this.project = await this.getProject();
+		this.task = await this.getTask();
+		this.description = await Dialogs.getDescription('What are you working on?');
 	}
 
 	//#region start
@@ -145,17 +189,24 @@ export class Tracking {
 	//#endregion
 	//#region update
 	private static async getRunningTimeEntry(): Promise<TimeEntryImpl | undefined> {
+		// check workspace
+		const configWorkspaceId = Config.get<string>('tracking.workspaceId');
+		if (!configWorkspaceId) {
+			return undefined;
+		}
+
 		// get current user
 		const user = await Clockify.getCurrentUser();
 		if (!user) {
 			return undefined;
 		}
 
-		// find running time entries in all workspaces
-		const workspaces = await Clockify.getWorkspaces();
-		const timeentries = (
-			await Promise.all(workspaces.map((x) => Clockify.getTimeEntriesForUser(x.id, user.id)))
-		).flat();
+		// find running time entries in workspace
+		// const workspaces = await Clockify.getWorkspaces();
+		// const timeentries = (
+		// 	await Promise.all(workspaces.map((x) => Clockify.getTimeEntriesForUser(x.id, user.id)))
+		// ).flat();
+		const timeentries = await Clockify.getTimeEntriesForUser(configWorkspaceId, user.id);
 		const startedTimeEntries = timeentries.filter((x) => x.timeInterval.end === null);
 
 		// get running time entry

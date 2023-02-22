@@ -41,4 +41,5 @@ export enum Commands {
 	// tracking
 	trackingStart = 'clockify.tracking.start',
 	trackingStop = 'clockify.tracking.stop',
+	trackingUpdateInformation = 'clockify.tracking.updateInformation',
 }
