@@ -9,9 +9,12 @@
 ![Duplicated Lines (%)](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=duplicated_lines_density&token=2782c63bf056da51a6fff7d15b0099af41483112)
 ![Maintainability Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=sqale_rating&token=2782c63bf056da51a6fff7d15b0099af41483112)
 
-Implements [Clockify](https://clockify.me/) time tracker in VSCode
+Implements [Clockify](https://clockify.me/) time tracker in VSCode.
 
 ![Clockify logo](assets/logo/logo-full.png)
+
+## Functions
+You can manage your workspaces, clients, projects, tasks and time entries. You can start and stop a timer on the status bar or automatically by adjusting the settings for the workspace in which you want to enable the auto tracking.
 
 ## Installation
 Launch VS Code Quick Open (`Ctrl+P`), paste the following command, and press enter:
@@ -22,7 +25,7 @@ ext install tobiaswaelde.clockify-tracker
 Or you can just search for "Clockify" in the Extensions view.
 
 ## Preview
-![Clockify TreeView screenshot](images/preview-treeview.png)
+![Clockify TreeView screenshot](docs/images/treeview-preview.png)
 
 ## Getting Started
 [Getting Started](https://github.com/tobiaswaelde/vscode-clockify/wiki/Home)
