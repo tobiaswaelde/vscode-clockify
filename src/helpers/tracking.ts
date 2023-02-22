@@ -98,9 +98,9 @@ export class Tracking {
 			await Clockify.updateTimeEntry(this.workspace.id, this.timeEntry.id, {
 				description: description,
 				billable: this.timeEntry.billable,
-				projectId: this.timeEntry.projectId,
+				projectId: this.project?.id,
 				tagIds: this.timeEntry.tagIds || undefined,
-				taskId: this.timeEntry.taskId,
+				taskId: this.task?.id,
 				start: this.timeEntry.timeInterval.start,
 			});
 		}
@@ -137,10 +137,24 @@ export class Tracking {
 	 * Show dialogs to select project, task and description
 	 */
 	public static async updateInformation() {
-		console.log('update information');
+		if (!this.workspace || !this.timeEntry) {
+			return;
+		}
+
 		this.project = await this.getProject();
 		this.task = await this.getTask();
 		this.description = await Dialogs.getDescription('What are you working on?');
+
+		await Clockify.updateTimeEntry(this.workspace.id, this.timeEntry.id, {
+			description: this.description,
+			billable: this.timeEntry.billable,
+			projectId: this.project?.id,
+			tagIds: this.timeEntry.tagIds || undefined,
+			taskId: this.task?.id,
+			start: this.timeEntry.timeInterval.start,
+		});
+
+		TreeView.refreshTimeentries();
 	}
 
 	//#region start
