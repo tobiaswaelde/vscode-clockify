@@ -259,15 +259,6 @@
           "default": "",
           "markdownDescription": "The ID of the default task in the workspace. `#clockify.tracking.workspaceId#` must be set."
         },
-        "clockify.tracking.tagIds": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "title": "Tag ID"
-          },
-          "default": [],
-          "markdownDescription": "The IDs of the default tags in the workspace. `#clockify.tracking.workspaceId#` must be set."
-        },
         "clockify.tracking.billable": {
           "type": "boolean",
           "default": false,

@@ -15,6 +15,7 @@ export class Tracking {
 	public static workspace?: Workspace;
 	public static project?: Project;
 	public static task?: Task;
+	public static billable?: boolean;
 
 	/**
 	 * Initilaize tracking API
@@ -55,7 +56,6 @@ export class Tracking {
 		if (this.isTracking) {
 			return;
 		}
-		console.log(this.workspace, this.project, this.task);
 
 		const start = new Date().toISOString();
 
@@ -66,6 +66,7 @@ export class Tracking {
 		this.project = await this.getProject();
 		this.task = await this.getTask();
 		this.description = await Dialogs.getDescription('What are you working on?');
+		this.billable = Config.get<boolean>('tracking.billable');
 
 		// add time entry
 		await Clockify.addTimeEntry(this.workspace.id, {
@@ -73,6 +74,7 @@ export class Tracking {
 			description: this.description,
 			projectId: this.project?.id,
 			taskId: this.task?.id,
+			billable: this.billable,
 		});
 		this.update();
 		TreeView.refreshTimeentries();
@@ -97,7 +99,6 @@ export class Tracking {
 		if (description) {
 			await Clockify.updateTimeEntry(this.workspace.id, this.timeEntry.id, {
 				description: description,
-				billable: this.timeEntry.billable,
 				projectId: this.project?.id,
 				tagIds: this.timeEntry.tagIds || undefined,
 				taskId: this.task?.id,

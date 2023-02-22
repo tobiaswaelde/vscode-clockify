@@ -32,22 +32,16 @@ Or you can just search for "Clockify" in the Extensions view.
 
 *All keys starting with `simpleChangelog.`*
 
-| Settings key                   | Type                | Default value | Description |
-| ------------------------------ | ------------------- | ------------- | ----------- |
-| apiKey                         | string              | ` `           |             |
-| fetchLimit                     | number              | `200`         |             |
-| hideSensitiveData              | boolean             | `false`       |             |
-| showIds                        | boolean             | `false`       |             |
-| workspaces.showNumberOfMembers | boolean             | `true`        |             |
-| tracking.workspaceId           | string              | ` `           |             |
-| tracking.projectId             | string              | ` `           |             |
-| tracking.taskId                | string              | ` `           |             |
-| tracking.tagIds                | array&lt;string&gt; | `[]`          |             |
-| tracking.billable              | boolean             | `false`       |             |
-| tracking.autostart             | boolean             | `false`       |             |
-| tracking.autostop              | boolean             | `true`        |             |
-|                                |                     |               |             |
-|                                |                     |               |             |
-|                                |                     |               |             |
-|                                |                     |               |             |
-|                                |                     |               |             |
+| Settings key                   | Type    | Default value | Description                                                                                  |
+| ------------------------------ | ------- | ------------- | -------------------------------------------------------------------------------------------- |
+| apiKey                         | string  | ` `           | The clockify API key.                                                                        |
+| fetchLimit                     | number  | `200`         | Limit the number of items that will be fetched for displaying in the tree view.              |
+| hideSensitiveData              | boolean | `false`       | Hide sensitive data. Can be useful for screenshots.                                          |
+| showIds                        | boolean | `false`       | Show IDs of the data.                                                                        |
+| workspaces.showNumberOfMembers | boolean | `true`        | Show the number of members for each workspace.                                               |
+| tracking.workspaceId           | string  | ` `           | The ID of the default workspace.                                                             |
+| tracking.projectId             | string  | ` `           | The ID of the default project in the workspace. `clockify.tracking.workspaceId` must be set. |
+| tracking.taskId                | string  | ` `           | The ID of the default task in the workspace. `clockify.tracking.workspaceId` must be set.    |
+| tracking.billable              | boolean | `false`       | Check if Time Entry is billable.                                                             |
+| tracking.autostart             | boolean | `false`       | Start tracking with opening the IDE.                                                         |
+| tracking.autostop              | boolean | `true`        | Stop tracking with closing the IDE.                                                          |
