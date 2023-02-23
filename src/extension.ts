@@ -12,6 +12,7 @@ import { StatusBar } from './views/statusbar';
 import { Tracking } from './helpers/tracking';
 import { ExtensionContext, workspace } from 'vscode';
 import { TreeView } from './views/treeview';
+import { checkDefaultWorkspace } from './functions/check-default-workspace';
 
 export async function activate(context: ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
@@ -19,6 +20,7 @@ export async function activate(context: ExtensionContext) {
 	Context.set('initialized', false);
 
 	checkApiKey();
+	await checkDefaultWorkspace();
 
 	registerCommands(context);
 
@@ -53,6 +55,7 @@ export async function activate(context: ExtensionContext) {
 		if (e.affectsConfiguration('clockify')) {
 			checkApiKey();
 			TreeView.refresh();
+			StatusBar.update();
 		}
 	});
 }

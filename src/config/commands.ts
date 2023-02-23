@@ -10,6 +10,7 @@ export enum Commands {
 	workspacesRefresh = 'clockify.workspaces.refresh',
 	workspacesSelection = 'clockify.workspaces.selection',
 	workspacesSetDefault = 'clockify.workspaces.setAsDefault',
+	workspacesSetWorkspaceDefault = 'clockify.workspaces.setAsWorkspaceDefault',
 	workspacesAdd = 'clockify.workspaces.add',
 	// clients
 	clientsRefresh = 'clockify.clients.refresh',

@@ -50,8 +50,15 @@
       },
       {
         "command": "clockify.workspaces.setAsDefault",
-        "title": "Set as default for this workspace",
+        "title": "Set as default",
         "shortTitle": "Set Default",
+        "category": "Clockify",
+        "enablement": "viewItem == workspace"
+      },
+      {
+        "command": "clockify.workspaces.setAsWorkspaceDefault",
+        "title": "Set as default for this workspace",
+        "shortTitle": "Set Default for Workspace",
         "category": "Clockify",
         "enablement": "viewItem == workspace"
       },
@@ -224,6 +231,11 @@
           "default": "",
           "description": "The clockify API key."
         },
+        "clockify.defaultWorkspaceId": {
+          "type": "string",
+          "default": "",
+          "description": "The ID of the default workspace in which start tracking (if no workspace ID is set in the workspaces settings.json)"
+        },
         "clockify.fetchLimit": {
           "type": "number",
           "default": 200,
@@ -381,6 +393,10 @@
       "view/item/context": [
         {
           "command": "clockify.workspaces.setAsDefault",
+          "when": "view == clockify-workspaces && viewItem == workspace"
+        },
+        {
+          "command": "clockify.workspaces.setAsWorkspaceDefault",
           "when": "view == clockify-workspaces && viewItem == workspace"
         },
         {

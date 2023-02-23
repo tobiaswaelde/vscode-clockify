@@ -14,8 +14,9 @@ import { Commands } from '../../../config/commands';
 import { selectWorkspace } from './commands/select-workspace';
 import { apiKeySet } from '../../../helpers';
 import { addWorkspace } from './commands/add-workspace';
-import { setWorkspaceAsDefault } from './commands/set-as-default';
+import { setWorkspaceAsWorkspaceDefault } from './commands/set-as-workspace-default';
 import { TreeView } from '..';
+import { setWorkspaceAsDefault } from './commands/set-as-default';
 
 type OnDidChangeEventData = WorkspaceTreeItem | undefined;
 
@@ -82,6 +83,9 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 			commands.registerCommand(Commands.workspacesRefresh, (x) => TreeView.refreshWorkspaces(x)),
 			commands.registerCommand(Commands.workspacesSelection, selectWorkspace),
 			commands.registerCommand(Commands.workspacesSetDefault, (x) => setWorkspaceAsDefault(x)),
+			commands.registerCommand(Commands.workspacesSetWorkspaceDefault, (x) =>
+				setWorkspaceAsWorkspaceDefault(x)
+			),
 			commands.registerCommand(Commands.workspacesAdd, addWorkspace)
 		);
 	}

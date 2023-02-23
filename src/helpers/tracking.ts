@@ -121,6 +121,18 @@ export class Tracking {
 	 * check if tracker is running
 	 */
 	public static async update() {
+		if (!this.workspace) {
+			const workspaceId = await this.getWorkspaceId();
+			if (workspaceId) {
+				this.workspace = await Clockify.getWorkspace(workspaceId);
+			} else {
+				this.workspace = await Dialogs.selectWorkspace();
+			}
+			if (!this.workspace) {
+				return;
+			}
+		}
+
 		const timeEntry = await this.getRunningTimeEntry();
 		if (!timeEntry) {
 			this.isTracking = false;
@@ -161,13 +173,13 @@ export class Tracking {
 	//#region start
 	private static async getWorkspace(): Promise<Workspace | undefined> {
 		// check if workspace ID is set in config
-		const workspaceWorkspaceId = Config.get<string>('tracking.workspaceId');
-		if (workspaceWorkspaceId) {
-			return Clockify.getWorkspace(workspaceWorkspaceId);
+		const workspaceId = await this.getWorkspaceId();
+		if (workspaceId) {
+			return Clockify.getWorkspace(workspaceId);
 		}
 
 		// let the user select the workspace
-		return Dialogs.selectWorkspace();
+		return Dialogs.selectWorkspace('Select the workspace to start tracking.');
 	}
 	private static async getProject(): Promise<Project | undefined> {
 		// skip if no workspace is set
@@ -202,11 +214,31 @@ export class Tracking {
 		return task || undefined;
 	}
 	//#endregion
+
+	private static async getWorkspaceId(): Promise<string | undefined> {
+		const workspaceWorkspaceId = Config.get<string>('tracking.workspaceId');
+		if (workspaceWorkspaceId) {
+			return workspaceWorkspaceId;
+		}
+
+		const defaultWorkspaceId = Config.get<string>('defaultWorkspaceId');
+		if (defaultWorkspaceId) {
+			return defaultWorkspaceId;
+		}
+
+		const workspaces = await Clockify.getWorkspaces();
+		if (workspaces.length > 0) {
+			return workspaces[0].id;
+		}
+
+		return undefined;
+	}
+
 	//#region update
 	private static async getRunningTimeEntry(): Promise<TimeEntryImpl | undefined> {
 		// check workspace
-		const configWorkspaceId = Config.get<string>('tracking.workspaceId');
-		if (!configWorkspaceId) {
+		const workspaceId = this.getWorkspaceId();
+		if (!this.workspace || !workspaceId) {
 			return undefined;
 		}
 
@@ -217,11 +249,7 @@ export class Tracking {
 		}
 
 		// find running time entries in workspace
-		// const workspaces = await Clockify.getWorkspaces();
-		// const timeentries = (
-		// 	await Promise.all(workspaces.map((x) => Clockify.getTimeEntriesForUser(x.id, user.id)))
-		// ).flat();
-		const timeentries = await Clockify.getTimeEntriesForUser(configWorkspaceId, user.id);
+		const timeentries = await Clockify.getTimeEntriesForUser(this.workspace.id, user.id);
 		const startedTimeEntries = timeentries.filter((x) => x.timeInterval.end === null);
 
 		// get running time entry
@@ -239,7 +267,6 @@ export class Tracking {
 			return;
 		}
 
-		console.log('[tracking] update workspace');
 		this.workspace = await Clockify.getWorkspace(this.timeEntry.workspaceId);
 	}
 	private static async updateProject() {
@@ -251,7 +278,6 @@ export class Tracking {
 			return;
 		}
 
-		console.log('[tracking] update project');
 		const { workspaceId, projectId } = this.timeEntry;
 		this.project = await Clockify.getProject(workspaceId, projectId);
 	}
@@ -265,7 +291,6 @@ export class Tracking {
 			return;
 		}
 
-		console.log('[tracking] update task');
 		const { workspaceId, projectId, taskId } = this.timeEntry;
 		this.task = await Clockify.getTask(workspaceId, projectId, taskId);
 	}

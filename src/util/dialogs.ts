@@ -68,7 +68,7 @@ export class Dialogs {
 		});
 	}
 
-	public static async selectWorkspace(): Promise<Workspace | undefined> {
+	public static async selectWorkspace(title?: string): Promise<Workspace | undefined> {
 		const workspaces = await Clockify.getWorkspaces();
 		const workspacesItems: IdQuickPickItem[] = workspaces.map((x) => ({
 			id: x.id,
@@ -76,7 +76,7 @@ export class Dialogs {
 		}));
 
 		const res = await window.showQuickPick(workspacesItems, {
-			title: 'Select Workspace',
+			title: title || 'Select Workspace',
 			placeHolder: 'Select Workspace',
 			ignoreFocusOut: true,
 		});
