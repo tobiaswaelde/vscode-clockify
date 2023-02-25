@@ -13,7 +13,7 @@ export async function registerCommands(ctx: ExtensionContext) {
 	ctx.subscriptions.push(
 		commands.registerCommand(Commands.setApiKey, () => setApiKey()),
 		commands.registerCommand(Commands.refresh, () => TreeView.refresh()),
-		commands.registerCommand(Commands.copyToClipboard, (x) => copyToClipboard(x)),
+		commands.registerCommand(Commands.copyToClipboard, (x: string) => copyToClipboard(x)),
 		commands.registerCommand(Commands.trackingStart, () => Tracking.start()),
 		commands.registerCommand(Commands.trackingStop, () => Tracking.stop()),
 		commands.registerCommand(Commands.trackingUpdateInformation, () => Tracking.updateInformation())

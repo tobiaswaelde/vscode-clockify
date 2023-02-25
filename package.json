@@ -36,6 +36,16 @@
         "category": "Clockify"
       },
       {
+        "command": "clockify.tracking.start",
+        "title": "Start tracking",
+        "category": "Clockify"
+      },
+      {
+        "command": "clockify.tracking.stop",
+        "title": "Stop tracking",
+        "category": "Clockify"
+      },
+      {
         "command": "clockify.workspaces.refresh",
         "title": "Refresh Workspaces",
         "shortTitle": "Refresh",
