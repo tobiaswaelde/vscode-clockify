@@ -2,6 +2,11 @@
 
 *Changelog created using the [Simple Changelog](https://marketplace.visualstudio.com/items?itemName=tobiaswaelde.vscode-simple-changelog) extension for VS Code.*
 
+## [4.0.3] - 2023-03-22
+### Fixed
+- status bar item
+
+
 ## [4.0.2] - 2023-02-25
 ### Added
 - Commands to start/stop tracking

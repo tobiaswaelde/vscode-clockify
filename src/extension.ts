@@ -43,9 +43,7 @@ export async function activate(context: ExtensionContext) {
 	//#region status bar
 	await StatusBar.initialize(context);
 	setInterval(() => {
-		if (Tracking.isTracking) {
-			StatusBar.update();
-		}
+		StatusBar.update();
 	}, 1000);
 	//#endregion
 
