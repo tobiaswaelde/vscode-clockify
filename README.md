@@ -1,13 +1,15 @@
 # Clockify
 
-<!-- project badges -->
-![Quality Gate Status](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=alert_status&token=2782c63bf056da51a6fff7d15b0099af41483112)
-![Security Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=security_rating&token=2782c63bf056da51a6fff7d15b0099af41483112)
-![Vulnerabilities](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=vulnerabilities&token=2782c63bf056da51a6fff7d15b0099af41483112)
-![Bugs](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=bugs&token=2782c63bf056da51a6fff7d15b0099af41483112)
-![Lines of Code](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=ncloc&token=2782c63bf056da51a6fff7d15b0099af41483112)
-![Duplicated Lines (%)](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=duplicated_lines_density&token=2782c63bf056da51a6fff7d15b0099af41483112)
-![Maintainability Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYYUyOSklG8PXLMOvYBO&metric=sqale_rating&token=2782c63bf056da51a6fff7d15b0099af41483112)
+<!-- github build status badge -->
+[![Build](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml/badge.svg?branch=master&event=status)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml)
+<!-- sonarqube project badges -->
+[![Quality Gate Status](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=alert_status&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
+[![Security Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=security_rating&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
+[![Vulnerabilities](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=vulnerabilities&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
+[![Bugs](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=bugs&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
+[![Lines of Code](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=ncloc&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
+[![Duplicated Lines (%)](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=duplicated_lines_density&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
+[![Maintainability Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=sqale_rating&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
 
 Implements [Clockify](https://clockify.me/) time tracker in VSCode.
 
