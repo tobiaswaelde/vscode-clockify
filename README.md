@@ -1,7 +1,7 @@
 # Clockify
 
 <!-- github build status badge -->
-[![Build](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml/badge.svg?branch=master&event=status)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml)
+[![Build](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml/badge.svg)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml)
 <!-- sonarqube project badges -->
 [![Quality Gate Status](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=alert_status&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
 [![Security Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=security_rating&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
