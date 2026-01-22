@@ -375,7 +375,7 @@
 	"dependencies": {
 		"@types/lodash": "^4.14.138",
 		"axios": "^0.21.2",
-		"lodash": "^4.17.21",
+		"lodash": "^4.17.23",
 		"moment": "^2.29.2"
 	}
 }
