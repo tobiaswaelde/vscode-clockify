@@ -135,6 +135,7 @@ export class Dialogs {
 			ignoreFocusOut: true,
 			placeHolder: 'Enter a name for your project',
 			prompt: 'Project Name',
+			value: name,
 		});
 	}
 	public static async getProjectVisibility(): Promise<boolean> {

@@ -209,6 +209,92 @@ describe('stopping a running timer', () => {
 	});
 });
 
+describe('project rename command', () => {
+	function createRenameProject({ workspace = { id: 'workspace-1' }, name, updateResult } = {}) {
+		const calls = { errors: [], names: [], updates: [], information: [], refreshes: 0 };
+		const { renameProject } = loadTypeScriptModule(
+			'src/views/treeview/projects/commands/rename-project.ts',
+			{
+				vscode: {
+					window: {
+						showInformationMessage: (message) => calls.information.push(message),
+					},
+				},
+				'../..': {
+					TreeView: { refreshProjects: () => calls.refreshes++ },
+				},
+				'../../../../sdk': {
+					Clockify: {
+						updateProject: async (...args) => {
+							calls.updates.push(args);
+							return updateResult;
+						},
+					},
+				},
+				'../../../../sdk/util': {
+					showError: (message) => calls.errors.push(message),
+				},
+				'../../../../util/dialogs': {
+					Dialogs: {
+						getProjectName: async (currentName) => {
+							calls.names.push(currentName);
+							return name;
+						},
+					},
+				},
+				'../../../../util/global-state': {
+					GlobalState: { get: () => workspace },
+				},
+			}
+		);
+		return { calls, renameProject };
+	}
+
+	it('prefills and submits the trimmed project name', async () => {
+		const { calls, renameProject } = createRenameProject({
+			name: '  Renamed project  ',
+			updateResult: { name: 'Renamed project' },
+		});
+
+		await renameProject({ project: { id: 'project-1', name: 'Original project' } });
+
+		assert.deepEqual(calls.names, ['Original project']);
+		assert.deepEqual(calls.updates, [
+			['workspace-1', 'project-1', { name: 'Renamed project' }],
+		]);
+		assert.deepEqual(calls.information, ["Project 'Renamed project' updated."]);
+		assert.equal(calls.refreshes, 1);
+	});
+
+	it('does not call the API when the dialog is cancelled or empty', async () => {
+		for (const name of [undefined, '', '   ']) {
+			const { calls, renameProject } = createRenameProject({ name });
+			await renameProject({ project: { id: 'project-1', name: 'Original project' } });
+			assert.equal(calls.updates.length, 0);
+		}
+	});
+
+	it('reports missing workspace or project context', async () => {
+		const missingWorkspace = createRenameProject({ workspace: null });
+		await missingWorkspace.renameProject({ project: { id: 'project-1' } });
+		assert.deepEqual(missingWorkspace.calls.errors, ['No workspace or project selected.']);
+
+		const missingProject = createRenameProject();
+		await missingProject.renameProject(undefined);
+		assert.deepEqual(missingProject.calls.errors, ['No workspace or project selected.']);
+	});
+
+	it('does not report success or refresh after an API failure', async () => {
+		const { calls, renameProject } = createRenameProject({ name: 'Renamed project' });
+
+		await renameProject({ project: { id: 'project-1', name: 'Original project' } });
+
+		assert.equal(calls.updates.length, 1);
+		assert.equal(calls.information.length, 0);
+		assert.equal(calls.refreshes, 0);
+	});
+});
+
 describe('API-key migration', () => {
 	const { getLegacyApiKey } = loadTypeScriptModule('src/util/api-key-values.ts');
 
