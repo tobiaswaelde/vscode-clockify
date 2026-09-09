@@ -295,6 +295,104 @@ describe('project rename command', () => {
 	});
 });
 
+describe('project delete command', () => {
+	function createDeleteProject({
+		workspace = { id: 'workspace-1' },
+		confirmation = 'Yes',
+		deleteResult,
+	} = {}) {
+		const calls = {
+			confirmations: [],
+			deletes: [],
+			errors: [],
+			information: [],
+			refreshes: [],
+		};
+		const { deleteProject } = loadTypeScriptModule(
+			'src/views/treeview/projects/commands/delete-project.ts',
+			{
+				vscode: {
+					window: {
+						showInformationMessage: (message) => calls.information.push(message),
+					},
+				},
+				'../..': {
+					TreeView: {
+						refreshProjects: () => calls.refreshes.push('projects'),
+						refreshTasks: () => calls.refreshes.push('tasks'),
+						refreshTimeentries: () => calls.refreshes.push('timeentries'),
+					},
+				},
+				'../../../../sdk': {
+					Clockify: {
+						deleteProject: async (...args) => {
+							calls.deletes.push(args);
+							return deleteResult;
+						},
+					},
+				},
+				'../../../../sdk/util': {
+					showError: (message) => calls.errors.push(message),
+				},
+				'../../../../util/dialogs': {
+					Dialogs: {
+						askForConfirmation: async (message) => {
+							calls.confirmations.push(message);
+							return confirmation;
+						},
+					},
+				},
+				'../../../../util/global-state': {
+					GlobalState: { get: () => workspace },
+				},
+			}
+		);
+		return { calls, deleteProject };
+	}
+
+	it('identifies and deletes the selected project, then refreshes dependent views', async () => {
+		const { calls, deleteProject } = createDeleteProject({
+			deleteResult: { id: 'project-1', name: 'Project One' },
+		});
+
+		await deleteProject({ project: { id: 'project-1', name: 'Project One' } });
+
+		assert.deepEqual(calls.confirmations, ["Do you really want to delete project 'Project One'?"]);
+		assert.deepEqual(calls.deletes, [['workspace-1', 'project-1']]);
+		assert.deepEqual(calls.information, ["Project 'Project One' deleted."]);
+		assert.deepEqual(calls.refreshes, ['projects', 'tasks', 'timeentries']);
+	});
+
+	it('does not call the API when deletion is cancelled', async () => {
+		const { calls, deleteProject } = createDeleteProject({ confirmation: 'No' });
+
+		await deleteProject({ project: { id: 'project-1', name: 'Project One' } });
+
+		assert.equal(calls.deletes.length, 0);
+		assert.equal(calls.refreshes.length, 0);
+	});
+
+	it('reports missing workspace or project context', async () => {
+		const missingWorkspace = createDeleteProject({ workspace: null });
+		await missingWorkspace.deleteProject({ project: { id: 'project-1' } });
+		assert.deepEqual(missingWorkspace.calls.errors, ['No workspace or project selected.']);
+
+		const missingProject = createDeleteProject();
+		await missingProject.deleteProject(undefined);
+		assert.deepEqual(missingProject.calls.errors, ['No workspace or project selected.']);
+	});
+
+	it('does not report success or refresh after an API failure', async () => {
+		const { calls, deleteProject } = createDeleteProject();
+
+		await deleteProject({ project: { id: 'project-1', name: 'Project One' } });
+
+		assert.equal(calls.deletes.length, 1);
+		assert.equal(calls.information.length, 0);
+		assert.equal(calls.refreshes.length, 0);
+	});
+});
+
 describe('API-key migration', () => {
 	const { getLegacyApiKey } = loadTypeScriptModule('src/util/api-key-values.ts');
 

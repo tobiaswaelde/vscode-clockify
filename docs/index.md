@@ -18,6 +18,6 @@ When Timesheet is enabled for a Clockify workspace, selecting a project is requi
 
 ## Tree view
 
-Projects can be renamed from their context menu. The rename dialog is prefilled with the current project name.
+Projects can be renamed or deleted from their context menu. Deleting a project requires confirmation and refreshes the related Projects, Tasks, and Time Entries views.
 
 ![Clockify tree view](./images/treeview-preview.png)
