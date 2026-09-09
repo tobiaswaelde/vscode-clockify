@@ -9,8 +9,8 @@ export class Config {
 	 * Get the extensions workspace configuration
 	 * @returns The configuration object
 	 */
-	private static getConfiguration(): vscode.WorkspaceConfiguration {
-		return vscode.workspace.getConfiguration('clockify');
+	private static getConfiguration(scope?: vscode.Uri): vscode.WorkspaceConfiguration {
+		return vscode.workspace.getConfiguration('clockify', scope);
 	}
 
 	/**
@@ -18,9 +18,37 @@ export class Config {
 	 * @param {ConfigurationKey} key The key
 	 * @returns The value
 	 */
-	public static get<T>(key: ConfigurationKey): T | undefined {
-		let config = this.getConfiguration();
+	public static get<T>(key: ConfigurationKey, scope?: vscode.Uri): T | undefined {
+		const config = this.getConfiguration(scope);
 		return config.get<T>(key);
+	}
+
+	/**
+	 * Resolve the workspace folder whose resource-scoped tracking settings apply.
+	 */
+	public static getTrackingScope(): vscode.Uri | undefined {
+		const activeEditor = vscode.window.activeTextEditor;
+		if (activeEditor) {
+			const activeFolder = vscode.workspace.getWorkspaceFolder(activeEditor.document.uri);
+			if (activeFolder) {
+				return activeFolder.uri;
+			}
+		}
+
+		const folders = vscode.workspace.workspaceFolders ?? [];
+		if (folders.length === 1) {
+			return folders[0].uri;
+		}
+
+		const linkedFolders = folders.filter((folder) => {
+			const configuration = this.getConfiguration(folder.uri);
+			return (
+				configuration.inspect<boolean>('tracking.autostart')?.workspaceFolderValue === true &&
+				Boolean(configuration.inspect<string>('tracking.projectId')?.workspaceFolderValue)
+			);
+		});
+
+		return linkedFolders.length === 1 ? linkedFolders[0].uri : undefined;
 	}
 
 	/**
@@ -35,9 +63,10 @@ export class Config {
 	public static async set(
 		key: ConfigurationKey,
 		value: unknown,
-		global: boolean | null = null
+		target: vscode.ConfigurationTarget | boolean | null = null,
+		scope?: vscode.Uri
 	): Promise<void> {
-		const config = this.getConfiguration();
-		await config.update(key, value, global);
+		const config = this.getConfiguration(scope);
+		await config.update(key, value, target);
 	}
 }

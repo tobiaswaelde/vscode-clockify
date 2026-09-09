@@ -20,6 +20,8 @@ Workspace, client, project and task selection dialogs include an **Add** action,
 
 Use **Clockify: Add Manual Time Entry** or the **Add** button in the Time Entries view to record a completed interval with project, task, tags, description and billing status.
 
+Use **Link Project to Workspace Folder** from a project's context menu to store the Clockify workspace/project IDs and enable auto-start for that local folder. Single-folder windows apply the link directly; multi-root windows ask which folder to link.
+
 ## Installation
 
 ### Latest release from GitHub
@@ -88,9 +90,9 @@ The API key entered through **Clockify: Set API key** is stored in VS Code Secre
 | hideSensitiveData              | boolean | `false`       | Hide sensitive data. Can be useful for screenshots.                                                                 |
 | showIds                        | boolean | `false`       | Show IDs of the data.                                                                                               |
 | workspaces.showNumberOfMembers | boolean | `true`        | Show the number of members for each workspace.                                                                      |
-| tracking.workspaceId           | string  | ` `           | The ID of the default workspace.                                                                                    |
-| tracking.projectId             | string  | ` `           | The ID of the default project in the workspace. `clockify.tracking.workspaceId` must be set.                        |
-| tracking.taskId                | string  | ` `           | The ID of the default task in the workspace. `clockify.tracking.workspaceId` must be set.                           |
+| tracking.workspaceId           | string  | ` `           | The ID of the default workspace. Supports workspace-folder scope.                                                   |
+| tracking.projectId             | string  | ` `           | The ID of the default project in the workspace. `clockify.tracking.workspaceId` must be set. Supports folder scope. |
+| tracking.taskId                | string  | ` `           | The ID of the default task in the workspace. `clockify.tracking.workspaceId` must be set. Supports folder scope.    |
 | tracking.billable              | boolean | `false`       | Check if Time Entry is billable.                                                                                    |
-| tracking.autostart             | boolean | `false`       | Start tracking with opening the IDE.                                                                                |
+| tracking.autostart             | boolean | `false`       | Start tracking when opening the IDE. Supports workspace-folder scope.                                               |
 | tracking.autostop              | boolean | `true`        | When this VS Code window closes, stop only a timer that was started by this window.                                  |
