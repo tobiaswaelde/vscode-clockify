@@ -18,6 +18,8 @@ import { Commands } from '../../../config/commands';
 import { addTask } from './commands/add-task';
 import { setTaskAsDefault } from './commands/set-as-default';
 import { TreeView } from '..';
+import { renameTask } from './commands/rename-task';
+import { deleteTask } from './commands/delete-task';
 
 type OnDidChangeEventData = TaskTreeItem | undefined;
 
@@ -82,7 +84,9 @@ export class TasksProvider implements TreeDataProvider<TaskTreeItem> {
 		ctx.subscriptions.push(
 			commands.registerCommand(Commands.tasksRefresh, (x) => TreeView.refreshTasks(x)),
 			commands.registerCommand(Commands.tasksSetDefault, (x) => setTaskAsDefault(x)),
-			commands.registerCommand(Commands.tasksAdd, addTask)
+			commands.registerCommand(Commands.tasksAdd, addTask),
+			commands.registerCommand(Commands.tasksRename, renameTask),
+			commands.registerCommand(Commands.tasksDelete, deleteTask)
 		);
 	}
 }
