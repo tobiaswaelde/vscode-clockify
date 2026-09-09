@@ -1,4 +1,4 @@
-import { TreeDataProvider, window } from 'vscode';
+import { TreeDataProvider, TreeView, window } from 'vscode';
 import { ProviderStore } from './provider-store';
 import { TreeViewStore } from './tree-view-store';
 
@@ -7,7 +7,7 @@ import { TreeViewStore } from './tree-view-store';
  * @param name The name of the provider
  * @param provider The provider
  */
-export function registerProvider<T>(name: string, provider: TreeDataProvider<T>) {
+export function registerProvider<T>(name: string, provider: TreeDataProvider<T>): TreeView<T> {
 	// create tree view
 	const viewId = `clockify-${name}`;
 	const treeView = window.createTreeView(viewId, {
@@ -17,4 +17,5 @@ export function registerProvider<T>(name: string, provider: TreeDataProvider<T>)
 	// register values in stores
 	TreeViewStore.set(name, treeView);
 	ProviderStore.set(name, provider);
+	return treeView;
 }

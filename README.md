@@ -1,6 +1,6 @@
 # Clockify
 
-[![CI](https://img.shields.io/github/actions/workflow/status/tobiaswaelde/vscode-clockify/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/tobiaswaelde/vscode-clockify/tests.yml?branch=main&style=for-the-badge&label=Tests)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/tests.yml)
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-Support-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=000000)](https://www.buymeacoffee.com/tobiaswaelde)
 
 Implements [Clockify](https://clockify.me/) time tracker in VSCode.
@@ -57,13 +57,28 @@ Releases are managed with [Changesets](https://github.com/changesets/changesets)
 2. Merge the change into `main`. The `Release PR` workflow creates or updates the `Version Packages` pull request.
 3. Merge the `Version Packages` pull request. The `GitHub Release` workflow packages the extension, creates a `v<version>` GitHub release and attaches the installable VSIX file.
 
+## Development
+
+Use Node.js 22 and Yarn 1. Install dependencies with `yarn install --frozen-lockfile`, then run:
+
+```sh
+yarn test
+yarn typecheck
+yarn lint
+yarn package
+yarn docs:build
+```
+
+Tests and quality checks run in `tests.yml`, releases run in the release workflows, and documentation is deployed independently by `docs.yml`.
+
 ## Configuration
 
 *All keys starting with `clockify.`*
 
+The API key entered through **Clockify: Set API key** is stored in VS Code SecretStorage and is not written to user or workspace settings.
+
 | Settings key                   | Type    | Default value | Description                                                                                                         |
 | ------------------------------ | ------- | ------------- | ------------------------------------------------------------------------------------------------------------------- |
-| apiKey                         | string  | ` `           | The clockify API key.                                                                                               |
 | defaultWorkspaceId             | string  | ` `           | The ID of the default workspace in which start tracking (if no workspace ID is set in the workspaces settings.json) |
 | fetchLimit                     | number  | `200`         | Limit the number of items that will be fetched for displaying in the tree view.                                     |
 | hideSensitiveData              | boolean | `false`       | Hide sensitive data. Can be useful for screenshots.                                                                 |

@@ -13,49 +13,59 @@ import { Tracking } from './helpers/tracking';
 import { ExtensionContext, workspace } from 'vscode';
 import { TreeView } from './views/treeview';
 import { checkDefaultWorkspace } from './functions/check-default-workspace';
+import { ApiKey } from './util/api-key';
 
 export async function activate(context: ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
 	Context.setObject(context);
-	Context.set('initialized', false);
+	await Context.set('initialized', false);
 
-	checkApiKey();
-	await checkDefaultWorkspace();
+	await ApiKey.migrateLegacyConfiguration();
+	const hasApiKey = await checkApiKey();
 
 	registerCommands(context);
 
 	//#region tree view
-	registerProvider('workspaces', new WorkspacesProvider(context));
-	registerProvider('clients', new ClientsProvider(context));
-	registerProvider('projects', new ProjectsProvider(context));
-	registerProvider('tasks', new TasksProvider(context));
-	registerProvider('tags', new TagsProvider(context));
-	registerProvider('timeentries', new TimeentriesProvider(context));
+	context.subscriptions.push(
+		registerProvider('workspaces', new WorkspacesProvider(context)),
+		registerProvider('clients', new ClientsProvider(context)),
+		registerProvider('projects', new ProjectsProvider(context)),
+		registerProvider('tasks', new TasksProvider(context)),
+		registerProvider('tags', new TagsProvider(context)),
+		registerProvider('timeentries', new TimeentriesProvider(context))
+	);
 	//#endregion
 
 	//#region tracking
-	await Tracking.initialize();
-	setInterval(() => {
-		Tracking.update();
+	if (hasApiKey) {
+		await checkDefaultWorkspace();
+		await Tracking.initialize();
+	}
+	const trackingInterval = setInterval(() => {
+		void Tracking.update();
 	}, 5000);
+	context.subscriptions.push({ dispose: () => clearInterval(trackingInterval) });
 	//#endregion
 
 	//#region status bar
-	await StatusBar.initialize(context);
-	setInterval(() => {
+	StatusBar.initialize(context);
+	const statusBarInterval = setInterval(() => {
 		StatusBar.update();
 	}, 1000);
+	context.subscriptions.push({ dispose: () => clearInterval(statusBarInterval) });
 	//#endregion
 
 	// refresh treeview when config changes
-	workspace.onDidChangeConfiguration((e) => {
-		// only listen for config changes in clockify config
-		if (e.affectsConfiguration('clockify')) {
-			checkApiKey();
-			TreeView.refresh();
-			StatusBar.update();
-		}
-	});
+	context.subscriptions.push(
+		workspace.onDidChangeConfiguration(async (e) => {
+			// only listen for config changes in clockify config
+			if (e.affectsConfiguration('clockify')) {
+				await checkApiKey();
+				TreeView.refresh();
+				StatusBar.update();
+			}
+		})
+	);
 }
 
 export async function deactivate() {

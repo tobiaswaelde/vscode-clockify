@@ -32,7 +32,6 @@ jobs:
           node-version: 22
           cache: yarn
       - run: yarn install --frozen-lockfile
-      - run: yarn lint
       - id: release
         name: Read release metadata
         shell: bash

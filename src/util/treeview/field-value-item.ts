@@ -1,6 +1,7 @@
 import { Command, MarkdownString, TreeItem, TreeItemCollapsibleState } from 'vscode';
 import { FieldValue } from '../../types/field-value';
 import { getValueTypeIconPath } from '../icon';
+import { toSingleLine } from '../text';
 
 export class FieldValueItem extends TreeItem {
 	/**
@@ -18,7 +19,7 @@ export class FieldValueItem extends TreeItem {
 		super(value.name, TreeItemCollapsibleState.None);
 
 		this.iconPath = value.icon && getValueTypeIconPath(value.icon);
-		this.description = value.value.replace('\n', ' ');
+		this.description = toSingleLine(value.value);
 
 		if (tooltip !== undefined) {
 			if (tooltip === true) {

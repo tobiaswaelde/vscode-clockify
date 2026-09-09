@@ -7,6 +7,7 @@ import { Dialogs } from '../util/dialogs';
 import { Project } from '../sdk/types/project';
 import { Task } from '../sdk/types/task';
 import { TreeView } from '../views/treeview';
+import { ApiKey } from '../util/api-key';
 
 export class Tracking {
 	public static isTracking: boolean = false;
@@ -16,6 +17,7 @@ export class Tracking {
 	public static project?: Project;
 	public static task?: Task;
 	public static billable?: boolean;
+	private static updateInProgress?: Promise<void>;
 
 	/**
 	 * Initilaize tracking API
@@ -52,6 +54,10 @@ export class Tracking {
 	 * Start tracking
 	 */
 	public static async start() {
+		if (!(await ApiKey.get())) {
+			return;
+		}
+
 		// skip is tracker is already active
 		if (this.isTracking) {
 			return;
@@ -76,7 +82,7 @@ export class Tracking {
 			taskId: this.task?.id,
 			billable: this.billable,
 		});
-		this.update();
+		await this.update();
 		TreeView.refreshTimeentries();
 	}
 
@@ -120,7 +126,23 @@ export class Tracking {
 	/**
 	 * check if tracker is running
 	 */
-	public static async update() {
+	public static update(): Promise<void> {
+		if (!this.updateInProgress) {
+			this.updateInProgress = this.performUpdate().finally(() => {
+				this.updateInProgress = undefined;
+			});
+		}
+
+		return this.updateInProgress;
+	}
+
+	private static async performUpdate(): Promise<void> {
+		if (!(await ApiKey.get())) {
+			this.isTracking = false;
+			this.timeEntry = undefined;
+			return;
+		}
+
 		if (!this.workspace) {
 			const workspaceId = await this.getWorkspaceId();
 			if (workspaceId) {
@@ -140,9 +162,7 @@ export class Tracking {
 		} else {
 			this.isTracking = true;
 			this.timeEntry = timeEntry;
-			this.updateWorkspace();
-			this.updateProject();
-			this.updateTask();
+			await Promise.all([this.updateWorkspace(), this.updateProject(), this.updateTask()]);
 		}
 	}
 
@@ -237,7 +257,7 @@ export class Tracking {
 	//#region update
 	private static async getRunningTimeEntry(): Promise<TimeEntryImpl | undefined> {
 		// check workspace
-		const workspaceId = this.getWorkspaceId();
+		const workspaceId = await this.getWorkspaceId();
 		if (!this.workspace || !workspaceId) {
 			return undefined;
 		}

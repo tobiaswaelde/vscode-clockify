@@ -22,6 +22,7 @@ import {
 import { User } from './types/user';
 import { Workspace, WorkspaceRequest } from './types/workspace';
 import { showError } from './util';
+import { filterByArchivedState, filterTasksByActivity } from './results';
 
 const BASE_URL = 'https://api.clockify.me/api/v1';
 
@@ -35,7 +36,11 @@ export class Clockify {
 	 * @param {string} apiKey The API key, `undefined` to remove authentication
 	 */
 	public static authenticate(apiKey: string | undefined) {
-		this.http.defaults.headers.common['X-Api-Key'] = apiKey;
+		if (apiKey) {
+			this.http.defaults.headers.common['X-Api-Key'] = apiKey;
+		} else {
+			delete this.http.defaults.headers.common['X-Api-Key'];
+		}
 	}
 
 	//#region Clients
@@ -58,7 +63,7 @@ export class Clockify {
 			);
 
 			const res = await this.http.get(`/workspaces/${workspaceId}/clients?${q}`);
-			const clients = res.data as Client[];
+			const clients = filterByArchivedState(res.data as Client[], false);
 			clients.sort((a, b) => a.name.localeCompare(b.name));
 			return clients;
 		} catch (err) {
@@ -140,10 +145,11 @@ export class Clockify {
 		filter?: GetProjectsFilter
 	): Promise<Project[]> {
 		try {
+			const archived = filter?.archived ?? false;
 			const q = qs.stringify(
 				{
 					name: filter?.name,
-					archived: filter?.archived,
+					archived,
 					page: filter?.page,
 					//eslint-disable-next-line @typescript-eslint/naming-convention
 					'page-size': filter?.pageSize,
@@ -152,7 +158,7 @@ export class Clockify {
 			);
 
 			const res = await this.http.get(`/workspaces/${workspaceId}/projects?${q}`);
-			return res.data as Project[];
+			return filterByArchivedState(res.data as Project[], archived);
 		} catch (err) {
 			showError('Error fetching projects.', err);
 			return [];
@@ -334,7 +340,8 @@ export class Clockify {
 		projectId: string,
 		filter: GetTasksFilter = {}
 	): Promise<Task[]> {
-		const { isActive, name, page, pageSize } = filter;
+		const { name, page, pageSize } = filter;
+		const isActive = filter.isActive ?? true;
 		try {
 			const q = qs.stringify(
 				//eslint-disable-next-line @typescript-eslint/naming-convention
@@ -345,7 +352,7 @@ export class Clockify {
 			const res = await this.http.get(
 				`/workspaces/${workspaceId}/projects/${projectId}/tasks?${q}`
 			);
-			return res.data as Task[];
+			return filterTasksByActivity(res.data as Task[], isActive);
 		} catch (err) {
 			showError('Error fetching tasks.', err);
 			return [];

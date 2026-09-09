@@ -18,7 +18,7 @@ export class Dialogs {
 	//#region General
 	public static async askForConfirmation(text: string): Promise<'Yes' | 'No' | undefined> {
 		return await window.showErrorMessage(
-			'Do you really want to delete the selected client?',
+			text,
 			'Yes',
 			'No'
 		);
@@ -28,6 +28,7 @@ export class Dialogs {
 		return window.showInputBox({
 			prompt: 'Enter your API key.',
 			placeHolder: 'Enter your API key',
+			password: true,
 			ignoreFocusOut: true,
 			value: apiKey,
 		});

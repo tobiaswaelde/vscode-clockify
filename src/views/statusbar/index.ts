@@ -7,16 +7,14 @@ export class StatusBar {
 	private static actionItem: StatusBarActionItem;
 	private static trackingItem: StatusBarTrackingItem;
 
-	public static async initialize(ctx: ExtensionContext) {
-		console.log('init statusbar');
+	public static initialize(ctx: ExtensionContext) {
 		this.actionItem = new StatusBarActionItem(ctx, StatusBarAlignment.Right, this.priority + 1);
 		this.trackingItem = new StatusBarTrackingItem(ctx, StatusBarAlignment.Right, this.priority);
 
 		this.update();
 	}
 
-	public static async update() {
-		console.log('[statusbar] update');
+	public static update() {
 		this.actionItem.update();
 		this.trackingItem.update();
 	}
