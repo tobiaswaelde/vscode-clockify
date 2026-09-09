@@ -20,6 +20,8 @@ When Timesheet is enabled for a Clockify workspace, selecting a project is requi
 
 ## Tree view
 
+Workspace, client, project and task selection dialogs end with an **Add** action. The newly created item is selected immediately, so starting or updating a timer can continue without switching to the tree view.
+
 Projects can be renamed or deleted from their context menu. Deleting a project requires confirmation and refreshes the related Projects, Tasks, and Time Entries views.
 
 Tasks can also be renamed or deleted from their context menu. The current task name is prefilled when renaming, and deletion requires confirmation.

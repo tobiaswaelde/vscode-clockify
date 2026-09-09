@@ -1,5 +1,6 @@
-import { QuickPickItem, window } from 'vscode';
+import { commands, QuickPickItem, window } from 'vscode';
 import { PROJECT_COLORS } from '../config/colors';
+import { Commands } from '../config/commands';
 import { Clockify } from '../sdk';
 import { GetClientsFilter, GetProjectsFilter, GetTasksFilter } from '../sdk/filters';
 import { Client } from '../sdk/types/client';
@@ -13,6 +14,8 @@ interface IdQuickPickItem extends QuickPickItem {
 interface ValueQuickPickItem extends QuickPickItem {
 	value: string;
 }
+
+const ADD_ITEM_ID = '__clockify_add__';
 
 export class Dialogs {
 	//#region General
@@ -75,6 +78,7 @@ export class Dialogs {
 			id: x.id,
 			label: x.name,
 		}));
+		workspacesItems.push({ id: ADD_ITEM_ID, label: '$(add) Add Workspace', alwaysShow: true });
 
 		const res = await window.showQuickPick(workspacesItems, {
 			title: title || 'Select Workspace',
@@ -82,9 +86,21 @@ export class Dialogs {
 			ignoreFocusOut: true,
 		});
 
-		if (res) {
-			return workspaces.find((x) => x.id === res.id);
+		if (res?.id === ADD_ITEM_ID) {
+			const name = (await this.getWorkspaceName())?.trim();
+			if (!name) {
+				return undefined;
+			}
+
+			const workspace = await Clockify.addWorkspace({ name });
+			if (workspace) {
+				await commands.executeCommand(Commands.workspacesRefresh);
+				window.showInformationMessage(`Workspace '${workspace.name}' added successfully.`);
+			}
+			return workspace;
 		}
+
+		return workspaces.find((x) => x.id === res?.id);
 	}
 	//#endregion
 
@@ -113,6 +129,7 @@ export class Dialogs {
 		if (allowNone) {
 			clientItems.unshift({ id: 'none', label: 'No Client' });
 		}
+		clientItems.push({ id: ADD_ITEM_ID, label: '$(add) Add Client', alwaysShow: true });
 
 		const res = await window.showQuickPick(clientItems, {
 			title: 'Select Client',
@@ -120,12 +137,24 @@ export class Dialogs {
 			ignoreFocusOut: true,
 		});
 
-		if (res) {
-			if (res.id === 'none') {
-				return null;
-			}
-			return clients.find((x) => x.id === res.id);
+		if (res?.id === 'none') {
+			return null;
 		}
+		if (res?.id === ADD_ITEM_ID) {
+			const name = (await this.getClientName())?.trim();
+			if (!name) {
+				return undefined;
+			}
+
+			const client = await Clockify.addClient(workspaceId, { name });
+			if (client) {
+				await commands.executeCommand(Commands.clientsRefresh);
+				window.showInformationMessage(`Client '${client.name}' added successfully.`);
+			}
+			return client;
+		}
+
+		return clients.find((x) => x.id === res?.id);
 	}
 	//#endregion
 
@@ -138,23 +167,23 @@ export class Dialogs {
 			value: name,
 		});
 	}
-	public static async getProjectVisibility(): Promise<boolean> {
+	public static async getProjectVisibility(): Promise<boolean | undefined> {
 		const res = await window.showQuickPick(['Public', 'Private'], {
 			title: 'Select Visibility',
 			placeHolder: 'Select Visibility',
 			ignoreFocusOut: true,
 		});
 
-		return res === 'Public';
+		return res === undefined ? undefined : res === 'Public';
 	}
-	public static async getProjectBillable(): Promise<boolean> {
+	public static async getProjectBillable(): Promise<boolean | undefined> {
 		const res = await window.showQuickPick(['Billable', 'Non-billable'], {
 			title: 'Billable?',
 			placeHolder: 'Billable?',
 			ignoreFocusOut: true,
 		});
 
-		return res === 'Billable';
+		return res === undefined ? undefined : res === 'Billable';
 	}
 	public static async selectProject(
 		workspaceId: string,
@@ -171,6 +200,7 @@ export class Dialogs {
 		if (allowNone) {
 			projectItems.unshift({ id: 'none', label: 'No Project' });
 		}
+		projectItems.push({ id: ADD_ITEM_ID, label: '$(add) Add Project', alwaysShow: true });
 
 		const res = await window.showQuickPick(projectItems, {
 			title: 'Select Project',
@@ -178,12 +208,47 @@ export class Dialogs {
 			ignoreFocusOut: true,
 		});
 
-		if (res) {
-			if (res.id === 'none') {
-				return null;
-			}
-			return projects.find((x) => x.id === res.id);
+		if (res?.id === 'none') {
+			return null;
 		}
+		if (res?.id === ADD_ITEM_ID) {
+			const client = await this.selectClient(workspaceId, true);
+			if (client === undefined) {
+				return undefined;
+			}
+
+			const name = (await this.getProjectName())?.trim();
+			if (!name) {
+				return undefined;
+			}
+			const color = await this.selectColor();
+			if (!color) {
+				return undefined;
+			}
+			const isPublic = await this.getProjectVisibility();
+			if (isPublic === undefined) {
+				return undefined;
+			}
+			const billable = await this.getProjectBillable();
+			if (billable === undefined) {
+				return undefined;
+			}
+
+			const project = await Clockify.addProject(workspaceId, {
+				clientId: client?.id,
+				name,
+				color,
+				isPublic,
+				billable,
+			});
+			if (project) {
+				await commands.executeCommand(Commands.projectsRefresh);
+				window.showInformationMessage(`Project '${project.name}' added.`);
+			}
+			return project;
+		}
+
+		return projects.find((x) => x.id === res?.id);
 	}
 	//#endregion
 
@@ -210,18 +275,31 @@ export class Dialogs {
 		if (allowNone) {
 			taskItems.unshift({ id: 'none', label: 'No Task' });
 		}
+		taskItems.push({ id: ADD_ITEM_ID, label: '$(add) Add Task', alwaysShow: true });
 
 		const res = await window.showQuickPick(taskItems, {
 			title: 'Select Task',
 			placeHolder: 'Select Task',
 			ignoreFocusOut: true,
 		});
-		if (res) {
-			if (res.id === 'none') {
-				return null;
-			}
-			return tasks.find((x) => x.id === res.id);
+		if (res?.id === 'none') {
+			return null;
 		}
+		if (res?.id === ADD_ITEM_ID) {
+			const name = (await this.getTaskName())?.trim();
+			if (!name) {
+				return undefined;
+			}
+
+			const task = await Clockify.addTask(workspaceId, projectId, { name });
+			if (task) {
+				await commands.executeCommand(Commands.tasksRefresh);
+				window.showInformationMessage(`Task '${task.name}' added.`);
+			}
+			return task;
+		}
+
+		return tasks.find((x) => x.id === res?.id);
 	}
 	//#endregion
 

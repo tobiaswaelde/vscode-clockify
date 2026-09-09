@@ -16,6 +16,8 @@ Implements [Clockify](https://clockify.me/) time tracker in VSCode.
 ## Functions
 You can manage your workspaces, clients, projects, tasks and time entries. You can start and stop a timer on the status bar or automatically by adjusting the settings for the workspace in which you want to enable the auto tracking.
 
+Workspace, client, project and task selection dialogs include an **Add** action, so missing items can be created without leaving the current workflow.
+
 ## Installation
 
 ### Latest release from GitHub
