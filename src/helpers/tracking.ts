@@ -8,6 +8,7 @@ import { Project } from '../sdk/types/project';
 import { Task } from '../sdk/types/task';
 import { TreeView } from '../views/treeview';
 import { ApiKey } from '../util/api-key';
+import { requiresProject } from './tracking-requirements';
 
 export class Tracking {
 	public static isTracking: boolean = false;
@@ -69,7 +70,11 @@ export class Tracking {
 		if (!this.workspace) {
 			return;
 		}
-		this.project = await this.getProject();
+		const projectRequired = requiresProject(this.workspace.workspaceSettings);
+		this.project = await this.getProject(projectRequired);
+		if (projectRequired && !this.project) {
+			return;
+		}
 		this.task = await this.getTask();
 		this.description = await Dialogs.getDescription('What are you working on?');
 		this.billable = Config.get<boolean>('tracking.billable');
@@ -201,7 +206,7 @@ export class Tracking {
 		// let the user select the workspace
 		return Dialogs.selectWorkspace('Select the workspace to start tracking.');
 	}
-	private static async getProject(): Promise<Project | undefined> {
+	private static async getProject(required: boolean = false): Promise<Project | undefined> {
 		// skip if no workspace is set
 		if (!this.workspace) {
 			return undefined;
@@ -214,7 +219,7 @@ export class Tracking {
 		}
 
 		// let the user select the project
-		const project = await Dialogs.selectProject(this.workspace.id, true);
+		const project = await Dialogs.selectProject(this.workspace.id, !required);
 		return project || undefined;
 	}
 	private static async getTask(): Promise<Task | undefined> {

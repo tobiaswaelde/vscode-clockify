@@ -67,6 +67,22 @@ describe('Clockify result filters', () => {
 	});
 });
 
+describe('tracking requirements', () => {
+	const { requiresProject } = loadTypeScriptModule('src/helpers/tracking-requirements.ts');
+
+	it('requires a project when Timesheet is enabled', () => {
+		assert.equal(requiresProject({ canSeeTimeSheet: true, forceProjects: false }), true);
+	});
+
+	it('requires a project when the workspace forces projects', () => {
+		assert.equal(requiresProject({ canSeeTimeSheet: false, forceProjects: true }), true);
+	});
+
+	it('keeps project-less timers available in workspaces without either requirement', () => {
+		assert.equal(requiresProject({ canSeeTimeSheet: false, forceProjects: false }), false);
+	});
+});
+
 describe('API-key migration', () => {
 	const { getLegacyApiKey } = loadTypeScriptModule('src/util/api-key-values.ts');
 
