@@ -35,6 +35,15 @@ export type ProjectRequest = {
 	tasks?: TaskRequest[];
 };
 
+export type UpdateProjectRequest = {
+	archived?: boolean;
+	billable?: boolean;
+	clientId?: string;
+	color?: string;
+	isPublic?: boolean;
+	name?: string;
+};
+
 export type ProjectSummary = {
 	color: string;
 	id: string;

@@ -18,4 +18,6 @@ When Timesheet is enabled for a Clockify workspace, selecting a project is requi
 
 ## Tree view
 
+Projects can be renamed from their context menu. The rename dialog is prefilled with the current project name.
+
 ![Clockify tree view](./images/treeview-preview.png)

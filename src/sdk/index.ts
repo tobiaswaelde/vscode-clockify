@@ -9,7 +9,7 @@ import {
 	GetTimeEntryFilter,
 } from './filters';
 import { Client, ClientRequest } from './types/client';
-import { Project, ProjectRequest } from './types/project';
+import { Project, ProjectRequest, UpdateProjectRequest } from './types/project';
 import { Tag, TagRequest } from './types/tag';
 import { Task, TaskRequest } from './types/task';
 import {
@@ -199,6 +199,27 @@ export class Clockify {
 			return res.data as Project;
 		} catch (err) {
 			showError('Error adding project.', err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Update a project in the workspace
+	 * @param {string} workspaceId The ID of the workspace the project belongs to
+	 * @param {string} projectId The ID of the project to update
+	 * @param {UpdateProjectRequest} data The project fields to update
+	 * @returns {Project|undefined} The updated project
+	 */
+	public static async updateProject(
+		workspaceId: string,
+		projectId: string,
+		data: UpdateProjectRequest
+	): Promise<Project | undefined> {
+		try {
+			const res = await this.http.put(`/workspaces/${workspaceId}/projects/${projectId}`, data);
+			return res.data as Project;
+		} catch (err) {
+			showError('Error updating project.', err);
 			return undefined;
 		}
 	}
