@@ -311,7 +311,7 @@
         "clockify.tracking.autostop": {
           "type": "boolean",
           "default": true,
-          "description": "Stop tracking with closing the IDE."
+          "description": "When closing this VS Code window, stop the timer only if it was started by this window."
         }
       }
     },

@@ -11,6 +11,7 @@ export type TimeEntriesDurationRequest = {
 
 export type TimeEntry = {
 	billable: boolean;
+	id: string;
 	isLocked: boolean;
 	projectId: ProjectId;
 	tagIds: TagId[];

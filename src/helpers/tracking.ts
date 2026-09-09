@@ -19,6 +19,7 @@ export class Tracking {
 	public static task?: Task;
 	public static billable?: boolean;
 	private static updateInProgress?: Promise<void>;
+	private static startedTimeEntryId?: string;
 
 	/**
 	 * Initilaize tracking API
@@ -42,13 +43,18 @@ export class Tracking {
 	 * Clean up tracking API
 	 */
 	public static async dispose() {
-		// check autostop tracking
 		const autostop = Config.get<boolean>('tracking.autostop') || false;
-		if (autostop) {
-			console.log('[tracking] automatically stop tracking...');
-			await this.update();
-			await this.stop();
+		if (!autostop || !this.startedTimeEntryId) {
+			return;
 		}
+
+		await this.update();
+		if (this.timeEntry?.id !== this.startedTimeEntryId) {
+			return;
+		}
+
+		console.log('[tracking] automatically stop tracking...');
+		await this.stop();
 	}
 
 	/**
@@ -80,13 +86,17 @@ export class Tracking {
 		this.billable = Config.get<boolean>('tracking.billable');
 
 		// add time entry
-		await Clockify.addTimeEntry(this.workspace.id, {
+		const timeEntry = await Clockify.addTimeEntry(this.workspace.id, {
 			start,
 			description: this.description,
 			projectId: this.project?.id,
 			taskId: this.task?.id,
 			billable: this.billable,
 		});
+		if (!timeEntry) {
+			return;
+		}
+		this.startedTimeEntryId = timeEntry.id;
 		await this.update();
 		TreeView.refreshTimeentries();
 	}
@@ -151,6 +161,7 @@ export class Tracking {
 		// update status bar
 		this.isTracking = false;
 		this.timeEntry = undefined;
+		this.startedTimeEntryId = undefined;
 		await StatusBar.update();
 		TreeView.refreshTimeentries();
 	}
@@ -192,6 +203,9 @@ export class Tracking {
 			this.isTracking = false;
 			this.timeEntry = undefined;
 		} else {
+			if (this.startedTimeEntryId && timeEntry.id !== this.startedTimeEntryId) {
+				this.startedTimeEntryId = undefined;
+			}
 			this.isTracking = true;
 			this.timeEntry = timeEntry;
 			this.description = timeEntry.description;

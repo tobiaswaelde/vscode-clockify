@@ -89,4 +89,4 @@ The API key entered through **Clockify: Set API key** is stored in VS Code Secre
 | tracking.taskId                | string  | ` `           | The ID of the default task in the workspace. `clockify.tracking.workspaceId` must be set.                           |
 | tracking.billable              | boolean | `false`       | Check if Time Entry is billable.                                                                                    |
 | tracking.autostart             | boolean | `false`       | Start tracking with opening the IDE.                                                                                |
-| tracking.autostop              | boolean | `true`        | Stop tracking with closing the IDE.                                                                                 |
+| tracking.autostop              | boolean | `true`        | When this VS Code window closes, stop only a timer that was started by this window.                                  |

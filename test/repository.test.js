@@ -122,13 +122,17 @@ describe('stopping a running timer', () => {
 			selectProject: async () => undefined,
 			...overrides.Dialogs,
 		};
+		const Config = {
+			get: () => undefined,
+			...overrides.Config,
+		};
 		const { requiresProject } = loadTypeScriptModule(
 			'src/helpers/tracking-requirements.ts'
 		);
 		const { Tracking } = loadTypeScriptModule('src/helpers/tracking.ts', {
 			'./../views/statusbar/index': { StatusBar: { update: async () => undefined } },
 			'../sdk': { Clockify },
-			'../util/config': { Config: { get: () => undefined } },
+			'../util/config': { Config },
 			'../util/dialogs': { Dialogs },
 			'../views/treeview': { TreeView: { refreshTimeentries: () => undefined } },
 			'../util/api-key': { ApiKey: { get: async () => 'api-key' } },
@@ -206,6 +210,24 @@ describe('stopping a running timer', () => {
 		assert.equal(calls.stops.length, 0);
 		assert.equal(Tracking.isTracking, true);
 		assert.equal(Tracking.timeEntry.projectId, null);
+	});
+
+	it('auto-stops only a timer started by the same extension instance', async () => {
+		const owned = createTracking({ Config: { get: () => true } });
+		owned.Tracking.startedTimeEntryId = 'entry-1';
+		owned.Tracking.update = async () => undefined;
+		let ownedStops = 0;
+		owned.Tracking.stop = async () => ownedStops++;
+		await owned.Tracking.dispose();
+		assert.equal(ownedStops, 1);
+
+		const observed = createTracking({ Config: { get: () => true } });
+		observed.Tracking.startedTimeEntryId = 'entry-from-another-window';
+		observed.Tracking.update = async () => undefined;
+		let observedStops = 0;
+		observed.Tracking.stop = async () => observedStops++;
+		await observed.Tracking.dispose();
+		assert.equal(observedStops, 0);
 	});
 });
 
