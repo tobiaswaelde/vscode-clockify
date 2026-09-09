@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.5
+
+### Patch Changes
+
+- e2f287b: Prompt for a required project before stopping project-less timers and retain the running state when Clockify rejects an update or stop request.
+- 5e9a3c1: Store API keys securely, avoid unauthenticated startup polling, clean up extension resources correctly, filter inactive items, and fix tree-view text handling.
+- 8cdc4a2: Require a project before starting timers in workspaces that use Timesheet or enforce project selection.
+
 ## 4.0.4
 
 ### Patch Changes
