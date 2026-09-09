@@ -34,4 +34,10 @@ To auto-track the correct project for a local folder, use **Link Project to Work
 
 With the optional **Atlassian for VS Code** extension installed, right-click an issue in its Jira Work Items or Custom JQL view—or a related Jira issue shown for a Bitbucket pull request—and choose **Start Clockify Timer**. Clockify uses `ISSUE-KEY: Summary` as the timer description and retains the extension's normal project/task selection. If a timer is already running, it is not replaced.
 
+## Pomodoro
+
+Enable `clockify.pomodoro.enabled` to apply a configurable focus interval to the active Clockify timer. This also observes timers started in the browser or another Clockify client. Browser-extension Pomodoro preferences live only in that browser's storage and are not exposed by the Clockify API, so configure the VS Code interval, short break, long break, and long-break cadence with the `clockify.pomodoro.*` settings.
+
+By default, VS Code shows actions when focus or break time ends. With `clockify.pomodoro.automaticBreaks`, it stops the work entry without editing it, creates a break entry using the same project/task/tags, and resumes the previous work entry when the configured break ends. Only the focused VS Code window acts on an elapsed interval, preventing duplicate prompts in multi-window use.
+
 ![Clockify tree view](./images/treeview-preview.png)

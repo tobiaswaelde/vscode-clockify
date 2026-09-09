@@ -230,6 +230,69 @@ describe('stopping a running timer', () => {
 		assert.equal(Tracking.timeEntry.projectId, null);
 	});
 
+	it('stops without an edit prompt during an automatic transition', async () => {
+		const { calls, Tracking } = createTracking({
+			Dialogs: {
+				getDescription: async () => {
+					throw new Error('description prompt must not open');
+				},
+			},
+		});
+		Tracking.workspace.workspaceSettings.canSeeTimeSheet = false;
+		Tracking.workspace.workspaceSettings.forceProjects = false;
+		Tracking.timeEntry.projectId = 'project-1';
+
+		assert.equal(await Tracking.stop(false), true);
+
+		assert.equal(calls.updates.length, 0);
+		assert.equal(calls.stops.length, 1);
+	});
+
+	it('continues a previous entry with its Clockify fields', async () => {
+		const starts = [];
+		const source = {
+			billable: true,
+			description: 'Focused work',
+			id: 'entry-1',
+			projectId: 'project-1',
+			tagIds: ['tag-1'],
+			taskId: 'task-1',
+			timeInterval: { start: '2026-09-09T08:00:00.000Z', end: null },
+			userId: 'user-1',
+			workspaceId: 'workspace-1',
+		};
+		const { Tracking } = createTracking({
+			Clockify: {
+				getWorkspace: async () => ({ id: 'workspace-1' }),
+				addTimeEntry: async (...args) => {
+					starts.push(args);
+					return { id: 'entry-2' };
+				},
+			},
+		});
+		Tracking.isTracking = false;
+		Tracking.timeEntry = undefined;
+		Tracking.update = async () => undefined;
+
+		assert.equal(await Tracking.startFromTimeEntry(source, 'Pomodoro break'), true);
+		assert.equal(starts.length, 1);
+		assert.equal(starts[0][0], 'workspace-1');
+		assert.deepEqual(
+			{
+				...starts[0][1],
+				start: '<dynamic>',
+			},
+			{
+				start: '<dynamic>',
+				description: 'Pomodoro break',
+				projectId: 'project-1',
+				taskId: 'task-1',
+				tagIds: ['tag-1'],
+				billable: true,
+			}
+		);
+	});
+
 	it('auto-stops only a timer started by the same extension instance', async () => {
 		const owned = createTracking({ Config: { get: () => true } });
 		owned.Tracking.startedTimeEntryId = 'entry-1';

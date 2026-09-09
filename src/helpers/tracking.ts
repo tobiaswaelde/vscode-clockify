@@ -111,31 +111,33 @@ export class Tracking {
 	/**
 	 * Stop current running timer
 	 */
-	public static async stop() {
+	public static async stop(editBeforeStopping: boolean = true): Promise<boolean> {
 		if (!this.workspace || !this.timeEntry) {
-			return;
+			return false;
 		}
 		const workspace = this.workspace;
 		const timeEntry = this.timeEntry;
 
 		if (requiresProject(workspace.workspaceSettings) && !timeEntry.projectId) {
+			if (!editBeforeStopping) {
+				return false;
+			}
 			this.project = await this.getProject(true);
 			if (!this.project) {
-				return;
+				return false;
 			}
 		}
 
 		// get current user
 		const user = await Clockify.getCurrentUser();
 		if (!user) {
-			return undefined;
+			return false;
 		}
 
 		// ask for description
-		const description = await Dialogs.getDescription(
-			'What were you working on?',
-			timeEntry.description
-		);
+		const description = editBeforeStopping
+			? await Dialogs.getDescription('What were you working on?', timeEntry.description)
+			: undefined;
 		const projectId = this.project?.id ?? timeEntry.projectId;
 		const shouldUpdate = description !== undefined || projectId !== timeEntry.projectId;
 		if (shouldUpdate) {
@@ -150,7 +152,7 @@ export class Tracking {
 				start: timeEntry.timeInterval.start,
 			});
 			if (!updatedTimeEntry) {
-				return;
+				return false;
 			}
 			timeEntry.description = nextDescription;
 			timeEntry.projectId = projectId;
@@ -162,7 +164,7 @@ export class Tracking {
 		const end = new Date().toISOString();
 		const stoppedTimeEntry = await Clockify.stopTimeEntryForUser(workspace.id, user.id, { end });
 		if (!stoppedTimeEntry) {
-			return;
+			return false;
 		}
 
 		// update status bar
@@ -171,6 +173,43 @@ export class Tracking {
 		this.startedTimeEntryId = undefined;
 		await StatusBar.update();
 		TreeView.refreshTimeentries();
+		return true;
+	}
+
+	/**
+	 * Continue an existing entry without opening selection dialogs.
+	 */
+	public static async startFromTimeEntry(
+		source: TimeEntryImpl,
+		description: string = source.description
+	): Promise<boolean> {
+		if (this.isTracking || !(await ApiKey.get())) {
+			return false;
+		}
+
+		const workspace = await Clockify.getWorkspace(source.workspaceId);
+		if (!workspace) {
+			return false;
+		}
+		const timeEntry = await Clockify.addTimeEntry(source.workspaceId, {
+			start: new Date().toISOString(),
+			description,
+			projectId: source.projectId || undefined,
+			taskId: source.taskId || undefined,
+			tagIds: source.tagIds || undefined,
+			billable: source.billable,
+		});
+		if (!timeEntry) {
+			return false;
+		}
+
+		this.workspace = workspace;
+		this.project = undefined;
+		this.task = undefined;
+		this.startedTimeEntryId = timeEntry.id;
+		await this.update();
+		TreeView.refreshTimeentries();
+		return true;
 	}
 
 	/**

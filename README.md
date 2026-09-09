@@ -24,6 +24,8 @@ Use **Link Project to Workspace Folder** from a project's context menu to store 
 
 When the optional **Atlassian for VS Code** extension is installed, Jira issue context menus—including related Jira issues shown for Bitbucket pull requests—include **Start Clockify Timer**. The timer description is populated as `ISSUE-KEY: Summary`; an already running timer is left untouched.
 
+Optional Pomodoro support observes the active Clockify entry even when it was started in the browser. VS Code can notify at focus/break boundaries or automatically stop work, track a `Pomodoro break`, and resume the prior entry. Browser-extension Pomodoro preferences are browser-local and cannot be read through the Clockify API, so VS Code uses the settings below.
+
 ## Installation
 
 ### Latest release from GitHub
@@ -98,3 +100,9 @@ The API key entered through **Clockify: Set API key** is stored in VS Code Secre
 | tracking.billable              | boolean | `false`       | Check if Time Entry is billable.                                                                                    |
 | tracking.autostart             | boolean | `false`       | Start tracking when opening the IDE. Supports workspace-folder scope.                                               |
 | tracking.autostop              | boolean | `true`        | When this VS Code window closes, stop only a timer that was started by this window.                                  |
+| pomodoro.enabled               | boolean | `false`       | Enable Pomodoro handling for the active Clockify timer.                                                              |
+| pomodoro.focusMinutes          | integer | `25`          | Focus interval length in minutes.                                                                                    |
+| pomodoro.shortBreakMinutes     | integer | `5`           | Short break length in minutes.                                                                                       |
+| pomodoro.longBreakMinutes      | integer | `15`          | Long break length in minutes.                                                                                        |
+| pomodoro.sessionsBeforeLongBreak | integer | `4`         | Completed focus intervals before a long break.                                                                       |
+| pomodoro.automaticBreaks       | boolean | `false`       | Automatically stop work, track the break, and resume the prior entry.                                                |
