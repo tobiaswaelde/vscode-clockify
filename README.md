@@ -1,15 +1,6 @@
 # Clockify
 
-<!-- github build status badge -->
-[![Build](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml/badge.svg)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/build.yml)
-<!-- sonarqube project badges -->
-[![Quality Gate Status](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=alert_status&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
-[![Security Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=security_rating&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
-[![Vulnerabilities](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=vulnerabilities&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
-[![Bugs](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=bugs&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
-[![Lines of Code](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=ncloc&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
-[![Duplicated Lines (%)](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=duplicated_lines_density&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
-[![Maintainability Rating](https://sq.srv.tobiaswaelde.com/api/project_badges/measure?project=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh&metric=sqale_rating&token=sqb_9f7ec553b50e159bbb9385e6bd27fb095d33d4ea)](https://sq.srv.tobiaswaelde.com/dashboard?id=tobiaswaelde_vscode-clockify_AYbOBTvPMsG9aSOZ5fmh)
+[![CI](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/ci.yml/badge.svg)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/ci.yml)
 
 Implements [Clockify](https://clockify.me/) time tracker in VSCode.
 
@@ -30,12 +21,12 @@ Or you can just search for "Clockify" in the Extensions view.
 ![Clockify TreeView screenshot](docs/images/treeview-preview.png)
 
 ## Getting Started
-[Getting Started](https://github.com/tobiaswaelde/vscode-clockify/wiki/Home)
+[Getting Started](docs/index.md)
 
 
 ## Configuration
 
-*All keys starting with `simpleChangelog.`*
+*All keys starting with `clockify.`*
 
 | Settings key                   | Type    | Default value | Description                                                                                                         |
 | ------------------------------ | ------- | ------------- | ------------------------------------------------------------------------------------------------------------------- |

@@ -1,0 +1,17 @@
+# Clockify for VS Code
+
+Manage Clockify workspaces, clients, projects, tasks, tags and time entries directly in VS Code.
+
+## Setup
+
+1. Install the `tobiaswaelde.clockify-tracker` extension.
+2. Run **Clockify: Set API key**.
+3. Select a default workspace when prompted.
+
+## Configuration
+
+All settings use the `clockify.` prefix. Open VS Code Settings and search for `Clockify` to configure tracking defaults, auto-start, auto-stop and tree-view options.
+
+## Tree view
+
+![Clockify tree view](./images/treeview-preview.png)
