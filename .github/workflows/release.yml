@@ -22,7 +22,7 @@ jobs:
       - run: yarn install --frozen-lockfile
       - uses: changesets/action@v1
         with:
-          version: yarn version
+          version: yarn changeset version
           publish: yarn release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
