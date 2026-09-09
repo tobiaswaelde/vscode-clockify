@@ -11,12 +11,22 @@ function read(relativePath) {
 	return fs.readFileSync(path.join(root, relativePath), 'utf8');
 }
 
-function loadTypeScriptModule(relativePath) {
+function loadTypeScriptModule(relativePath, dependencies = {}) {
 	const output = ts.transpileModule(read(relativePath), {
 		compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
 	}).outputText;
 	const loadedModule = { exports: {} };
-	new Function('module', 'exports', output)(loadedModule, loadedModule.exports);
+	const requireDependency = (specifier) => {
+		if (!(specifier in dependencies)) {
+			throw new Error(`Missing test dependency: ${specifier}`);
+		}
+		return dependencies[specifier];
+	};
+	new Function('require', 'module', 'exports', output)(
+		requireDependency,
+		loadedModule,
+		loadedModule.exports
+	);
 	return loadedModule.exports;
 }
 
@@ -80,6 +90,122 @@ describe('tracking requirements', () => {
 
 	it('keeps project-less timers available in workspaces without either requirement', () => {
 		assert.equal(requiresProject({ canSeeTimeSheet: false, forceProjects: false }), false);
+	});
+});
+
+describe('stopping a running timer', () => {
+	function createTracking(overrides = {}) {
+		const calls = { updates: [], stops: [] };
+		const clockifyOverrides = overrides.Clockify || {};
+		const Clockify = {
+			getCurrentUser: async () => ({ id: 'user-1' }),
+			updateTimeEntry: async (...args) => {
+				calls.updates.push(args);
+				return clockifyOverrides.updateTimeEntry
+					? clockifyOverrides.updateTimeEntry(...args)
+					: {};
+			},
+			stopTimeEntryForUser: async (...args) => {
+				calls.stops.push(args);
+				return clockifyOverrides.stopTimeEntryForUser
+					? clockifyOverrides.stopTimeEntryForUser(...args)
+					: {};
+			},
+			...Object.fromEntries(
+				Object.entries(clockifyOverrides).filter(
+					([name]) => !['updateTimeEntry', 'stopTimeEntryForUser'].includes(name)
+				)
+			),
+		};
+		const Dialogs = {
+			getDescription: async () => undefined,
+			selectProject: async () => undefined,
+			...overrides.Dialogs,
+		};
+		const { requiresProject } = loadTypeScriptModule(
+			'src/helpers/tracking-requirements.ts'
+		);
+		const { Tracking } = loadTypeScriptModule('src/helpers/tracking.ts', {
+			'./../views/statusbar/index': { StatusBar: { update: async () => undefined } },
+			'../sdk': { Clockify },
+			'../util/config': { Config: { get: () => undefined } },
+			'../util/dialogs': { Dialogs },
+			'../views/treeview': { TreeView: { refreshTimeentries: () => undefined } },
+			'../util/api-key': { ApiKey: { get: async () => 'api-key' } },
+			'./tracking-requirements': { requiresProject },
+		});
+
+		Tracking.workspace = {
+			id: 'workspace-1',
+			workspaceSettings: { canSeeTimeSheet: true, forceProjects: true },
+		};
+		Tracking.timeEntry = {
+			billable: false,
+			description: 'Existing description',
+			id: 'entry-1',
+			projectId: null,
+			tagIds: null,
+			taskId: null,
+			timeInterval: { start: '2026-09-09T08:00:00.000Z', end: null },
+			userId: 'user-1',
+			workspaceId: 'workspace-1',
+		};
+		Tracking.isTracking = true;
+
+		return { calls, Tracking };
+	}
+
+	it('assigns a required project before stopping', async () => {
+		const { calls, Tracking } = createTracking({
+			Dialogs: { selectProject: async () => ({ id: 'project-1' }) },
+		});
+
+		await Tracking.stop();
+
+		assert.equal(calls.updates.length, 1);
+		assert.equal(calls.updates[0][2].projectId, 'project-1');
+		assert.equal(calls.stops.length, 1);
+		assert.equal(Tracking.isTracking, false);
+		assert.equal(Tracking.timeEntry, undefined);
+	});
+
+	it('keeps the timer running when required project selection is cancelled', async () => {
+		const { calls, Tracking } = createTracking();
+
+		await Tracking.stop();
+
+		assert.equal(calls.updates.length, 0);
+		assert.equal(calls.stops.length, 0);
+		assert.equal(Tracking.isTracking, true);
+		assert.equal(Tracking.timeEntry.id, 'entry-1');
+	});
+
+	it('keeps the timer running when the stop request fails', async () => {
+		const { calls, Tracking } = createTracking({
+			Clockify: { stopTimeEntryForUser: async () => undefined },
+			Dialogs: { selectProject: async () => ({ id: 'project-1' }) },
+		});
+
+		await Tracking.stop();
+
+		assert.equal(calls.stops.length, 1);
+		assert.equal(Tracking.isTracking, true);
+		assert.equal(Tracking.timeEntry.id, 'entry-1');
+		assert.equal(Tracking.timeEntry.projectId, 'project-1');
+	});
+
+	it('does not send a stop request when the required project update fails', async () => {
+		const { calls, Tracking } = createTracking({
+			Clockify: { updateTimeEntry: async () => undefined },
+			Dialogs: { selectProject: async () => ({ id: 'project-1' }) },
+		});
+
+		await Tracking.stop();
+
+		assert.equal(calls.updates.length, 1);
+		assert.equal(calls.stops.length, 0);
+		assert.equal(Tracking.isTracking, true);
+		assert.equal(Tracking.timeEntry.projectId, null);
 	});
 });
 
