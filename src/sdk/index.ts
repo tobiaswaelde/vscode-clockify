@@ -427,6 +427,55 @@ export class Clockify {
 		}
 	}
 
+	/**
+	 * Update a task on a project
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {string} projectId The ID of the project
+	 * @param {string} taskId The ID of the task
+	 * @param {TaskRequest} data The task fields to update
+	 * @returns {Task|undefined} The updated task
+	 */
+	public static async updateTask(
+		workspaceId: string,
+		projectId: string,
+		taskId: string,
+		data: TaskRequest
+	): Promise<Task | undefined> {
+		try {
+			const res = await this.http.put(
+				`/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`,
+				data
+			);
+			return res.data as Task;
+		} catch (err) {
+			showError('Error updating task.', err);
+			return undefined;
+		}
+	}
+
+	/**
+	 * Delete a task from a project
+	 * @param {string} workspaceId The ID of the workspace
+	 * @param {string} projectId The ID of the project
+	 * @param {string} taskId The ID of the task
+	 * @returns {Task|undefined} The deleted task
+	 */
+	public static async deleteTask(
+		workspaceId: string,
+		projectId: string,
+		taskId: string
+	): Promise<Task | undefined> {
+		try {
+			const res = await this.http.delete(
+				`/workspaces/${workspaceId}/projects/${projectId}/tasks/${taskId}`
+			);
+			return res.data as Task;
+		} catch (err) {
+			showError('Error deleting task.', err);
+			return undefined;
+		}
+	}
+
 	//#endregion
 	//#region Time Entries
 

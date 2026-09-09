@@ -20,4 +20,6 @@ When Timesheet is enabled for a Clockify workspace, selecting a project is requi
 
 Projects can be renamed or deleted from their context menu. Deleting a project requires confirmation and refreshes the related Projects, Tasks, and Time Entries views.
 
+Tasks can also be renamed or deleted from their context menu. The current task name is prefilled when renaming, and deletion requires confirmation.
+
 ![Clockify tree view](./images/treeview-preview.png)

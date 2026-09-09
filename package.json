@@ -186,6 +186,22 @@
         "icon": "$(add)"
       },
       {
+        "command": "clockify.tasks.rename",
+        "title": "Rename Task",
+        "shortTitle": "Rename",
+        "category": "Clockify",
+        "icon": "$(edit)",
+        "enablement": "viewItem == task"
+      },
+      {
+        "command": "clockify.tasks.delete",
+        "title": "Delete Task",
+        "shortTitle": "Delete",
+        "category": "Clockify",
+        "icon": "$(trash)",
+        "enablement": "viewItem == task"
+      },
+      {
         "command": "clockify.tags.refresh",
         "title": "Refresh Tags",
         "shortTitle": "Refresh",
@@ -434,6 +450,15 @@
         },
         {
           "command": "clockify.tasks.setAsDefault",
+          "when": "view == clockify-tasks && viewItem == task"
+        },
+        {
+          "command": "clockify.tasks.rename",
+          "when": "view == clockify-tasks && viewItem == task",
+          "group": "inline"
+        },
+        {
+          "command": "clockify.tasks.delete",
           "when": "view == clockify-tasks && viewItem == task"
         },
         {
