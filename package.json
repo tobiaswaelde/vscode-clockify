@@ -248,6 +248,13 @@
         "enablement": "viewItem == tag-archived"
       },
       {
+        "command": "clockify.timeentries.add",
+        "title": "Add Manual Time Entry",
+        "shortTitle": "Add",
+        "category": "Clockify",
+        "icon": "$(add)"
+      },
+      {
         "command": "clockify.timeentries.refresh",
         "title": "Refresh Time Entries",
         "shortTitle": "Refresh",
@@ -412,9 +419,14 @@
           "group": "navigation@2"
         },
         {
-          "command": "clockify.timeentries.refresh",
+          "command": "clockify.timeentries.add",
           "when": "view == clockify-timeentries",
           "group": "navigation@1"
+        },
+        {
+          "command": "clockify.timeentries.refresh",
+          "when": "view == clockify-timeentries",
+          "group": "navigation@2"
         }
       ],
       "view/item/context": [

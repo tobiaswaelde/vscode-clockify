@@ -40,6 +40,7 @@ export enum Commands {
 	tagsUnarchive = 'clockify.tags.unarchive',
 	// timeentries
 	timeentriesRefresh = 'clockify.timeentries.refresh',
+	timeentriesAdd = 'clockify.timeentries.add',
 
 	// tracking
 	trackingStart = 'clockify.tracking.start',

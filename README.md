@@ -18,6 +18,8 @@ You can manage your workspaces, clients, projects, tasks and time entries. You c
 
 Workspace, client, project and task selection dialogs include an **Add** action, so missing items can be created without leaving the current workflow.
 
+Use **Clockify: Add Manual Time Entry** or the **Add** button in the Time Entries view to record a completed interval with project, task, tags, description and billing status.
+
 ## Installation
 
 ### Latest release from GitHub

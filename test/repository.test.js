@@ -38,6 +38,24 @@ describe('text utilities', () => {
 	});
 });
 
+describe('local date and time utilities', () => {
+	const { formatLocalDateTime, parseLocalDateTime } = loadTypeScriptModule(
+		'src/util/date-time.ts'
+	);
+
+	it('round-trips a valid local minute', () => {
+		const parsed = parseLocalDateTime('2026-09-09 08:05');
+		assert.ok(parsed);
+		assert.equal(formatLocalDateTime(parsed), '2026-09-09 08:05');
+	});
+
+	it('rejects invalid formats and calendar dates', () => {
+		assert.equal(parseLocalDateTime('2026-09-09T08:05'), undefined);
+		assert.equal(parseLocalDateTime('2026-02-30 08:05'), undefined);
+		assert.equal(parseLocalDateTime('2026-09-09 24:00'), undefined);
+	});
+});
+
 describe('Clockify result filters', () => {
 	const { filterByArchivedState, filterTasksByActivity } = loadTypeScriptModule(
 		'src/sdk/results.ts'
