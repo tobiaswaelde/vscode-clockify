@@ -4,6 +4,7 @@ import { Tracking } from '../helpers/tracking';
 import { TreeView } from '../views/treeview';
 import { copyToClipboard } from './copy-to-clipboard';
 import { setApiKey } from './set-api-key';
+import { startTrackingJiraIssue } from '../integrations/atlassian';
 
 /**
  * Register general commands
@@ -14,6 +15,7 @@ export async function registerCommands(ctx: ExtensionContext) {
 		commands.registerCommand(Commands.setApiKey, () => setApiKey()),
 		commands.registerCommand(Commands.refresh, () => TreeView.refresh()),
 		commands.registerCommand(Commands.copyToClipboard, (x: string) => copyToClipboard(x)),
+		commands.registerCommand(Commands.startJiraIssue, (x: unknown) => startTrackingJiraIssue(x)),
 		commands.registerCommand(Commands.trackingStart, () => Tracking.start()),
 		commands.registerCommand(Commands.trackingStop, () => Tracking.stop()),
 		commands.registerCommand(Commands.trackingUpdateInformation, () => Tracking.updateInformation())

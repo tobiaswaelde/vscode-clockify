@@ -42,6 +42,13 @@
         "category": "Clockify"
       },
       {
+        "command": "clockify.integrations.atlassian.startJiraIssue",
+        "title": "Start Clockify Timer",
+        "shortTitle": "Start Clockify",
+        "category": "Clockify",
+        "icon": "$(watch)"
+      },
+      {
         "command": "clockify.tracking.start",
         "title": "Start tracking",
         "category": "Clockify"
@@ -443,6 +450,11 @@
       ],
       "view/item/context": [
         {
+          "command": "clockify.integrations.atlassian.startJiraIssue",
+          "when": "viewItem =~ /^(jiraIssue|assignedJiraIssue)(_.+)?$|^relatedJiraIssueBB$/",
+          "group": "jiraContextMenuGroup1@10"
+        },
+        {
           "command": "clockify.workspaces.setAsDefault",
           "when": "view == clockify-workspaces && viewItem == workspace"
         },
@@ -505,6 +517,12 @@
         {
           "command": "clockify.tags.unarchive",
           "when": "view == clockify-tags && viewItem == tag-archived"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "clockify.integrations.atlassian.startJiraIssue",
+          "when": "false"
         }
       ]
     }
