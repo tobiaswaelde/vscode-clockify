@@ -28,4 +28,6 @@ Projects can be renamed or deleted from their context menu. Deleting a project r
 
 Tasks can also be renamed or deleted from their context menu. The current task name is prefilled when renaming, and deletion requires confirmation.
 
+To auto-track the correct project for a local folder, use **Link Project to Workspace Folder** from the project's context menu. The link stores resource-scoped workspace/project settings and enables auto-start for that folder. In a multi-root workspace the active editor's folder wins; with no active editor, a single linked auto-start folder is selected automatically. If several folders are linked, focus a file in the intended folder before starting a timer.
+
 ![Clockify tree view](./images/treeview-preview.png)

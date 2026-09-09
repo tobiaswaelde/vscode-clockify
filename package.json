@@ -165,6 +165,14 @@
         "enablement": "viewItem == project"
       },
       {
+        "command": "clockify.projects.linkWorkspaceFolder",
+        "title": "Link Project to Workspace Folder",
+        "shortTitle": "Link to Folder",
+        "category": "Clockify",
+        "icon": "$(link)",
+        "enablement": "viewItem == project"
+      },
+      {
         "command": "clockify.tasks.refresh",
         "title": "Refresh Tasks",
         "shortTitle": "Refresh",
@@ -293,16 +301,19 @@
         "clockify.tracking.workspaceId": {
           "type": "string",
           "default": "",
+          "scope": "resource",
           "description": "The ID of the default workspace."
         },
         "clockify.tracking.projectId": {
           "type": "string",
           "default": "",
+          "scope": "resource",
           "markdownDescription": "The ID of the default project in the workspace. `#clockify.tracking.workspaceId#` must be set."
         },
         "clockify.tracking.taskId": {
           "type": "string",
           "default": "",
+          "scope": "resource",
           "markdownDescription": "The ID of the default task in the workspace. `#clockify.tracking.workspaceId#` must be set."
         },
         "clockify.tracking.billable": {
@@ -313,6 +324,7 @@
         "clockify.tracking.autostart": {
           "type": "boolean",
           "default": false,
+          "scope": "resource",
           "description": "Start tracking with opening the IDE."
         },
         "clockify.tracking.autostop": {
@@ -458,6 +470,10 @@
         },
         {
           "command": "clockify.projects.delete",
+          "when": "view == clockify-projects && viewItem == project"
+        },
+        {
+          "command": "clockify.projects.linkWorkspaceFolder",
           "when": "view == clockify-projects && viewItem == project"
         },
         {

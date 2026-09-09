@@ -9,6 +9,7 @@ import { Task } from '../sdk/types/task';
 import { TreeView } from '../views/treeview';
 import { ApiKey } from '../util/api-key';
 import { requiresProject } from './tracking-requirements';
+import { Uri } from 'vscode';
 
 export class Tracking {
 	public static isTracking: boolean = false;
@@ -20,13 +21,16 @@ export class Tracking {
 	public static billable?: boolean;
 	private static updateInProgress?: Promise<void>;
 	private static startedTimeEntryId?: string;
+	private static configurationScope?: Uri;
 
 	/**
 	 * Initilaize tracking API
 	 */
 	public static async initialize() {
+		this.configurationScope = Config.getTrackingScope();
 		// check for autostart tracking
-		const autostart = Config.get<boolean>('tracking.autostart') || false;
+		const autostart =
+			Config.get<boolean>('tracking.autostart', this.configurationScope) || false;
 		if (autostart) {
 			await this.update();
 			if (this.isTracking) {
@@ -43,7 +47,8 @@ export class Tracking {
 	 * Clean up tracking API
 	 */
 	public static async dispose() {
-		const autostop = Config.get<boolean>('tracking.autostop') || false;
+		const autostop =
+			Config.get<boolean>('tracking.autostop', this.configurationScope) || false;
 		if (!autostop || !this.startedTimeEntryId) {
 			return;
 		}
@@ -69,6 +74,7 @@ export class Tracking {
 		if (this.isTracking) {
 			return;
 		}
+		this.configurationScope = Config.getTrackingScope();
 
 		const start = new Date().toISOString();
 
@@ -83,7 +89,7 @@ export class Tracking {
 		}
 		this.task = await this.getTask();
 		this.description = await Dialogs.getDescription('What are you working on?');
-		this.billable = Config.get<boolean>('tracking.billable');
+		this.billable = Config.get<boolean>('tracking.billable', this.configurationScope);
 
 		// add time entry
 		const timeEntry = await Clockify.addTimeEntry(this.workspace.id, {
@@ -256,7 +262,10 @@ export class Tracking {
 		}
 
 		// check if project ID is set in config
-		const workspaceProjectId = Config.get<string>('tracking.projectId');
+		const workspaceProjectId = Config.get<string>(
+			'tracking.projectId',
+			this.configurationScope
+		);
 		if (workspaceProjectId) {
 			return Clockify.getProject(this.workspace.id, workspaceProjectId);
 		}
@@ -272,7 +281,7 @@ export class Tracking {
 		}
 
 		// check if task ID is set in config
-		const workspaceTaskId = Config.get<string>('tracking.taskId');
+		const workspaceTaskId = Config.get<string>('tracking.taskId', this.configurationScope);
 		if (workspaceTaskId) {
 			return Clockify.getTask(this.workspace.id, this.project.id, workspaceTaskId);
 		}
@@ -284,7 +293,10 @@ export class Tracking {
 	//#endregion
 
 	private static async getWorkspaceId(): Promise<string | undefined> {
-		const workspaceWorkspaceId = Config.get<string>('tracking.workspaceId');
+		const workspaceWorkspaceId = Config.get<string>(
+			'tracking.workspaceId',
+			this.configurationScope
+		);
 		if (workspaceWorkspaceId) {
 			return workspaceWorkspaceId;
 		}

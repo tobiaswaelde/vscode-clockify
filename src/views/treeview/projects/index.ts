@@ -21,6 +21,7 @@ import { renameProject } from './commands/rename-project';
 import { deleteProject } from './commands/delete-project';
 import { setProjectAsDefault } from './commands/set-as-default';
 import { TreeView } from '..';
+import { linkWorkspaceFolder } from './commands/link-workspace-folder';
 
 type OnDidChangeEventData = ProjectTreeItem | undefined;
 
@@ -95,7 +96,10 @@ export class ProjectsProvider implements TreeDataProvider<ProjectTreeItem> {
 			commands.registerCommand(Commands.projectsSetDefault, (x) => setProjectAsDefault(x)),
 			commands.registerCommand(Commands.projectsAdd, addProject),
 			commands.registerCommand(Commands.projectsRename, renameProject),
-			commands.registerCommand(Commands.projectsDelete, (x) => deleteProject(x))
+			commands.registerCommand(Commands.projectsDelete, (x) => deleteProject(x)),
+			commands.registerCommand(Commands.projectsLinkWorkspaceFolder, (x) =>
+				linkWorkspaceFolder(x)
+			)
 		);
 	}
 }
