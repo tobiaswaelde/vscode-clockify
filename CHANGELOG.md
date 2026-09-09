@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.4
+
+### Patch Changes
+
+- 53df4d6: Remove the deprecated legacy extension source and attach installable VSIX packages automatically to GitHub Releases.
+- 3fb3fee: Add documentation, deployment and release automation.
+
 *Changelog created using the [Simple Changelog](https://marketplace.visualstudio.com/items?itemName=tobiaswaelde.vscode-simple-changelog) extension for VS Code.*
 
 ## [4.0.3] - 2023-03-22
