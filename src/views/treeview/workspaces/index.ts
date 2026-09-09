@@ -35,7 +35,7 @@ export class WorkspacesProvider implements TreeDataProvider<WorkspaceTreeItem> {
 
 	async getChildren(element?: WorkspaceTreeItem | undefined): Promise<WorkspaceTreeItem[]> {
 		// check if API key if set
-		if (!apiKeySet()) {
+		if (!(await apiKeySet())) {
 			return [
 				new MessageTreeItem('API key not set. Click to set API key.', undefined, 'error', {
 					command: Commands.setApiKey,

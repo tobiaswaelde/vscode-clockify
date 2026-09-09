@@ -8,7 +8,7 @@ export async function checkDefaultWorkspace(): Promise<boolean> {
 		if (!workspace) {
 			return false;
 		} else {
-			Config.set('defaultWorkspaceId', workspace.id, true);
+			await Config.set('defaultWorkspaceId', workspace.id, true);
 		}
 	}
 

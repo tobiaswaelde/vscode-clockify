@@ -32,8 +32,12 @@ export class Config {
 	 *	- If `false` updates workspace.
 	 *	- If `undefined` or `null` updates workspace folder settings
 	 */
-	public static set(key: ConfigurationKey, value: any, global: boolean | null = null) {
-		let config = this.getConfiguration();
-		config.update(key, value, global);
+	public static async set(
+		key: ConfigurationKey,
+		value: unknown,
+		global: boolean | null = null
+	): Promise<void> {
+		const config = this.getConfiguration();
+		await config.update(key, value, global);
 	}
 }

@@ -22,7 +22,7 @@ export class StatusBarTrackingItem {
 		this.item.tooltip = 'Start tracking to display information.';
 	}
 
-	public async update() {
+	public update() {
 		if (Tracking.isTracking && Tracking.timeEntry) {
 			const duration = moment.duration(
 				moment().diff(moment(Tracking.timeEntry.timeInterval.start))

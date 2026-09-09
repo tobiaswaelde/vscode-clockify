@@ -28,7 +28,7 @@ export class Context {
 	 * @param {ContextValue} key The key
 	 * @param {any} value The value
 	 */
-	public static set(key: ContextValueKey, value: any) {
-		commands.executeCommand('setContext', `clockify.${key}`, value);
+	public static async set(key: ContextValueKey, value: unknown): Promise<void> {
+		await commands.executeCommand('setContext', `clockify.${key}`, value);
 	}
 }

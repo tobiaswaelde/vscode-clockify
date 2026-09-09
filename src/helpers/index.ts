@@ -1,6 +1,5 @@
-import { Config } from '../util/config';
+import { ApiKey } from '../util/api-key';
 
-export function apiKeySet(): boolean {
-	const apiKey = Config.get<string>('apiKey');
-	return apiKey !== undefined && apiKey !== '';
+export async function apiKeySet(): Promise<boolean> {
+	return Boolean(await ApiKey.get());
 }

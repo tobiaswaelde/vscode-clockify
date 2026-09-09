@@ -2,7 +2,7 @@
  * The extensions context values
  */
 export type ContextValueKey =
-	| 'apiKey'
+	| 'apiKeySet'
 	| 'initialized'
 	| 'workspaces:selected'
 	| 'clients:selected'

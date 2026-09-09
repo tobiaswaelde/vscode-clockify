@@ -8,6 +8,8 @@ Manage Clockify workspaces, clients, projects, tasks, tags and time entries dire
 2. Run **Clockify: Set API key**.
 3. Select a default workspace when prompted.
 
+The API key is stored securely in VS Code SecretStorage rather than in user or workspace settings.
+
 ## Configuration
 
 All settings use the `clockify.` prefix. Open VS Code Settings and search for `Clockify` to configure tracking defaults, auto-start, auto-stop and tree-view options.

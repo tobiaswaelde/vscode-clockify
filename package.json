@@ -4,6 +4,7 @@
   "displayName": "Clockify",
   "description": "Implements Clockify time tracker (https://clockify.me/) in VSCode.",
   "version": "4.0.4",
+  "packageManager": "yarn@1.22.22",
   "icon": "assets/icon.ico",
   "galleryBanner": {
     "color": "#ffffff",
@@ -25,7 +26,7 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onStartupFinished"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -241,11 +242,6 @@
     "configuration": {
       "title": "Clockify Tracker",
       "properties": {
-        "clockify.apiKey": {
-          "type": "string",
-          "default": "",
-          "description": "The clockify API key."
-        },
         "clockify.defaultWorkspaceId": {
           "type": "string",
           "default": "",
@@ -342,9 +338,9 @@
     },
     "viewsWelcome": [
       {
-        "view": "clockify-explorer",
+        "view": "clockify-workspaces",
         "contents": "To use the extension first add your API key. You can find your API key [here](https://app.clockify.me/user/settings#:~:text=Manage%20email%20preferences-,API,-Connect%20Clockify%20to)",
-        "when": "!clockify.apiKey"
+        "when": "!clockify.apiKeySet"
       }
     ],
     "menus": {
@@ -465,6 +461,8 @@
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
+    "test": "node --test test/*.test.js",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext ts",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
@@ -474,19 +472,14 @@
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.2",
-    "@types/glob": "^8.0.0",
-    "@types/mocha": "^10.0.1",
     "@types/moment": "^2.13.0",
     "@types/node": "16.x",
     "@types/qs": "^6.9.7",
     "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
-    "@vscode/test-electron": "^2.2.0",
     "@vscode/vsce": "3.9.2",
     "eslint": "^8.28.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.1.0",
     "ts-loader": "^9.4.1",
     "typescript": "^4.9.3",
     "vitepress": "^1.6.4",

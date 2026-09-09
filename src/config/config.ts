@@ -1,5 +1,4 @@
 export type ConfigurationKey =
-	| 'apiKey'
 	| 'defaultWorkspaceId'
 	| 'fetchLimit'
 	| 'hideSensitiveData'

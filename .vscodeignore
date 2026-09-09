@@ -6,7 +6,9 @@ docs/.vitepress/**
 out/**
 node_modules/**
 src/**
+test/**
 .gitignore
+.nvmrc
 .yarnrc
 webpack.config.js
 vsc-extension-quickstart.md
