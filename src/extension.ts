@@ -14,6 +14,7 @@ import { ExtensionContext, workspace } from 'vscode';
 import { TreeView } from './views/treeview';
 import { checkDefaultWorkspace } from './functions/check-default-workspace';
 import { ApiKey } from './util/api-key';
+import { Pomodoro } from './helpers/pomodoro';
 
 export async function activate(context: ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
@@ -45,6 +46,11 @@ export async function activate(context: ExtensionContext) {
 		void Tracking.update();
 	}, 5000);
 	context.subscriptions.push({ dispose: () => clearInterval(trackingInterval) });
+	const pomodoroInterval = setInterval(() => {
+		void Pomodoro.update();
+	}, 1000);
+	context.subscriptions.push({ dispose: () => clearInterval(pomodoroInterval) });
+	await Pomodoro.update();
 	//#endregion
 
 	//#region status bar

@@ -9,4 +9,10 @@ export type ConfigurationKey =
 	| 'tracking.taskId'
 	| 'tracking.billable'
 	| 'tracking.autostart'
-	| 'tracking.autostop';
+	| 'tracking.autostop'
+	| 'pomodoro.enabled'
+	| 'pomodoro.focusMinutes'
+	| 'pomodoro.shortBreakMinutes'
+	| 'pomodoro.longBreakMinutes'
+	| 'pomodoro.sessionsBeforeLongBreak'
+	| 'pomodoro.automaticBreaks';

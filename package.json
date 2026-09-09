@@ -338,6 +338,40 @@
           "type": "boolean",
           "default": true,
           "description": "When closing this VS Code window, stop the timer only if it was started by this window."
+        },
+        "clockify.pomodoro.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Pomodoro notifications for the active Clockify timer, including timers started outside VS Code."
+        },
+        "clockify.pomodoro.focusMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 25,
+          "description": "Length of a Pomodoro focus interval in minutes."
+        },
+        "clockify.pomodoro.shortBreakMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 5,
+          "description": "Length of a short Pomodoro break in minutes."
+        },
+        "clockify.pomodoro.longBreakMinutes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 15,
+          "description": "Length of a long Pomodoro break in minutes."
+        },
+        "clockify.pomodoro.sessionsBeforeLongBreak": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 4,
+          "description": "Number of completed focus intervals before a long Pomodoro break."
+        },
+        "clockify.pomodoro.automaticBreaks": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically stop work, track Pomodoro breaks, and resume the previous Clockify entry."
         }
       }
     },
