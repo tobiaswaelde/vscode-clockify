@@ -98,6 +98,15 @@ export class Tracking {
 		if (!this.workspace || !this.timeEntry) {
 			return;
 		}
+		const workspace = this.workspace;
+		const timeEntry = this.timeEntry;
+
+		if (requiresProject(workspace.workspaceSettings) && !timeEntry.projectId) {
+			this.project = await this.getProject(true);
+			if (!this.project) {
+				return;
+			}
+		}
 
 		// get current user
 		const user = await Clockify.getCurrentUser();
@@ -106,20 +115,38 @@ export class Tracking {
 		}
 
 		// ask for description
-		const description = await Dialogs.getDescription('What were you working on?', this.description);
-		if (description) {
-			await Clockify.updateTimeEntry(this.workspace.id, this.timeEntry.id, {
-				description: description,
-				projectId: this.project?.id,
-				tagIds: this.timeEntry.tagIds || undefined,
-				taskId: this.task?.id,
-				start: this.timeEntry.timeInterval.start,
+		const description = await Dialogs.getDescription(
+			'What were you working on?',
+			timeEntry.description
+		);
+		const projectId = this.project?.id ?? timeEntry.projectId;
+		const shouldUpdate = description !== undefined || projectId !== timeEntry.projectId;
+		if (shouldUpdate) {
+			const nextDescription = description ?? timeEntry.description;
+			const nextTaskId = this.task?.id ?? timeEntry.taskId;
+			const updatedTimeEntry = await Clockify.updateTimeEntry(workspace.id, timeEntry.id, {
+				description: nextDescription,
+				billable: timeEntry.billable,
+				projectId,
+				tagIds: timeEntry.tagIds || undefined,
+				taskId: nextTaskId,
+				start: timeEntry.timeInterval.start,
 			});
+			if (!updatedTimeEntry) {
+				return;
+			}
+			timeEntry.description = nextDescription;
+			timeEntry.projectId = projectId;
+			timeEntry.taskId = nextTaskId;
+			this.description = nextDescription;
 		}
 
 		// send stop request
 		const end = new Date().toISOString();
-		await Clockify.stopTimeEntryForUser(this.workspace.id, user.id, { end });
+		const stoppedTimeEntry = await Clockify.stopTimeEntryForUser(workspace.id, user.id, { end });
+		if (!stoppedTimeEntry) {
+			return;
+		}
 
 		// update status bar
 		this.isTracking = false;
@@ -167,6 +194,8 @@ export class Tracking {
 		} else {
 			this.isTracking = true;
 			this.timeEntry = timeEntry;
+			this.description = timeEntry.description;
+			this.billable = timeEntry.billable;
 			await Promise.all([this.updateWorkspace(), this.updateProject(), this.updateTask()]);
 		}
 	}
@@ -295,11 +324,14 @@ export class Tracking {
 		this.workspace = await Clockify.getWorkspace(this.timeEntry.workspaceId);
 	}
 	private static async updateProject() {
-		if (
-			!this.timeEntry || // no active time entry
-			!this.timeEntry.projectId || // no project assigned
-			this.project?.id === this.timeEntry.projectId // project not changed
-		) {
+		if (!this.timeEntry) {
+			return;
+		}
+		if (!this.timeEntry.projectId) {
+			this.project = undefined;
+			return;
+		}
+		if (this.project?.id === this.timeEntry.projectId) {
 			return;
 		}
 
@@ -307,12 +339,14 @@ export class Tracking {
 		this.project = await Clockify.getProject(workspaceId, projectId);
 	}
 	private static async updateTask() {
-		if (
-			!this.timeEntry || // no active time entry
-			!this.timeEntry.projectId || // no project assigned
-			!this.timeEntry.taskId || // no task assigned
-			this.task?.id === this.timeEntry.taskId // task not changed
-		) {
+		if (!this.timeEntry) {
+			return;
+		}
+		if (!this.timeEntry.projectId || !this.timeEntry.taskId) {
+			this.task = undefined;
+			return;
+		}
+		if (this.task?.id === this.timeEntry.taskId) {
 			return;
 		}
 
