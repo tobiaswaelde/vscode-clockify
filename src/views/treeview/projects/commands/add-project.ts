@@ -32,7 +32,13 @@ export async function addProject(): Promise<void> {
 	}
 
 	const isPublic = await Dialogs.getProjectVisibility();
+	if (isPublic === undefined) {
+		return;
+	}
 	const isBillable = await Dialogs.getProjectBillable();
+	if (isBillable === undefined) {
+		return;
+	}
 
 	// add project
 	const project = await Clockify.addProject(workspace.id, {
