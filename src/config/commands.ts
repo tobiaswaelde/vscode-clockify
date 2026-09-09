@@ -6,6 +6,7 @@ export enum Commands {
 	setApiKey = 'clockify.setApiKey',
 	refresh = 'clockify.refresh',
 	copyToClipboard = 'clockify.copyToClipboard',
+	startJiraIssue = 'clockify.integrations.atlassian.startJiraIssue',
 	// workspaces
 	workspacesRefresh = 'clockify.workspaces.refresh',
 	workspacesSelection = 'clockify.workspaces.selection',

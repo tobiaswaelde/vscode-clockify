@@ -22,6 +22,8 @@ Use **Clockify: Add Manual Time Entry** or the **Add** button in the Time Entrie
 
 Use **Link Project to Workspace Folder** from a project's context menu to store the Clockify workspace/project IDs and enable auto-start for that local folder. Single-folder windows apply the link directly; multi-root windows ask which folder to link.
 
+When the optional **Atlassian for VS Code** extension is installed, Jira issue context menus—including related Jira issues shown for Bitbucket pull requests—include **Start Clockify Timer**. The timer description is populated as `ISSUE-KEY: Summary`; an already running timer is left untouched.
+
 ## Installation
 
 ### Latest release from GitHub

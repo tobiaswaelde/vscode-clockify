@@ -65,7 +65,7 @@ export class Tracking {
 	/**
 	 * Start tracking
 	 */
-	public static async start() {
+	public static async start(initialDescription?: string) {
 		if (!(await ApiKey.get())) {
 			return;
 		}
@@ -88,7 +88,8 @@ export class Tracking {
 			return;
 		}
 		this.task = await this.getTask();
-		this.description = await Dialogs.getDescription('What are you working on?');
+		this.description =
+			initialDescription ?? (await Dialogs.getDescription('What are you working on?'));
 		this.billable = Config.get<boolean>('tracking.billable', this.configurationScope);
 
 		// add time entry

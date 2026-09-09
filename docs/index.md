@@ -30,4 +30,8 @@ Tasks can also be renamed or deleted from their context menu. The current task n
 
 To auto-track the correct project for a local folder, use **Link Project to Workspace Folder** from the project's context menu. The link stores resource-scoped workspace/project settings and enables auto-start for that folder. In a multi-root workspace the active editor's folder wins; with no active editor, a single linked auto-start folder is selected automatically. If several folders are linked, focus a file in the intended folder before starting a timer.
 
+## Atlassian Jira integration
+
+With the optional **Atlassian for VS Code** extension installed, right-click an issue in its Jira Work Items or Custom JQL view—or a related Jira issue shown for a Bitbucket pull request—and choose **Start Clockify Timer**. Clockify uses `ISSUE-KEY: Summary` as the timer description and retains the extension's normal project/task selection. If a timer is already running, it is not replaced.
+
 ![Clockify tree view](./images/treeview-preview.png)
