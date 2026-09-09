@@ -1,6 +1,7 @@
 # Clockify
 
-[![CI](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/ci.yml/badge.svg)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/ci.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/tobiaswaelde/vscode-clockify/ci.yml?branch=main&style=for-the-badge&label=CI)](https://github.com/tobiaswaelde/vscode-clockify/actions/workflows/ci.yml)
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-Support-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=000000)](https://www.buymeacoffee.com/tobiaswaelde)
 
 Implements [Clockify](https://clockify.me/) time tracker in VSCode.
 
