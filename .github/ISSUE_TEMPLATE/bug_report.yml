@@ -1,0 +1,119 @@
+name: Bug report
+description: Report unexpected behavior in the Clockify extension for VS Code.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem. Please provide enough detail to reproduce it, and never include your Clockify API key or other sensitive data.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and did not find a duplicate.
+          required: true
+        - label: I removed API keys, workspace IDs, client data, and other sensitive information from this report.
+          required: true
+
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Affected area
+      description: Which part of the extension is affected?
+      options:
+        - Authentication or API key
+        - Timer start or stop
+        - Automatic tracking
+        - Status bar
+        - Workspaces
+        - Clients
+        - Projects
+        - Tasks
+        - Tags
+        - Time entries
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: extension-version
+    attributes:
+      label: Extension version
+      description: Find this on the Clockify extension page in VS Code.
+      placeholder: e.g. 4.0.3
+    validations:
+      required: true
+
+  - type: input
+    id: vscode-version
+    attributes:
+      label: VS Code version
+      description: 'Run "Help: About" or "code --version" to find this.'
+      placeholder: e.g. 1.105.0
+    validations:
+      required: true
+
+  - type: input
+    id: operating-system
+    attributes:
+      label: Operating system
+      placeholder: e.g. Windows 11, macOS 15, or Ubuntu 24.04
+    validations:
+      required: true
+
+  - type: dropdown
+    id: installation-source
+    attributes:
+      label: Installation source
+      options:
+        - VS Code Marketplace
+        - VSIX package
+        - Source checkout
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include the relevant commands, settings, and sequence of actions.
+      placeholder: |
+        1. Configure ...
+        2. Run ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      placeholder: Describe what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      placeholder: Describe what happened instead, including any error message.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Paste relevant output from VS Code's Output panel or Developer Tools. Redact secrets and sensitive Clockify data.
+      render: shell
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add screenshots, relevant settings, or anything else that may help. Redact sensitive data first.

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Clockify extension documentation
+    url: https://github.com/tobiaswaelde/vscode-clockify/blob/main/docs/index.md
+    about: Read the setup guide before opening an issue.
+  - name: Clockify service support
+    url: https://clockify.me/help/contact
+    about: Contact Clockify for account, billing, or Clockify platform issues.

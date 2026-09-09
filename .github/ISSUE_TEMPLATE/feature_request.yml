@@ -1,0 +1,73 @@
+name: Feature request
+description: Suggest an improvement to the Clockify extension for VS Code.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the extension. Describe the problem first so the proposed change can be evaluated in context.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the existing issues and did not find a duplicate request.
+          required: true
+
+  - type: dropdown
+    id: affected-area
+    attributes:
+      label: Area
+      description: Which part of the extension would this improve?
+      options:
+        - Timer and manual tracking
+        - Automatic tracking
+        - Status bar
+        - Workspaces, clients, projects, tasks, or tags
+        - Time entries
+        - Configuration
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case
+      description: What workflow is difficult or impossible today, and who is affected?
+      placeholder: When I ..., I need ..., because ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed solution
+      description: Describe the behavior you would like to see in VS Code.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Describe any workarounds or alternative approaches you have tried.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add examples, mockups, or links that clarify the request. Do not include sensitive Clockify data.
+
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Would you like to contribute this change?
+      options:
+        - "Yes"
+        - "No"
+        - Maybe, with guidance

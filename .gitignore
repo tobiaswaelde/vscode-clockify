@@ -1,9 +1,8 @@
-#TODO remove later
-.deprecated
-
-out
-dist
-node_modules
+node_modules/
+dist/
+out/
+docs/.vitepress/dist/
 .vscode-test/
 *.vsix
 .DS_Store
+yarn-error.log

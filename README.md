@@ -24,6 +24,16 @@ Or you can just search for "Clockify" in the Extensions view.
 ## Getting Started
 [Getting Started](docs/index.md)
 
+## Releasing
+
+Releases are managed with [Changesets](https://github.com/changesets/changesets):
+
+1. Add a changeset for every user-facing change.
+2. Merge the change into `main`. The `Release PR` workflow creates or updates the `Version Packages` pull request.
+3. Merge the `Version Packages` pull request. The `Publish` workflow publishes the packaged extension to the VS Code Marketplace using GitHub OIDC.
+
+Trusted publishing must be configured once for the `tobiaswaelde` publisher in the [Visual Studio Marketplace publisher management page](https://marketplace.visualstudio.com/manage/publishers/). Trust the `tobiaswaelde/vscode-clockify` repository and the `.github/workflows/publish.yml` workflow. No long-lived Marketplace token is required.
+
 
 ## Configuration
 
