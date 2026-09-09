@@ -6,7 +6,9 @@ import { GetClientsFilter, GetProjectsFilter, GetTasksFilter } from '../sdk/filt
 import { Client } from '../sdk/types/client';
 import { Project } from '../sdk/types/project';
 import { Task } from '../sdk/types/task';
+import { Tag } from '../sdk/types/tag';
 import { Workspace } from '../sdk/types/workspace';
+import { parseLocalDateTime } from './date-time';
 
 interface IdQuickPickItem extends QuickPickItem {
 	id: string;
@@ -59,6 +61,35 @@ export class Dialogs {
 			ignoreFocusOut: true,
 			value: value,
 		});
+	}
+
+	public static async getDateTime(title: string, value: string): Promise<string | undefined> {
+		return window.showInputBox({
+			title,
+			prompt: 'Enter local date and time in YYYY-MM-DD HH:mm format',
+			placeHolder: 'YYYY-MM-DD HH:mm',
+			ignoreFocusOut: true,
+			value,
+			validateInput: (input) =>
+				parseLocalDateTime(input) ? undefined : 'Use a valid date and time: YYYY-MM-DD HH:mm',
+		});
+	}
+
+	public static async getBillable(value: boolean): Promise<boolean | undefined> {
+		const billableItem: ValueQuickPickItem = { label: 'Billable', value: 'billable' };
+		const nonBillableItem: ValueQuickPickItem = {
+			label: 'Non-billable',
+			value: 'non-billable',
+		};
+		const items = value
+			? [billableItem, nonBillableItem]
+			: [nonBillableItem, billableItem];
+		const result = await window.showQuickPick(items, {
+			title: 'Select Billing Status',
+			placeHolder: 'Select Billing Status',
+			ignoreFocusOut: true,
+		});
+		return result ? result.value === 'billable' : undefined;
 	}
 	//#endregion
 
@@ -301,9 +332,43 @@ export class Dialogs {
 
 		return tasks.find((x) => x.id === res?.id);
 	}
-	//#endregion
+	public static async selectTags(workspaceId: string): Promise<Tag[] | undefined> {
+		const tags = await Clockify.getTags(workspaceId, { page: 1, pageSize: 5000 });
+		const tagItems: IdQuickPickItem[] = tags.map((tag) => ({
+			id: tag.id,
+			label: tag.name,
+		}));
+		tagItems.push({ id: ADD_ITEM_ID, label: '$(add) Add Tag', alwaysShow: true });
 
-	//#region Tags
+		const result = await window.showQuickPick(tagItems, {
+			title: 'Select Tags',
+			placeHolder: 'Select zero or more tags',
+			ignoreFocusOut: true,
+			canPickMany: true,
+		});
+		if (!result) {
+			return undefined;
+		}
+
+		const selectedTags = tags.filter((tag) => result.some(({ id }) => id === tag.id));
+		if (!result.some(({ id }) => id === ADD_ITEM_ID)) {
+			return selectedTags;
+		}
+
+		const name = (await this.getTagName())?.trim();
+		if (!name) {
+			return undefined;
+		}
+		const tag = await Clockify.addTag(workspaceId, { name });
+		if (!tag) {
+			return undefined;
+		}
+
+		await commands.executeCommand(Commands.tagsRefresh);
+		window.showInformationMessage(`Tag '${tag.name}' added.`);
+		return [...selectedTags, tag];
+	}
+
 	public static async getTagName(name?: string): Promise<string | undefined> {
 		return window.showInputBox({
 			ignoreFocusOut: true,

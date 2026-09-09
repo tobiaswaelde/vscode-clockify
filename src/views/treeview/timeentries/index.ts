@@ -8,6 +8,7 @@ import { MessageTreeItem } from '../../../util/treeview/message-tree-item';
 import { Config } from '../../../util/config';
 import { TimeentryItem } from './items/item';
 import { TreeView } from '..';
+import { addTimeEntry } from './commands/add-time-entry';
 
 type OnDidChangeEventData = TimeentryTreeItem | undefined;
 
@@ -70,6 +71,7 @@ export class TimeentriesProvider implements TreeDataProvider<TimeentryTreeItem> 
 	 */
 	private registerCommands(ctx: ExtensionContext) {
 		ctx.subscriptions.push(
+			commands.registerCommand(Commands.timeentriesAdd, () => addTimeEntry()),
 			commands.registerCommand(Commands.timeentriesRefresh, (x) => TreeView.refreshTimeentries(x))
 		);
 	}
