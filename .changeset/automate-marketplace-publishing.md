@@ -2,4 +2,4 @@
 "clockify-tracker": patch
 ---
 
-Remove the deprecated legacy extension source and publish releases automatically to the VS Code Marketplace with GitHub OIDC.
+Remove the deprecated legacy extension source and attach installable VSIX packages automatically to GitHub Releases.

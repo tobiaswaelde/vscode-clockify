@@ -465,7 +465,7 @@
     "docs:build": "vitepress build docs",
     "changeset": "changeset",
     "version": "changeset version",
-    "release": "vsce publish --oidc --skip-duplicate"
+    "package:vsix": "vsce package"
   },
   "devDependencies": {
     "@changesets/cli": "^3.0.2",
@@ -478,7 +478,7 @@
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
     "@vscode/test-electron": "^2.2.0",
-    "@vscode/vsce": "3.9.3-12",
+    "@vscode/vsce": "3.9.2",
     "eslint": "^8.28.0",
     "glob": "^8.0.3",
     "mocha": "^10.1.0",
