@@ -18,9 +18,9 @@
     "vscode": "^1.75.0"
   },
   "resolutions": {
-    "esbuild": "0.25.0",
-    "serialize-javascript": "7.0.5",
-    "vite": "6.4.3"
+    "esbuild": "0.25.12",
+    "serialize-javascript": "7.1.2",
+    "vite": "6.4.5"
   },
   "categories": [
     "Other"
@@ -576,7 +576,7 @@
     "package:vsix": "vsce package"
   },
   "devDependencies": {
-    "@changesets/cli": "^3.0.2",
+    "@changesets/cli": "^3.0.3",
     "@types/moment": "^2.13.0",
     "@types/node": "16.x",
     "@types/qs": "^6.9.7",
@@ -588,7 +588,7 @@
     "ts-loader": "^9.4.1",
     "typescript": "^4.9.3",
     "vitepress": "^1.6.4",
-    "webpack": "^5.94.0",
+    "webpack": "^5.112.0",
     "webpack-cli": "^5.0.0"
   },
   "dependencies": {
@@ -596,7 +596,7 @@
     "axios": "^1.12.0",
     "moment": "^2.31.0",
     "moment-duration-format": "^2.3.2",
-    "qs": "^6.16.0",
+    "qs": "^6.16.1",
     "querystring": "^0.2.1"
   }
 }
