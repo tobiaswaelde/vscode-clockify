@@ -17,6 +17,7 @@ interface PomodoroSettings {
 const SHORT_BREAK_DESCRIPTION = 'Pomodoro break';
 const LONG_BREAK_DESCRIPTION = 'Pomodoro long break';
 
+/** Coordinates Pomodoro notifications and transitions for the synchronized Clockify timer. */
 export class Pomodoro {
 	private static phase: PomodoroPhase = 'idle';
 	private static entryId?: string;
@@ -34,10 +35,17 @@ export class Pomodoro {
 		return this.updateInProgress;
 	}
 
+	/**
+	 * Advance Pomodoro only while the timer snapshot is successfully synchronized.
+	 * @returns {Promise<void>} Resolves after any notification or automatic transition.
+	 */
 	private static async performUpdate(): Promise<void> {
 		const settings = this.getSettings();
 		if (!settings.enabled) {
 			this.reset(true);
+			return;
+		}
+		if (!Tracking.isSynchronized) {
 			return;
 		}
 
@@ -105,12 +113,19 @@ export class Pomodoro {
 			});
 	}
 
+	/**
+	 * Replace the synchronized work entry with a tracked Pomodoro break.
+	 * @param {TimeEntryImpl} entry The work entry to stop.
+	 * @param {boolean} longBreak Whether to use the long-break description.
+	 * @param {number} breakMinutes The break length displayed to the user.
+	 * @returns {Promise<void>} Resolves after the attempted transition.
+	 */
 	private static async beginBreak(
 		entry: TimeEntryImpl,
 		longBreak: boolean,
 		breakMinutes: number
 	): Promise<void> {
-		if (Tracking.timeEntry?.id !== entry.id) {
+		if (!Tracking.isSynchronized || Tracking.timeEntry?.id !== entry.id) {
 			return;
 		}
 
@@ -153,8 +168,13 @@ export class Pomodoro {
 			});
 	}
 
+	/**
+	 * Stop the synchronized break entry and resume the saved work entry.
+	 * @param {TimeEntryImpl} breakEntry The break timer to stop.
+	 * @returns {Promise<void>} Resolves after the attempted transition.
+	 */
 	private static async resumeWork(breakEntry: TimeEntryImpl): Promise<void> {
-		if (Tracking.timeEntry?.id !== breakEntry.id || !this.workEntry) {
+		if (!Tracking.isSynchronized || Tracking.timeEntry?.id !== breakEntry.id || !this.workEntry) {
 			return;
 		}
 

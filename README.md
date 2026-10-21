@@ -65,7 +65,7 @@ Releases are managed with [Changesets](https://github.com/changesets/changesets)
 
 1. Add a changeset for every user-facing change.
 2. Merge the change into `main`. The `Release PR` workflow creates or updates the `Version Packages` pull request.
-3. Merge the `Version Packages` pull request. The `GitHub Release` workflow packages the extension, creates a `v<version>` GitHub release and attaches the installable VSIX file.
+3. Merge the `Version Packages` pull request. The `GitHub Release` workflow packages the extension, creates a `v<version>` GitHub release and attaches the installable VSIX file. Issues marked with `Issue: #123` in that version's changeset are automatically closed after the release and VSIX are available.
 
 ## Development
 

@@ -6,10 +6,16 @@ const ts = require('typescript');
 
 const root = path.resolve(__dirname, '..');
 
+/**
+ * Load Pomodoro with isolated timer and VS Code dependencies.
+ * @param {object} options Initial entry, settings, focus, and prompt selection.
+ * @returns {object} The Pomodoro module, tracking state, and recorded calls.
+ */
 function createPomodoro({ entry, settings = {}, focused = true, selection } = {}) {
 	const calls = { errors: [], information: [], starts: [], stops: [] };
 	const Tracking = {
 		isTracking: Boolean(entry),
+		isSynchronized: true,
 		timeEntry: entry,
 		stop: async (...args) => {
 			calls.stops.push(args);
@@ -83,6 +89,30 @@ function timeEntry(description = 'Focused work') {
 }
 
 describe('Pomodoro timer', () => {
+	it('keeps an unsynchronized work or break timer unchanged', async () => {
+		for (const description of ['Focused work', 'Pomodoro break']) {
+			const { Pomodoro, Tracking, calls } = createPomodoro({
+				entry: timeEntry(description), settings: { 'pomodoro.automaticBreaks': true },
+			});
+			Tracking.isSynchronized = false;
+			await Pomodoro.update();
+			assert.deepEqual(calls.stops, []);
+			assert.deepEqual(calls.starts, []);
+			assert.deepEqual(calls.information, []);
+		}
+	});
+
+	it('ignores a delayed transition after synchronization fails', async () => {
+		const entry = timeEntry();
+		const { Pomodoro, Tracking, calls } = createPomodoro({ entry });
+		Pomodoro.workEntry = entry;
+		Tracking.isSynchronized = false;
+		await Pomodoro.beginBreak(entry, false, 5);
+		await Pomodoro.resumeWork(entry);
+		assert.deepEqual(calls.stops, []);
+		assert.deepEqual(calls.starts, []);
+	});
+
 	it('notifies for an elapsed external Clockify work timer', async () => {
 		const { Pomodoro, calls } = createPomodoro({ entry: timeEntry() });
 

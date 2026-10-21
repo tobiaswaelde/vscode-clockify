@@ -112,6 +112,11 @@ describe('tracking requirements', () => {
 });
 
 describe('stopping a running timer', () => {
+	/**
+	 * Load tracking with isolated configuration, dialogs, and SDK responses.
+	 * @param {object} overrides Dependencies to replace for this scenario.
+	 * @returns {object} The tracking class and recorded update and stop requests.
+	 */
 	function createTracking(overrides = {}) {
 		const calls = { updates: [], stops: [] };
 		const clockifyOverrides = overrides.Clockify || {};
@@ -142,6 +147,7 @@ describe('stopping a running timer', () => {
 		};
 		const Config = {
 			get: () => undefined,
+			getTrackingScope: () => undefined,
 			...overrides.Config,
 		};
 		const { requiresProject } = loadTypeScriptModule(
@@ -176,6 +182,74 @@ describe('stopping a running timer', () => {
 
 		return { calls, Tracking };
 	}
+
+	it('keeps the running timer and ownership after a failed synchronization', async () => {
+		const { Tracking } = createTracking({ Clockify: { getRunningTimeEntry: async () => undefined } });
+		const entry = Tracking.timeEntry;
+		Tracking.startedTimeEntryId = entry.id;
+		Tracking.isSynchronized = true;
+		await Tracking.update();
+		assert.equal(Tracking.isSynchronized, false);
+		assert.equal(Tracking.isTracking, true);
+		assert.equal(Tracking.timeEntry, entry);
+		assert.equal(Tracking.startedTimeEntryId, entry.id);
+	});
+
+	it('clears the timer only after a successful confirmation that none is running', async () => {
+		const { Tracking } = createTracking({ Clockify: { getRunningTimeEntry: async () => null } });
+		await Tracking.update();
+		assert.equal(Tracking.isSynchronized, true);
+		assert.equal(Tracking.isTracking, false);
+		assert.equal(Tracking.timeEntry, undefined);
+	});
+
+	it('recovers synchronization and updates a running timer without extra metadata requests', async () => {
+		let result;
+		const { Tracking } = createTracking({ Clockify: { getRunningTimeEntry: async () => result } });
+		const entry = Tracking.timeEntry;
+		await Tracking.update();
+		assert.equal(Tracking.isSynchronized, false);
+		result = { ...entry, description: 'Synced description' };
+		await Tracking.update();
+		assert.equal(Tracking.isSynchronized, true);
+		assert.equal(Tracking.timeEntry, result);
+		assert.equal(Tracking.description, 'Synced description');
+	});
+
+	it('shares simultaneous synchronization attempts', async () => {
+		let requests = 0;
+		const { Tracking } = createTracking({ Clockify: { getRunningTimeEntry: async () => {
+			requests++;
+			return null;
+		} } });
+		await Promise.all([Tracking.update(), Tracking.update(), Tracking.update()]);
+		assert.equal(requests, 1);
+	});
+
+	it('auto-starts only after confirmed absence, never after a failed initial check', async (t) => {
+		for (const result of [undefined, null]) {
+			const { Tracking } = createTracking({
+				Config: { get: () => true },
+				Clockify: { getRunningTimeEntry: async () => result },
+			});
+			Tracking.isTracking = false;
+			Tracking.timeEntry = undefined;
+			const start = t.mock.method(Tracking, 'start', async () => undefined);
+			await Tracking.initialize();
+			assert.equal(start.mock.callCount(), result === null ? 1 : 0);
+		}
+	});
+
+	it('does not auto-stop an owned timer after a failed shutdown check', async (t) => {
+		const { Tracking } = createTracking({
+			Config: { get: () => true },
+			Clockify: { getRunningTimeEntry: async () => undefined },
+		});
+		Tracking.startedTimeEntryId = Tracking.timeEntry.id;
+		const stop = t.mock.method(Tracking, 'stop', async () => true);
+		await Tracking.dispose();
+		assert.equal(stop.mock.callCount(), 0);
+	});
 
 	it('assigns a required project before stopping', async () => {
 		const { calls, Tracking } = createTracking({
@@ -295,6 +369,7 @@ describe('stopping a running timer', () => {
 
 	it('auto-stops only a timer started by the same extension instance', async () => {
 		const owned = createTracking({ Config: { get: () => true } });
+		owned.Tracking.isSynchronized = true;
 		owned.Tracking.startedTimeEntryId = 'entry-1';
 		owned.Tracking.update = async () => undefined;
 		let ownedStops = 0;
@@ -303,6 +378,7 @@ describe('stopping a running timer', () => {
 		assert.equal(ownedStops, 1);
 
 		const observed = createTracking({ Config: { get: () => true } });
+		observed.Tracking.isSynchronized = true;
 		observed.Tracking.startedTimeEntryId = 'entry-from-another-window';
 		observed.Tracking.update = async () => undefined;
 		let observedStops = 0;
