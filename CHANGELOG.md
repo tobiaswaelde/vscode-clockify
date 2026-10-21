@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.2
+
+### Patch Changes
+
+- 12bfc2d: Update runtime and development dependencies, including Moment, qs, webpack, Vite, and transitive security fixes.
+
 ## 4.1.1
 
 ### Patch Changes
