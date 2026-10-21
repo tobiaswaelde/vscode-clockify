@@ -11,8 +11,10 @@ import { ApiKey } from '../util/api-key';
 import { requiresProject } from './tracking-requirements';
 import { Uri } from 'vscode';
 
+/** Maintains the local timer snapshot and the timer owned by this VS Code window. */
 export class Tracking {
 	public static isTracking: boolean = false;
+	public static isSynchronized: boolean = false;
 	public static timeEntry?: TimeEntryImpl;
 	public static description?: string;
 	public static workspace?: Workspace;
@@ -24,7 +26,8 @@ export class Tracking {
 	private static configurationScope?: Uri;
 
 	/**
-	 * Initilaize tracking API
+	 * Initialize tracking, starting automatically only after confirming the remote timer state.
+	 * @returns {Promise<void>} Resolves after the initial timer check and optional start.
 	 */
 	public static async initialize() {
 		this.configurationScope = Config.getTrackingScope();
@@ -33,7 +36,7 @@ export class Tracking {
 			Config.get<boolean>('tracking.autostart', this.configurationScope) || false;
 		if (autostart) {
 			await this.update();
-			if (this.isTracking) {
+			if (!this.isSynchronized || this.isTracking) {
 				return;
 			}
 			console.log('[tracking] automatically start tracking...');
@@ -44,7 +47,8 @@ export class Tracking {
 	}
 
 	/**
-	 * Clean up tracking API
+	 * Stop this window's timer on shutdown only after a successful remote check.
+	 * @returns {Promise<void>} Resolves after any owned timer has been stopped.
 	 */
 	public static async dispose() {
 		const autostop =
@@ -54,7 +58,7 @@ export class Tracking {
 		}
 
 		await this.update();
-		if (this.timeEntry?.id !== this.startedTimeEntryId) {
+		if (!this.isSynchronized || this.timeEntry?.id !== this.startedTimeEntryId) {
 			return;
 		}
 
@@ -213,7 +217,8 @@ export class Tracking {
 	}
 
 	/**
-	 * check if tracker is running
+	 * Share concurrent remote timer checks without discarding the last snapshot on failure.
+	 * @returns {Promise<void>} Resolves when the shared synchronization attempt finishes.
 	 */
 	public static update(): Promise<void> {
 		if (!this.updateInProgress) {
@@ -225,7 +230,12 @@ export class Tracking {
 		return this.updateInProgress;
 	}
 
+	/**
+	 * Update the timer snapshot only when Clockify confirms a running entry or its absence.
+	 * @returns {Promise<void>} Resolves after checking the timer and refreshing related metadata.
+	 */
 	private static async performUpdate(): Promise<void> {
+		this.isSynchronized = false;
 		if (!(await ApiKey.get())) {
 			this.isTracking = false;
 			this.timeEntry = undefined;
@@ -244,8 +254,12 @@ export class Tracking {
 			}
 		}
 
-		const timeEntry = await this.getRunningTimeEntry();
-		if (!timeEntry) {
+		const timeEntry = await Clockify.getRunningTimeEntry(this.workspace.id);
+		if (timeEntry === undefined) {
+			return;
+		}
+		this.isSynchronized = true;
+		if (timeEntry === null) {
 			this.isTracking = false;
 			this.timeEntry = undefined;
 		} else {
@@ -355,30 +369,6 @@ export class Tracking {
 	}
 
 	//#region update
-	private static async getRunningTimeEntry(): Promise<TimeEntryImpl | undefined> {
-		// check workspace
-		const workspaceId = await this.getWorkspaceId();
-		if (!this.workspace || !workspaceId) {
-			return undefined;
-		}
-
-		// get current user
-		const user = await Clockify.getCurrentUser();
-		if (!user) {
-			return undefined;
-		}
-
-		// find running time entries in workspace
-		const timeentries = await Clockify.getTimeEntriesForUser(this.workspace.id, user.id);
-		const startedTimeEntries = timeentries.filter((x) => x.timeInterval.end === null);
-
-		// get running time entry
-		if (startedTimeEntries.length > 0) {
-			return startedTimeEntries[0];
-		}
-
-		return undefined;
-	}
 	private static async updateWorkspace() {
 		if (
 			!this.timeEntry || // no active time entry

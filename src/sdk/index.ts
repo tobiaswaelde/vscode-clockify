@@ -1,5 +1,5 @@
-import axios from 'axios';
 import * as qs from 'qs';
+
 import {
 	GetClientsFilter,
 	GetProjectsFilter,
@@ -23,19 +23,29 @@ import { User } from './types/user';
 import { Workspace, WorkspaceRequest } from './types/workspace';
 import { showError } from './util';
 import { filterByArchivedState, filterTasksByActivity } from './results';
+import { createHttpClient } from './http';
 
-const BASE_URL = 'https://api.clockify.me/api/v1';
-
+/** Provides authenticated access to Clockify resources and timer operations. */
 export class Clockify {
-	private static http = axios.create({
-		baseURL: BASE_URL,
-	});
+	private static controller = new AbortController();
+	private static http = createHttpClient(this.controller.signal);
+	private static apiKey?: string;
+	private static currentUser?: Promise<User | undefined>;
 
 	/**
-	 * Authenticate using API key
-	 * @param {string} apiKey The API key, `undefined` to remove authentication
+	 * Change credentials, cancelling old requests and clearing cached user and cooldown state.
+	 * @param {string|undefined} apiKey The API key, or undefined to remove authentication.
+	 * @returns {void} Nothing.
 	 */
 	public static authenticate(apiKey: string | undefined) {
+		if (apiKey === this.apiKey) {
+			return;
+		}
+		this.controller.abort();
+		this.controller = new AbortController();
+		this.http = createHttpClient(this.controller.signal);
+		this.apiKey = apiKey;
+		this.currentUser = undefined;
 		if (apiKey) {
 			this.http.defaults.headers.common['X-Api-Key'] = apiKey;
 		} else {
@@ -480,6 +490,31 @@ export class Clockify {
 	//#region Time Entries
 
 	/**
+	 * Fetch only the current user's running timer, distinguishing failure from confirmed absence.
+	 * @param {string} workspaceId The workspace whose timer to inspect.
+	 * @returns {Promise<TimeEntryImpl|null|undefined>} The running entry, null if stopped, or undefined on failure.
+	 */
+	public static async getRunningTimeEntry(
+		workspaceId: string
+	): Promise<TimeEntryImpl | null | undefined> {
+		const http = this.http;
+		const user = await this.getCurrentUser();
+		if (!user || http !== this.http) {
+			return undefined;
+		}
+
+		try {
+			const res = await http.get<TimeEntryImpl[]>(
+				`/workspaces/${workspaceId}/user/${user.id}/time-entries?in-progress=1&page-size=1`
+			);
+			return http === this.http ? res.data[0] ?? null : undefined;
+		} catch (err) {
+			showError('Error fetching running time entry.', err);
+			return undefined;
+		}
+	}
+
+	/**
 	 * Add a new time entry to workspace
 	 *
 	 * If end is not sent in request means that stopwatch mode is active, otherwise time entry is manually added.
@@ -665,17 +700,25 @@ export class Clockify {
 	//#region User
 
 	/**
-	 * Get currently signed in user
-	 * @returns {User|undefined} The currently signed in user
+	 * Cache the signed-in user for these credentials and share concurrent lookups.
+	 * Failed lookups remain retryable; responses from superseded credentials are discarded.
+	 * @returns {Promise<User|undefined>} The current user, or undefined on failure.
 	 */
-	public static async getCurrentUser(): Promise<User | undefined> {
-		try {
-			const res = await this.http.get('/user');
-			return res.data as User;
-		} catch (err) {
-			showError('Error fetching current user.', err);
-			return undefined;
+	public static getCurrentUser(): Promise<User | undefined> {
+		if (!this.currentUser) {
+			const http = this.http;
+			const pending = http.get('/user')
+				.then((res) => http === this.http ? res.data as User : undefined)
+				.catch((err: unknown) => {
+					if (this.currentUser === pending) {
+						this.currentUser = undefined;
+					}
+					showError('Error fetching current user.', err);
+					return undefined;
+				});
+			this.currentUser = pending;
 		}
+		return this.currentUser;
 	}
 
 	/**

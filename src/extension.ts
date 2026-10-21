@@ -16,6 +16,11 @@ import { checkDefaultWorkspace } from './functions/check-default-workspace';
 import { ApiKey } from './util/api-key';
 import { Pomodoro } from './helpers/pomodoro';
 
+/**
+ * Register extension resources, initialize tracking, and schedule remote and local updates.
+ * @param {ExtensionContext} context The VS Code extension lifecycle context.
+ * @returns {Promise<void>} Resolves after initialization.
+ */
 export async function activate(context: ExtensionContext) {
 	console.log('[clockify-tracker] Activating extension...');
 	Context.setObject(context);
@@ -44,7 +49,7 @@ export async function activate(context: ExtensionContext) {
 	}
 	const trackingInterval = setInterval(() => {
 		void Tracking.update();
-	}, 5000);
+	}, 30000);
 	context.subscriptions.push({ dispose: () => clearInterval(trackingInterval) });
 	const pomodoroInterval = setInterval(() => {
 		void Pomodoro.update();
