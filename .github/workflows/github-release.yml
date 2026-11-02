@@ -30,7 +30,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 26.13.0
           cache: yarn
       - run: yarn install --frozen-lockfile
       - id: release

@@ -14,6 +14,7 @@ Implements [Clockify](https://clockify.me/) time tracker in VSCode.
 > **Community help wanted:** If you have experience with secure, sustainable VS Code Marketplace publishing and can help bring current releases back to the Marketplace, please [open an issue](https://github.com/tobiaswaelde/vscode-clockify/issues/new) and share your approach.
 
 ## Functions
+
 You can manage your workspaces, clients, projects, tasks and time entries. You can start and stop a timer on the status bar or automatically by adjusting the settings for the workspace in which you want to enable the auto tracking.
 
 Workspace, client, project and task selection dialogs include an **Add** action, so missing items can be created without leaving the current workflow.
@@ -54,9 +55,11 @@ ext install tobiaswaelde.clockify-tracker
 You can also search for "Clockify" in the Extensions view. Until Marketplace publishing resumes, this version may be older than the latest GitHub release.
 
 ## Preview
+
 ![Clockify TreeView screenshot](docs/images/treeview-preview.png)
 
 ## Getting Started
+
 [Getting Started](docs/index.md)
 
 ## Releasing
@@ -83,26 +86,30 @@ Tests and quality checks run in `tests.yml`, releases run in the release workflo
 
 ## Configuration
 
-*All keys starting with `clockify.`*
+_All keys starting with `clockify.`_
 
 The API key entered through **Clockify: Set API key** is stored in VS Code SecretStorage and is not written to user or workspace settings.
 
-| Settings key                   | Type    | Default value | Description                                                                                                         |
-| ------------------------------ | ------- | ------------- | ------------------------------------------------------------------------------------------------------------------- |
-| defaultWorkspaceId             | string  | ` `           | The ID of the default workspace in which start tracking (if no workspace ID is set in the workspaces settings.json) |
-| fetchLimit                     | number  | `200`         | Limit the number of items that will be fetched for displaying in the tree view.                                     |
-| hideSensitiveData              | boolean | `false`       | Hide sensitive data. Can be useful for screenshots.                                                                 |
-| showIds                        | boolean | `false`       | Show IDs of the data.                                                                                               |
-| workspaces.showNumberOfMembers | boolean | `true`        | Show the number of members for each workspace.                                                                      |
-| tracking.workspaceId           | string  | ` `           | The ID of the default workspace. Supports workspace-folder scope.                                                   |
-| tracking.projectId             | string  | ` `           | The ID of the default project in the workspace. `clockify.tracking.workspaceId` must be set. Supports folder scope. |
-| tracking.taskId                | string  | ` `           | The ID of the default task in the workspace. `clockify.tracking.workspaceId` must be set. Supports folder scope.    |
-| tracking.billable              | boolean | `false`       | Check if Time Entry is billable.                                                                                    |
-| tracking.autostart             | boolean | `false`       | Start tracking when opening the IDE. Supports workspace-folder scope.                                               |
-| tracking.autostop              | boolean | `true`        | When this VS Code window closes, stop only a timer that was started by this window.                                  |
-| pomodoro.enabled               | boolean | `false`       | Enable Pomodoro handling for the active Clockify timer.                                                              |
-| pomodoro.focusMinutes          | integer | `25`          | Focus interval length in minutes.                                                                                    |
-| pomodoro.shortBreakMinutes     | integer | `5`           | Short break length in minutes.                                                                                       |
-| pomodoro.longBreakMinutes      | integer | `15`          | Long break length in minutes.                                                                                        |
-| pomodoro.sessionsBeforeLongBreak | integer | `4`         | Completed focus intervals before a long break.                                                                       |
-| pomodoro.automaticBreaks       | boolean | `false`       | Automatically stop work, track the break, and resume the prior entry.                                                |
+| Settings key                     | Type    | Default value | Description                                                                                                         |
+| -------------------------------- | ------- | ------------- | ------------------------------------------------------------------------------------------------------------------- |
+| defaultWorkspaceId               | string  | ` `           | The ID of the default workspace in which start tracking (if no workspace ID is set in the workspaces settings.json) |
+| fetchLimit                       | number  | `200`         | Limit the number of items that will be fetched for displaying in the tree view.                                     |
+| hideSensitiveData                | boolean | `false`       | Hide sensitive data. Can be useful for screenshots.                                                                 |
+| showIds                          | boolean | `false`       | Show IDs of the data.                                                                                               |
+| workspaces.showNumberOfMembers   | boolean | `true`        | Show the number of members for each workspace.                                                                      |
+| tracking.workspaceId             | string  | ` `           | The ID of the default workspace. Supports workspace-folder scope.                                                   |
+| tracking.projectId               | string  | ` `           | The ID of the default project in the workspace. `clockify.tracking.workspaceId` must be set. Supports folder scope. |
+| tracking.taskId                  | string  | ` `           | The ID of the default task in the workspace. `clockify.tracking.workspaceId` must be set. Supports folder scope.    |
+| tracking.billable                | boolean | `false`       | Check if Time Entry is billable.                                                                                    |
+| tracking.autostart               | boolean | `false`       | Start tracking when opening the IDE. Supports workspace-folder scope.                                               |
+| tracking.autostop                | boolean | `true`        | When this VS Code window closes, stop only a timer that was started by this window.                                 |
+| pomodoro.enabled                 | boolean | `false`       | Enable Pomodoro handling for the active Clockify timer.                                                             |
+| pomodoro.focusMinutes            | integer | `25`          | Focus interval length in minutes.                                                                                   |
+| pomodoro.shortBreakMinutes       | integer | `5`           | Short break length in minutes.                                                                                      |
+| pomodoro.longBreakMinutes        | integer | `15`          | Long break length in minutes.                                                                                       |
+| pomodoro.sessionsBeforeLongBreak | integer | `4`           | Completed focus intervals before a long break.                                                                      |
+| pomodoro.automaticBreaks         | boolean | `false`       | Automatically stop work, track the break, and resume the prior entry.                                               |
+
+## Development toolchain
+
+Use Node.js 26.13.0 LTS and the package manager pinned in `package.json`. Node-based application runtimes require Node.js 26. Builds use TypeScript 7; ESLint and compiler-API consumers use the TypeScript 6 compatibility package. Dependency overrides, where present, pin security fixes for transitive packages; validate tests and documentation builds when changing them.
